@@ -1,10 +1,8 @@
 import pygame
-from Aliens.GameMenu.main_menu import MainMenu
-from Aliens.constraints import *
-
-game_scenes = {
-    MainMenu.__name__: MainMenu()
-}
+from Aliens.Menu.main_menu import MainMenu
+from Aliens.GameMenu.game_menu import GameMenu
+from Aliens.EndlessMode.endless_mode import EndlessMode
+from Aliens.settings import *
 
 
 class App:
@@ -15,7 +13,12 @@ class App:
         self.screen = pygame.display.set_mode(WINDOW_SIZE)
         # game setup
         self.is_running = True
-        self.current_scene = game_scenes[MainMenu.__name__]
+        self.game_scenes = {
+            MainMenu.__name__: MainMenu(self),
+            GameMenu.__name__: GameMenu(self),
+            EndlessMode.__name__: EndlessMode(self)
+        }
+        self.current_scene = self.game_scenes[MainMenu.__name__]
 
     def run(self):
         while self.is_running:

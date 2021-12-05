@@ -1,3 +1,5 @@
 # windows constraints
 WINDOW_SIZE = (1280, 720)
+WINDOW_WIDTH = 1280
+WINDOWS_HEIGHT = 720
 WINDOW_TITLE = "Aliens!"

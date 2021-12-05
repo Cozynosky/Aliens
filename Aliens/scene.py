@@ -1,8 +1,10 @@
 import pygame
 
+
 class Scene:
-    def __init__(self):
+    def __init__(self, parent):
         pygame.init()
+        self.app = parent
         self.clock = pygame.time.Clock()
 
     def update(self):

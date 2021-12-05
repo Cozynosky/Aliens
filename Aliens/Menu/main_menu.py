@@ -1,17 +1,18 @@
 import pygame
 import pygame_gui
+
 from Aliens import app
 from Aliens.scene import Scene
-from Aliens.constraints import *
+from Aliens.settings import *
 from sys import exit
 
 
 class MainMenu(Scene):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent):
+        super(MainMenu, self).__init__(parent)
         # background
         self.background = pygame.Surface(WINDOW_SIZE)
-        self.background.fill(pygame.Color('#FFFFFF'))
+        self.background.fill(pygame.Color('#DDDDDD'))
         # game logo
         pygame.font.init()
         self.game_logo = pygame.Surface((500, 200))
@@ -24,17 +25,17 @@ class MainMenu(Scene):
         self.manager = pygame_gui.UIManager(WINDOW_SIZE)
         # prepare buttons
         self.play_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(WINDOW_SIZE[0] // 2 - 150, 300, 300, 75), text="PLAY",
+            relative_rect=pygame.Rect(WINDOW_WIDTH // 2 - 150, 300, 300, 75), text="PLAY",
             manager=self.manager)
         self.settings_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(WINDOW_SIZE[0] // 2 - 150, 375, 300, 75), text="SETTINGS",
+            relative_rect=pygame.Rect(WINDOW_WIDTH // 2 - 150, 375, 300, 75), text="SETTINGS",
             manager=self.manager)
         self.instructions_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(WINDOW_SIZE[0] // 2 - 150, 450, 300, 75),
+            relative_rect=pygame.Rect(WINDOW_WIDTH // 2 - 150, 450, 300, 75),
             text="INSTRUCTIONS",
             manager=self.manager)
         self.exit_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(WINDOW_SIZE[0] - 125, WINDOW_SIZE[1] - 75, 100, 50), text="EXIT",
+            relative_rect=pygame.Rect(WINDOW_WIDTH - 125, WINDOWS_HEIGHT - 75, 100, 50), text="EXIT",
             manager=self.manager)
 
     def update(self):
@@ -42,7 +43,7 @@ class MainMenu(Scene):
 
     def render(self, screen):
         screen.blit(self.background, (0, 0))
-        screen.blit(self.game_logo, (WINDOW_SIZE[0] // 2 - 250, 90))
+        screen.blit(self.game_logo, (WINDOW_WIDTH // 2 - 250, 50))
         self.manager.draw_ui(screen)
         pygame.display.update()
 
@@ -56,7 +57,7 @@ class MainMenu(Scene):
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.play_button:
-                        pass
+                        self.app.current_scene = self.app.game_scenes['GameMenu']
                     if event.ui_element == self.settings_button:
                         pass
                     if event.ui_element == self.instructions_button:
