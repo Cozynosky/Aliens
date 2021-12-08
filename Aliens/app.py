@@ -2,6 +2,7 @@ import pygame
 from Aliens.Menu.main_menu import MainMenu
 from Aliens.GameMenu.game_menu import GameMenu
 from Aliens.EndlessMode.endless_mode import EndlessMode
+from Aliens.Settings.settings import Settings
 from Aliens.settings import *
 
 
@@ -16,7 +17,8 @@ class App:
         self.game_scenes = {
             MainMenu.__name__: MainMenu(self),
             GameMenu.__name__: GameMenu(self),
-            EndlessMode.__name__: EndlessMode(self)
+            EndlessMode.__name__: EndlessMode(self),
+            Settings.__name__: Settings(self)
         }
         self.current_scene = self.game_scenes[MainMenu.__name__]
 

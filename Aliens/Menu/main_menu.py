@@ -59,7 +59,7 @@ class MainMenu(Scene):
                     if event.ui_element == self.play_button:
                         self.app.current_scene = self.app.game_scenes['GameMenu']
                     if event.ui_element == self.settings_button:
-                        pass
+                        self.app.current_scene = self.app.game_scenes['Settings']
                     if event.ui_element == self.instructions_button:
                         pass
                     if event.ui_element == self.exit_button:
