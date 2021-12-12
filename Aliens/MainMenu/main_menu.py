@@ -1,14 +1,14 @@
 import pygame
 import pygame_gui
 
-from Aliens.scene import Scene
 from Aliens import SETTINGS
+from Aliens.scene import Scene
 from sys import exit
 
 
-class GameMenu(Scene):
+class MainMenu(Scene):
     def __init__(self, parent):
-        super(GameMenu, self).__init__(parent)
+        super(MainMenu, self).__init__(parent)
         pygame.font.init()
         # background
         self.background = self.prepare_background()
@@ -16,13 +16,10 @@ class GameMenu(Scene):
         self.game_logo, self.game_logo_rect = self.prepare_game_logo()
         # ui manager
         self.manager = self.prepare_manager()
-
-        # prepare buttons
-        self.adventure_button = self.prepare_adventure_button()
-        self.endless_button = self.prepare_endless_button()
-        self.upgrades_button = self.prepare_upgrades_button()
-        self.statistics_button = self.prepare_statistics_button()
-        self.back_button = self.prepare_back_button()
+        # buttons
+        self.play_button = self.prepare_play_button()
+        self.settings_button = self.prepare_settings_button()
+        self.instructions_button = self.prepare_instructions_button()
         self.exit_button = self.prepare_exit_button()
 
     def refactor_ui(self):
@@ -32,13 +29,10 @@ class GameMenu(Scene):
         self.game_logo, self.game_logo_rect = self.prepare_game_logo()
         # ui manager
         self.manager = self.prepare_manager()
-
-        # prepare buttons
-        self.adventure_button = self.prepare_adventure_button()
-        self.endless_button = self.prepare_endless_button()
-        self.upgrades_button = self.prepare_upgrades_button()
-        self.statistics_button = self.prepare_statistics_button()
-        self.back_button = self.prepare_back_button()
+        # buttons
+        self.play_button = self.prepare_play_button()
+        self.settings_button = self.prepare_settings_button()
+        self.instructions_button = self.prepare_instructions_button()
         self.exit_button = self.prepare_exit_button()
 
     def prepare_background(self):
@@ -60,48 +54,29 @@ class GameMenu(Scene):
     def prepare_manager(self):
         return pygame_gui.UIManager(SETTINGS.WINDOW_SIZE)
 
-    def prepare_adventure_button(self):
+    def prepare_play_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 300, 300, 75), text="ADVENTURE MODE",
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 300, 300, 75), text="PLAY",
             manager=self.manager)
-
         return button
 
-    def prepare_endless_button(self):
+    def prepare_settings_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 375, 300, 75), text="ENDLESS MODE",
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 375, 300, 75), text="SETTINGS",
             manager=self.manager)
-
         return button
 
-    def prepare_upgrades_button(self):
+    def prepare_instructions_button(self):
         button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 450, 300, 75),
-            text="UPGRADES",
+            text="INSTRUCTIONS",
             manager=self.manager)
-
-        return button
-
-    def prepare_statistics_button(self):
-        button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 525, 300, 75),
-            text="STATISTICS",
-            manager=self.manager)
-
-        return button
-
-    def prepare_back_button(self):
-        button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(25, SETTINGS.WINDOW_HEIGHT - 75, 100, 50), text="BACK",
-            manager=self.manager)
-
         return button
 
     def prepare_exit_button(self):
         button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH - 125, SETTINGS.WINDOW_HEIGHT - 75, 100, 50), text="EXIT",
             manager=self.manager)
-
         return button
 
     def update(self):
@@ -109,7 +84,7 @@ class GameMenu(Scene):
 
     def render(self, screen):
         screen.blit(self.background, (0, 0))
-        screen.blit(self.game_logo, (SETTINGS.WINDOW_WIDTH // 2 - 250, 50))
+        screen.blit(self.game_logo, self.game_logo_rect)
         self.manager.draw_ui(screen)
         pygame.display.update()
 
@@ -122,10 +97,12 @@ class GameMenu(Scene):
                 exit()
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == self.endless_button:
-                        self.app.current_scene = self.app.game_scenes['EndlessMode']
-                    if event.ui_element == self.back_button:
-                        self.app.current_scene = self.app.game_scenes['MainMenu']
+                    if event.ui_element == self.play_button:
+                        self.app.current_scene = self.app.game_scenes['GameMenu']
+                    if event.ui_element == self.settings_button:
+                        self.app.current_scene = self.app.game_scenes['SettingsMenu']
+                    if event.ui_element == self.instructions_button:
+                        pass
                     if event.ui_element == self.exit_button:
                         pygame.quit()
                         exit()

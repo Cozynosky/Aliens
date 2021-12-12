@@ -1,7 +1,7 @@
 import pygame
 from sys import exit
 from Aliens.scene import Scene
-from Aliens.settings import *
+from Aliens import SETTINGS
 from Aliens.EndlessMode.player import Player
 
 
@@ -9,8 +9,15 @@ class EndlessMode(Scene):
     def __init__(self, parent):
         super(EndlessMode, self).__init__(parent)
         self.player = Player()
-        self.background = pygame.Surface(WINDOW_SIZE)
-        self.background.fill(pygame.Color('#DDDDDD'))
+        self.background = self.prepare_background()
+
+    def refactor_ui(self):
+        self.background = self.prepare_background()
+
+    def prepare_background(self):
+        background = pygame.Surface(SETTINGS.WINDOW_SIZE)
+        background.fill(pygame.Color('#DDDDDD'))
+        return background
 
     def update(self):
         self.player.update()

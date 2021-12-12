@@ -1,26 +1,44 @@
 import pygame
-from Aliens.Menu.main_menu import MainMenu
+from Aliens.MainMenu.main_menu import MainMenu
 from Aliens.GameMenu.game_menu import GameMenu
 from Aliens.EndlessMode.endless_mode import EndlessMode
-from Aliens.Settings.settings import Settings
-from Aliens.settings import *
+from Aliens.SettingsMenu.settingsmenu import SettingsMenu
+from Aliens import SETTINGS
 
 
 class App:
     def __init__(self):
         # pygame setup
         pygame.init()
-        pygame.display.set_caption(WINDOW_TITLE)
-        self.screen = pygame.display.set_mode(WINDOW_SIZE)
+        pygame.display.set_caption(SETTINGS.WINDOW_TITLE)
+        # screen setup
+        if SETTINGS.FULLSCREEN:
+            self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT))
         # game setup
         self.is_running = True
         self.game_scenes = {
             MainMenu.__name__: MainMenu(self),
             GameMenu.__name__: GameMenu(self),
             EndlessMode.__name__: EndlessMode(self),
-            Settings.__name__: Settings(self)
+            SettingsMenu.__name__: SettingsMenu(self)
         }
         self.current_scene = self.game_scenes[MainMenu.__name__]
+
+    def refactor_ui(self):
+        # save user settings to file
+        SETTINGS.save_settings()
+
+        pygame.display.quit()
+        pygame.display.init()
+        if SETTINGS.FULLSCREEN:
+            self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT))
+
+        for scene in self.game_scenes.values():
+            scene.refactor_ui()
 
     def run(self):
         while self.is_running:

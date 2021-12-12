@@ -1,5 +1,5 @@
 import pygame
-from Aliens.settings import *
+from Aliens import SETTINGS
 
 
 class Player(pygame.sprite.Sprite):
@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         self.go_down = False
 
     def reset_player(self):
-        self.rect.center = (self.rect.width, WINDOWS_HEIGHT // 2)
+        self.rect.center = (self.rect.width, SETTINGS.WINDOW_HEIGHT // 2)
         self.lives = 3
         # movement
         self.go_left = False
@@ -34,9 +34,9 @@ class Player(pygame.sprite.Sprite):
         # movement
         if self.go_left and self.rect.left > 0:
             self.rect.x -= self.horizontal_speed
-        if self.go_right and self.rect.right < WINDOW_WIDTH:
+        if self.go_right and self.rect.right < SETTINGS.WINDOW_WIDTH:
             self.rect.x += self.horizontal_speed
         if self.go_up and self.rect.top > 0:
             self.rect.y -= self.vertical_speed
-        if self.go_down and self.rect.bottom < WINDOWS_HEIGHT:
+        if self.go_down and self.rect.bottom < SETTINGS.WINDOW_HEIGHT:
             self.rect.y += self.vertical_speed

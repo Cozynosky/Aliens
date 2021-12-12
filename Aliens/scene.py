@@ -10,6 +10,9 @@ class Scene:
     def update(self):
         raise NotImplementedError
 
+    def refactor_ui(self):
+        raise NotImplementedError
+
     def render(self, screen):
         raise NotImplementedError
 
