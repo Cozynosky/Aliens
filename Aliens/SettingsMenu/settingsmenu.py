@@ -63,17 +63,17 @@ class SettingsMenu(Scene):
         return pygame_gui.UIManager(SETTINGS.WINDOW_SIZE)
 
     def prepare_resolution_label(self):
-        label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(450, 300, 100, 40),
+        label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 200, 300, 100, 40),
                                                        text="Resolution", manager=self.manager)
         return label
 
     def prepare_fullscreen_label(self):
-        label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(450, 350, 100, 40),
+        label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 200, 350, 100, 40),
                                                             text="Fullscreen", manager=self.manager)
         return label
 
     def prepare_resolution_dropdown(self):
-        resolution_dropdown = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(600, 300, 250, 40),
+        resolution_dropdown = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, 300, 250, 40),
                                                                  manager=self.manager,
                                                                  options_list=SETTINGS.RESOLUTIONS.keys(),
                                                                  starting_option=f"{SETTINGS.WINDOW_WIDTH} x {SETTINGS.WINDOW_HEIGHT}")
@@ -81,7 +81,7 @@ class SettingsMenu(Scene):
 
     def prepare_fullscreen_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(600, 350, 100, 40), text=f"{SETTINGS.FULLSCREEN}",
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, 350, 100, 40), text=f"{SETTINGS.FULLSCREEN}",
             manager=self.manager)
         return button
 
@@ -121,5 +121,9 @@ class SettingsMenu(Scene):
                     SETTINGS.WINDOW_HEIGHT = int(event.text.split(" x ")[1])
                     SETTINGS.SCALE = SETTINGS.prepare_scale()
                     self.app.refactor_ui()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.app.current_scene = self.app.game_scenes["MainMenu"]
+
             self.manager.process_events(event)
         self.manager.update(time_delta)

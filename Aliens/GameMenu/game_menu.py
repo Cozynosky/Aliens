@@ -120,6 +120,9 @@ class GameMenu(Scene):
                 self.app.is_running = False
                 pygame.quit()
                 exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.app.current_scene = self.app.game_scenes["MainMenu"]
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.endless_button:

@@ -56,20 +56,19 @@ class MainMenu(Scene):
 
     def prepare_play_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 300, 300, 75), text="PLAY",
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, self.game_logo_rect.bottom + 50, 300, 75), text="PLAY",
             manager=self.manager)
         return button
 
     def prepare_settings_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 375, 300, 75), text="SETTINGS",
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, self.game_logo_rect.bottom + 125, 300, 75), text="SETTINGS",
             manager=self.manager)
         return button
 
     def prepare_instructions_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 450, 300, 75),
-            text="INSTRUCTIONS",
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, self.game_logo_rect.bottom + 200, 300, 75), text="INSTRUCTIONS",
             manager=self.manager)
         return button
 

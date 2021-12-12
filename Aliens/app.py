@@ -32,6 +32,7 @@ class App:
 
         pygame.display.quit()
         pygame.display.init()
+        pygame.display.set_caption(SETTINGS.WINDOW_TITLE)
         if SETTINGS.FULLSCREEN:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT), pygame.FULLSCREEN)
         else:

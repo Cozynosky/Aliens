@@ -1,63 +1,33 @@
 import pygame
 from sys import exit
 from Aliens.scene import Scene
-from Aliens import SETTINGS
-from Aliens.EndlessMode.player import Player
+from Aliens.EndlessMode.game import Game
 
 
 class EndlessMode(Scene):
     def __init__(self, parent):
         super(EndlessMode, self).__init__(parent)
-        self.player = Player()
-        self.background = self.prepare_background()
+        self.game = Game()
 
     def refactor_ui(self):
-        self.background = self.prepare_background()
-
-    def prepare_background(self):
-        background = pygame.Surface(SETTINGS.WINDOW_SIZE)
-        background.fill(pygame.Color('#DDDDDD'))
-        return background
+        self.game.new_game()
 
     def update(self):
-        self.player.update()
+        self.game.update()
 
     def render(self, screen):
-        screen.blit(self.background, (0, 0))
-        screen.blit(self.player.image, self.player.rect)
+        self.game.draw(screen)
         pygame.display.update()
 
     def handle_events(self, events):
         self.clock.tick(60)
         for event in events:
-
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w or event.key == pygame.K_UP:
-                    self.player.go_up = True
-                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    self.player.go_down = True
-                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    self.player.go_left = True
-                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    self.player.go_right = True
                 if event.key == pygame.K_ESCAPE:
-                    self.reset_game()
-                    self.app.previous_scene = self.app.game_scenes[EndlessMode.__name__]
-                    self.app.current_scene = self.app.game_scenes['GameMenu']
+                    self.game.new_game()
+                    self.app.current_scene = self.app.game_scenes["GameMenu"]
+        self.game.handle_events(events)
 
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_w or event.key == pygame.K_UP:
-                    self.player.go_up = False
-                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                    self.player.go_down = False
-                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                    self.player.go_left = False
-                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                    self.player.go_right = False
-
-    def reset_game(self):
-        self.player.reset_player()
