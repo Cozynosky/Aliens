@@ -6,20 +6,24 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         # prepare players image
-        self.image, self.rect = self.reset_image()
+        self.image, self.rect = self.prepare_image()
         # lifes
         self.lives = 3
-        self.reset_player()
         # player speed
-        self.horizontal_speed = 6
-        self.vertical_speed = 6
+        self.horizontal_speed = 8 * SETTINGS.SCALE
+        self.vertical_speed = 8 * SETTINGS.SCALE
         # movement
         self.go_left = False
         self.go_right = False
         self.go_up = False
         self.go_down = False
 
-    def reset_image(self):
+    def refactor(self):
+        self.image, self.rect = self.prepare_image()
+        self.horizontal_speed = 8 * SETTINGS.SCALE
+        self.vertical_speed = 8 * SETTINGS.SCALE
+
+    def prepare_image(self):
         image = pygame.Surface((128 * SETTINGS.SCALE, 128 * SETTINGS.SCALE))
         image.fill('#00FF00')
         rect = image.get_rect()
@@ -28,7 +32,7 @@ class Player(pygame.sprite.Sprite):
 
     def reset_player(self):
         # reset image
-        self.image, self.rect = self.reset_image()
+        self.image, self.rect = self.prepare_image()
         # reset lives
         self.lives = 3
         # movement
@@ -47,6 +51,9 @@ class Player(pygame.sprite.Sprite):
             self.rect.y -= self.vertical_speed
         if self.go_down and self.rect.bottom < SETTINGS.WINDOW_HEIGHT:
             self.rect.y += self.vertical_speed
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
 
     def handle_events(self, events):
         for event in events:
@@ -69,4 +76,3 @@ class Player(pygame.sprite.Sprite):
                     self.go_left = False
                 if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                     self.go_right = False
-

@@ -1,21 +1,22 @@
 import pygame
 from sys import exit
 from Aliens.scene import Scene
-from Aliens.EndlessMode.game import Game
+from Aliens.GameCore.gamecore import Game
 
 
 class EndlessMode(Scene):
     def __init__(self, parent):
         super(EndlessMode, self).__init__(parent)
-        self.game = Game()
+        self.game = Game(game_mode="ENDLESS")
 
     def refactor_ui(self):
-        self.game.new_game()
+        self.game.refactor()
 
     def update(self):
         self.game.update()
 
     def render(self, screen):
+        screen.fill((0, 0, 0))
         self.game.draw(screen)
         pygame.display.update()
 
