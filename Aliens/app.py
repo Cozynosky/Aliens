@@ -3,6 +3,7 @@ from Aliens.MainMenu.main_menu import MainMenu
 from Aliens.GameMenu.game_menu import GameMenu
 from Aliens.EndlessMode.endless_mode import EndlessMode
 from Aliens.SettingsMenu.settingsmenu import SettingsMenu
+from Aliens.Profile.profile import Profile
 from Aliens import SETTINGS
 
 
@@ -16,6 +17,9 @@ class App:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT))
+        # temp profile selection
+        self.profiles = [Profile(), Profile(), Profile()]
+        self.current_profile = self.profiles[0]
         # game setup
         self.is_running = True
         self.game_scenes = {
@@ -25,6 +29,7 @@ class App:
             SettingsMenu.__name__: SettingsMenu(self)
         }
         self.current_scene = self.game_scenes[MainMenu.__name__]
+
 
     def refactor_ui(self):
         # save user settings to file

@@ -7,7 +7,7 @@ from Aliens.GameCore.gamecore import Game
 class EndlessMode(Scene):
     def __init__(self, parent):
         super(EndlessMode, self).__init__(parent)
-        self.game = Game(game_mode="ENDLESS")
+        self.game = Game(game_mode="ENDLESS", ship=self.app.current_profile.ship)
 
     def refactor_ui(self):
         self.game.refactor()
@@ -28,7 +28,6 @@ class EndlessMode(Scene):
                 exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.game.new_game()
+                    self.game.reset()
                     self.app.current_scene = self.app.game_scenes["GameMenu"]
-        self.game.handle_events(events)
-
+            self.game.handle_event(event)
