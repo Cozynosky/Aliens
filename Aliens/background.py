@@ -45,7 +45,7 @@ class BackgroundLayer:
     def load_image(self, filename):
         image = pygame.image.load(os.path.join(self.images_folder, filename)).convert_alpha()
         rect = image.get_rect()
-        image = pygame.transform.scale(image, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
+        image = pygame.transform.smoothscale(image, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
         rect = image.get_rect()
         rect.topleft = (0, 0)
         following_rect = rect.copy()

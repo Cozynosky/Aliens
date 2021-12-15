@@ -10,8 +10,6 @@ class GameMenu(Scene):
     def __init__(self, parent):
         super(GameMenu, self).__init__(parent)
         pygame.font.init()
-        # background
-        self.background = self.prepare_background()
         # game logo
         self.game_logo, self.game_logo_rect = self.prepare_game_logo()
         # ui manager
@@ -26,8 +24,6 @@ class GameMenu(Scene):
         self.exit_button = self.prepare_exit_button()
 
     def refactor_ui(self):
-        # background
-        self.background = self.prepare_background()
         # game logo
         self.game_logo, self.game_logo_rect = self.prepare_game_logo()
         # ui manager
@@ -40,11 +36,6 @@ class GameMenu(Scene):
         self.statistics_button = self.prepare_statistics_button()
         self.back_button = self.prepare_back_button()
         self.exit_button = self.prepare_exit_button()
-
-    def prepare_background(self):
-        background = pygame.Surface(SETTINGS.WINDOW_SIZE)
-        background.fill(pygame.Color('#DDDDDD'))
-        return background
 
     def prepare_game_logo(self):
         game_logo = pygame.Surface((500, 200))
@@ -108,7 +99,7 @@ class GameMenu(Scene):
         pass
 
     def render(self, screen):
-        screen.blit(self.background, (0, 0))
+        self.app.background.draw(screen)
         screen.blit(self.game_logo, (SETTINGS.WINDOW_WIDTH // 2 - 250, 50))
         self.manager.draw_ui(screen)
         pygame.display.update()

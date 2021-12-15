@@ -22,9 +22,9 @@ class Bullet(pygame.sprite.Sprite):
         ]
         rect = frames[0].get_rect()
         frames = [
-            pygame.transform.scale(frames[0], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
-            pygame.transform.scale(frames[1], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
-            pygame.transform.scale(frames[2], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
+            pygame.transform.smoothscale(frames[0], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
+            pygame.transform.smoothscale(frames[1], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
+            pygame.transform.smoothscale(frames[2], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
         ]
         rect = frames[0].get_rect()
         rect.center = (rect.width, SETTINGS.WINDOW_HEIGHT // 2)

@@ -5,35 +5,30 @@ from Aliens import SETTINGS
 class Ship(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        # prepare players image
-        self.frames, self.frame, self.rect = self.load_image()
+        # init needed values
+        self.frames = None
+        self.frame = None
+        self.animation_speed = None
+        self.vertical_speed = None
+        self.horizontal_speed = None
         # movement
         self.go_left = False
         self.go_right = False
         self.go_up = False
         self.go_down = False
-        # init values
-        self.lives = 3
-        self.horizontal_speed = 0
-        self.vertical_speed = 0
-        self.animation_speed = 0
 
     def refactor(self):
-        self.frames, self.frame, self.rect = self.load_image()
+        raise NotImplementedError
 
     def load_image(self):
         raise NotImplementedError
 
     def reset_ship(self):
-        # reset image
-        self.frames, self.frame, self.rect = self.load_image()
-        # reset lives
-        self.lives = 3
-        # movement
         self.go_left = False
         self.go_right = False
         self.go_up = False
         self.go_down = False
+        self.rect.center = (self.rect.width, SETTINGS.WINDOW_HEIGHT // 2)
 
     def update(self):
         # movement
@@ -76,4 +71,4 @@ class Ship(pygame.sprite.Sprite):
                 self.go_right = False
 
     def draw(self, screen):
-        screen.blit(self.frames[int(self.frame)], self.rect)
+        raise NotImplementedError

@@ -13,10 +13,11 @@ class EndlessMode(Scene):
         self.game.refactor()
 
     def update(self):
+        self.app.background.update()
         self.game.update()
 
     def render(self, screen):
-        screen.fill((0, 0, 0))
+        self.app.background.draw(screen)
         self.game.draw(screen)
         pygame.display.update()
 

@@ -4,6 +4,7 @@ from Aliens.GameMenu.game_menu import GameMenu
 from Aliens.EndlessMode.endless_mode import EndlessMode
 from Aliens.SettingsMenu.settingsmenu import SettingsMenu
 from Aliens.Profile.profile import Profile
+from Aliens.background import EndlessBackground
 from Aliens import SETTINGS
 
 
@@ -17,6 +18,8 @@ class App:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT))
+        # prepare endless background
+        self.background = EndlessBackground()
         # temp profile selection
         self.profiles = [Profile(), Profile(), Profile()]
         self.current_profile = self.profiles[0]
@@ -42,7 +45,7 @@ class App:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT))
-
+        self.background.refactor()
         for scene in self.game_scenes.values():
             scene.refactor_ui()
 
