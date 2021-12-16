@@ -23,7 +23,7 @@ class Ship(pygame.sprite.Sprite):
     def load_image(self):
         raise NotImplementedError
 
-    def reset_ship(self):
+    def reset(self):
         self.go_left = False
         self.go_right = False
         self.go_up = False

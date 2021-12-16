@@ -8,7 +8,7 @@ from Aliens import SETTINGS
 class FirstShip(Ship):
     def __init__(self):
         super().__init__()
-        #load images
+        # load images
         self.frames, self.frame, self.rect = self.load_image()
         # ship speed
         self.horizontal_speed = int(8 * SETTINGS.SCALE)
@@ -24,8 +24,8 @@ class FirstShip(Ship):
         self.horizontal_speed = 8 * SETTINGS.SCALE
         self.vertical_speed = 8 * SETTINGS.SCALE
 
-    def reset_ship(self):
-        super(FirstShip, self).reset_ship()
+    def reset(self):
+        super(FirstShip, self).reset()
         self.shots.empty()
         self.horizontal_speed = int(8 * SETTINGS.SCALE)
         self.vertical_speed = int(8 * SETTINGS.SCALE)

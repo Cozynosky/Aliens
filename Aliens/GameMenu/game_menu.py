@@ -117,7 +117,7 @@ class GameMenu(Scene):
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.endless_button:
-                        self.app.current_scene = self.app.game_scenes['EndlessMode']
+                        self.app.current_scene = self.app.game_scenes['EndlessModeMenu']
                     if event.ui_element == self.back_button:
                         self.app.current_scene = self.app.game_scenes['MainMenu']
                     if event.ui_element == self.exit_button:

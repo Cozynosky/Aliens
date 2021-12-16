@@ -1,13 +1,13 @@
 import pygame
 from sys import exit
 from Aliens.scene import Scene
-from Aliens.GameCore.gamecore import Game
+from Aliens.EndlessGameCore.gamecore import Game
 
 
-class EndlessMode(Scene):
+class EndlessModeMenu(Scene):
     def __init__(self, parent):
-        super(EndlessMode, self).__init__(parent)
-        self.game = Game(game_mode="ENDLESS", ship=self.app.current_profile.ship)
+        super(EndlessModeMenu, self).__init__(parent)
+        self.game = Game(ship=self.app.current_profile.ship)
 
     def refactor_ui(self):
         self.game.refactor()
