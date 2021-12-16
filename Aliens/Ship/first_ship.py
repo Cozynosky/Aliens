@@ -15,9 +15,6 @@ class FirstShip(Ship):
         self.vertical_speed = int(8 * SETTINGS.SCALE)
         # animation speed
         self.animation_speed = 0.15
-        # magazine
-        self.magazine_size = 3
-        self.shots = pygame.sprite.Group()
 
     def refactor(self):
         self.frames, self.frame, self.rect = self.load_image()
@@ -26,7 +23,6 @@ class FirstShip(Ship):
 
     def reset(self):
         super(FirstShip, self).reset()
-        self.shots.empty()
         self.horizontal_speed = int(8 * SETTINGS.SCALE)
         self.vertical_speed = int(8 * SETTINGS.SCALE)
 
@@ -51,16 +47,13 @@ class FirstShip(Ship):
         return frames, frame, rect
 
     def shot(self):
-        if len(self.shots) < self.magazine_size:
-            self.shots.add(Bullet(10, self.rect.right, self.rect.centery))
+        return Bullet(10, self.rect.right, self.rect.centery)
 
     def update(self):
         super(FirstShip, self).update()
-        self.shots.update()
 
     def draw(self, screen):
         screen.blit(self.frames[int(self.frame)], self.rect)
-        self.shots.draw(screen)
 
     def handle_event(self, event):
         super(FirstShip, self).handle_event(event)

@@ -1,6 +1,12 @@
 import pygame
 import os.path
 from Aliens import SETTINGS
+from enum import Enum
+
+
+class BulletState(Enum):
+    ALIVE = 0
+    DEAD = 1
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -10,8 +16,9 @@ class Bullet(pygame.sprite.Sprite):
         self.frame = 0
         self.rect.topleft = (x, y)
         self.speed = int(speed * SETTINGS.SCALE)
+        self.damage = 5
         self.animation_speed = 0.15
-        self.hit = False
+        self.state = BulletState.ALIVE
 
     def load_image(self):
         images_folder = os.path.join("Data", "Sprites", "Bullets", "FristShip_Bullet")
@@ -32,14 +39,7 @@ class Bullet(pygame.sprite.Sprite):
         return bullet_frames, explosion_frames, bullet_rect, masks
 
     def update(self):
-        if self.hit:
-            self.image = self.explosion_frames[int(self.frame)]
-
-            self.frame += self.animation_speed
-            if self.frame > len(self.explosion_frames):
-                self.kill()
-
-        else:
+        if self.state == BulletState.ALIVE:
             self.image = self.bullet_frames[int(self.frame)]
             self.mask = self.masks[int(self.frame)]
 
@@ -51,8 +51,16 @@ class Bullet(pygame.sprite.Sprite):
             if self.rect.x > SETTINGS.WINDOW_WIDTH:
                 self.kill()
 
+        elif self.state == BulletState.DEAD:
+            self.image = self.explosion_frames[int(self.frame)]
+
+            self.frame += self.animation_speed
+            if self.frame > len(self.explosion_frames):
+                self.kill()
+
+
+
     def enemy_hit(self):
-        if self.hit is False:
-            self.frame = 0
-            self.hit = True
-            self.animation_speed = 0.3
+        self.frame = 0
+        self.state = BulletState.DEAD
+        self.animation_speed = 0.3

@@ -4,9 +4,9 @@ from Aliens.scene import Scene
 from Aliens.EndlessGameCore.gamecore import Game
 
 
-class EndlessModeMenu(Scene):
+class EndlessMode(Scene):
     def __init__(self, parent):
-        super(EndlessModeMenu, self).__init__(parent)
+        super(EndlessMode, self).__init__(parent)
         self.game = Game(ship=self.app.current_profile.ship)
 
     def refactor_ui(self):
