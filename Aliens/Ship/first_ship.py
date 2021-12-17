@@ -1,62 +1,111 @@
 import pygame
 import os.path
-from Aliens.Ship.ship import Ship
-from Aliens.Ship.bullet import Bullet
 from Aliens import SETTINGS
+from Aliens.Ship.ship import Ship, ShipState
+from Aliens.Bullets.ship_bullet import ShipBullet
 
 
 class FirstShip(Ship):
     def __init__(self):
-        super().__init__()
-        # load images
-        self.frames, self.frame, self.rect = self.load_image()
-        # ship speed
-        self.horizontal_speed = int(8 * SETTINGS.SCALE)
-        self.vertical_speed = int(8 * SETTINGS.SCALE)
-        # animation speed
-        self.animation_speed = 0.15
+        super(FirstShip, self).__init__()
 
-    def refactor(self):
-        self.frames, self.frame, self.rect = self.load_image()
-        self.horizontal_speed = 8 * SETTINGS.SCALE
-        self.vertical_speed = 8 * SETTINGS.SCALE
+        self.speed = int(8 * SETTINGS.SCALE)
+        self.hit_damage = 5
+        self.health_capacity = 10
+        self.current_health = 10
 
     def reset(self):
-        super(FirstShip, self).reset()
-        self.horizontal_speed = int(8 * SETTINGS.SCALE)
-        self.vertical_speed = int(8 * SETTINGS.SCALE)
+        self.go_left = False
+        self.go_right = False
+        self.go_up = False
+        self.go_down = False
 
-    def load_image(self):
+        self.health_capacity = 10
+        self.current_health = 10
+
+        self.ship_frame_number = 0
+        self.explosion_frame_number = 0
+        self.boost_frame_number = 0
+
+        self.rect = self.prepare_rect()
+
+    def load_ship_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Ships", "FirstShip")
-        frames = [
-            pygame.image.load(os.path.join(images_folder, "vehicle-1.png")).convert_alpha(),
-            pygame.image.load(os.path.join(images_folder, "vehicle-2.png")).convert_alpha(),
-            pygame.image.load(os.path.join(images_folder, "vehicle-3.png")).convert_alpha(),
-            pygame.image.load(os.path.join(images_folder, "vehicle-2.png")).convert_alpha()
-        ]
-        rect = frames[0].get_rect()
-        frames = [
-            pygame.transform.smoothscale(frames[0], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
-            pygame.transform.smoothscale(frames[1], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
-            pygame.transform.smoothscale(frames[2], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)),
-            pygame.transform.smoothscale(frames[1], (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
-        ]
-        rect = frames[0].get_rect()
+
+        ship_frames = [pygame.image.load(os.path.join(images_folder, f"ship-{i}.png")).convert_alpha() for i in range(3)]
+        rect = ship_frames[0].get_rect()
+        ship_frames = [pygame.transform.smoothscale(ship_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)) for ship_frame in ship_frames]
+
+        ship_frame_number = 0
+
+        return ship_frames, ship_frame_number
+
+    def load_boost_frames(self):
+        images_folder = os.path.join("Data", "Sprites", "Ships", "FirstShip")
+
+        boost_frames = [pygame.image.load(os.path.join(images_folder, f"boost-{i}.png")).convert_alpha() for i in range(3)]
+        rect = boost_frames[0].get_rect()
+        boost_frames = [pygame.transform.smoothscale(boost_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)) for boost_frame in boost_frames]
+
+        boost_animation_speed = 0.15
+        boost_frame_number = 0
+
+        return boost_frames, boost_animation_speed, boost_frame_number
+
+    def load_explosion_frames(self):
+        images_folder = os.path.join("Data", "Sprites", "Ships", "EasyEnemy")
+
+        boost_frames = [pygame.image.load(os.path.join(images_folder, f"boost-{i}.png")).convert_alpha() for i in range(3)]
+        rect = boost_frames[0].get_rect()
+        boost_frames = [pygame.transform.smoothscale(boost_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)) for boost_frame in boost_frames]
+
+        boost_animation_speed = 0.15
+        boost_frame_number = 0
+
+        return boost_frames, boost_animation_speed, boost_frame_number
+
+    def prepare_rect(self):
+        rect = self.ship_frames[0].get_rect()
         rect.center = (rect.width, SETTINGS.WINDOW_HEIGHT // 2)
-        frame = 0
-        return frames, frame, rect
+
+        return rect
 
     def shot(self):
-        return Bullet(10, self.rect.right, self.rect.centery)
+        return ShipBullet(self.rect.right, self.rect.centery)
 
     def update(self):
         super(FirstShip, self).update()
-
-    def draw(self, screen):
-        screen.blit(self.frames[int(self.frame)], self.rect)
+        if self.state == ShipState.ALIVE:
+            if self.go_left and self.rect.left > 0:
+                self.rect.x -= self.speed
+            if self.go_right and self.rect.right < SETTINGS.WINDOW_WIDTH:
+                self.rect.x += self.speed
+            if self.go_up and self.rect.top > 0:
+                self.rect.y -= self.speed
+            if self.go_down and self.rect.bottom < SETTINGS.WINDOW_HEIGHT:
+                self.rect.y += self.speed
 
     def handle_event(self, event):
-        super(FirstShip, self).handle_event(event)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_w or event.key == pygame.K_UP:
+                self.go_up = True
+            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                self.go_down = True
+            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                self.go_left = True
+            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                self.go_right = True
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_w or event.key == pygame.K_UP:
+                self.go_up = False
+            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                self.go_down = False
+            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                self.go_left = False
+            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                self.go_right = False
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.shot()

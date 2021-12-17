@@ -1,74 +1,97 @@
 import pygame
-from Aliens import SETTINGS
+from enum import Enum
+
+
+class ShipState(Enum):
+    ALIVE = 0
+    DEAD = 1
 
 
 class Ship(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        # init needed values
-        self.frames = None
-        self.frame = None
-        self.animation_speed = None
-        self.vertical_speed = None
-        self.horizontal_speed = None
+        self.state = ShipState.ALIVE
+        # ship frames
+        self.ship_frames, self.ship_frame_number = self.load_ship_frames()
+        self.boost_frames, self.boost_animation_speed, self.boost_frame_number = self.load_boost_frames()
+        self.explosion_frames, self.explosion_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
+        # sprite rect and mask
+        self.rect = self.prepare_rect()
+        self.image = self.get_image()
+        self.mask = self.prepare_mask()
         # movement
         self.go_left = False
         self.go_right = False
         self.go_up = False
         self.go_down = False
+        # variables depending on ship
+        self.speed = NotImplemented
+        self.hit_damage = NotImplemented
+        self.health_capacity = NotImplemented
+        self.current_health = NotImplemented
 
-    def refactor(self):
+    def load_ship_frames(self):
         raise NotImplementedError
 
-    def load_image(self):
+    def load_boost_frames(self):
         raise NotImplementedError
 
-    def reset(self):
-        self.go_left = False
-        self.go_right = False
-        self.go_up = False
-        self.go_down = False
-        self.rect.center = (self.rect.width, SETTINGS.WINDOW_HEIGHT // 2)
+    def load_explosion_frames(self):
+        raise NotImplementedError
 
-    def update(self):
-        # movement
-        if self.go_left and self.rect.left > 0:
-            self.rect.x -= self.horizontal_speed
-        if self.go_right and self.rect.right < SETTINGS.WINDOW_WIDTH:
-            self.rect.x += self.horizontal_speed
-        if self.go_up and self.rect.top > 0:
-            self.rect.y -= self.vertical_speed
-        if self.go_down and self.rect.bottom < SETTINGS.WINDOW_HEIGHT:
-            self.rect.y += self.vertical_speed
+    def prepare_rect(self):
+        raise NotImplementedError
 
-        # animation
-        self.frame += self.animation_speed
-        if self.frame > len(self.frames):
-            self.frame = 0
+    def prepare_mask(self):
+        mask = pygame.mask.from_surface(self.image)
+        return mask
+
+    def get_image(self):
+        image = None
+        if self.state == ShipState.ALIVE:
+            if self.boost_frame_number >= len(self.boost_frames):
+                self.boost_frame_number = 0
+            image = self.boost_frames[int(self.boost_frame_number)].copy()
+            image.blit(self.ship_frames[self.ship_frame_number], (0, 0))
+        # ship dead
+        else:
+            if self.explosion_frame_number >= len(self.explosion_frames):
+                self.kill()
+            else:
+                image = self.explosion_frames[int(self.explosion_frame_number)]
+        return image
 
     def shot(self):
         raise NotImplementedError
 
-    def handle_event(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w or event.key == pygame.K_UP:
-                self.go_up = True
-            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                self.go_down = True
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                self.go_left = True
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                self.go_right = True
+    def refactor(self):
+        self.ship_frames, self.ship_frame_number = self.load_ship_frames()
+        self.boost_frames, self.boost_animation_speed, self.boost_frame_number = self.load_boost_frames()
+        self.explosion_frames, self.explosion_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_w or event.key == pygame.K_UP:
-                self.go_up = False
-            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                self.go_down = False
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                self.go_left = False
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                self.go_right = False
+    def update(self):
+        self.image = self.get_image()
+
+        if self.state == ShipState.ALIVE:
+            self.boost_frame_number += self.boost_animation_speed
+        elif self.state == ShipState.DEAD:
+            self.explosion_frame_number += self.explosion_animation_speed
+
+    def take_damage(self, damage):
+        self.current_health -= damage
+        # check if still alive
+        if self.current_health <= 0:
+            self.state = ShipState.DEAD
+            return True
+        # change image depending od health
+        elif self.current_health <= self.health_capacity / 4:
+            self.ship_frame_number = 2
+            return False
+        elif self.current_health <= self.health_capacity / 2:
+            self.ship_frame_number = 1
+            return False
+        else:
+            return False
 
     def draw(self, screen):
-        raise NotImplementedError
+        screen.blit(self.image, self.rect)

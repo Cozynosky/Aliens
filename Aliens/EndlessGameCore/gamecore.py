@@ -5,13 +5,9 @@ from Aliens.EndlessGameCore.wave import Wave
 
 class Game:
     def __init__(self, ship):
-        # store current profile
         self.ship = ship
-        # init wave system
         self.wave = Wave()
-        # player shots
         self.player_shots = pygame.sprite.Group()
-        # hit shots, kept only for animations
         self.hit_shots = pygame.sprite.Group()
 
     def refactor(self):
@@ -47,9 +43,8 @@ class Game:
         for shot, enemies in collisions.items():
             enemy = pygame.sprite.spritecollideany(shot, pygame.sprite.Group(enemies), collided=pygame.sprite.collide_mask)
             if enemy:
-                if enemy.got_hit(shot.damage):
+                if enemy.take_damage(self.ship.hit_damage):
                     self.wave.enemy_killed(enemy)
-                shot.enemy_hit()
+                shot.ship_hit()
                 self.hit_shots.add(shot)
                 self.player_shots.remove(shot)
-

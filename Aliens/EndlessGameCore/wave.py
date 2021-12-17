@@ -1,5 +1,5 @@
 import pygame
-from Aliens.Enemies.easyenemy import EasyEnemy
+from Aliens.Ship.easyenemy_ship import EasyEnemy
 
 
 class Wave:
@@ -22,14 +22,17 @@ class Wave:
         self.to_spawn_time = 3
 
     def update(self):
+        self.to_spawn_time += 0.016
+        self.alive_enemies.update()
+        self.dead_enemies.update()
+
         if self.number_of_spawned < self.number_to_kill and self.spawn_time <= self.to_spawn_time:
             self.alive_enemies.add(EasyEnemy(self.wave_number))
             self.to_spawn_time = 0
             self.number_of_spawned += 1
 
-        self.to_spawn_time += 0.016
-        self.alive_enemies.update()
-        self.dead_enemies.update()
+        else:
+            pass
 
     def draw(self, screen):
         self.alive_enemies.draw(screen)
