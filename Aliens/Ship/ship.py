@@ -47,17 +47,13 @@ class Ship(pygame.sprite.Sprite):
         return mask
 
     def get_image(self):
-        image = None
+        image = pygame.surface.Surface((0,0))
         if self.state == ShipState.ALIVE:
-            if self.boost_frame_number >= len(self.boost_frames):
-                self.boost_frame_number = 0
             image = self.boost_frames[int(self.boost_frame_number)].copy()
             image.blit(self.ship_frames[self.ship_frame_number], (0, 0))
         # ship dead
         else:
-            if self.explosion_frame_number >= len(self.explosion_frames):
-                self.kill()
-            else:
+            if self.explosion_frame_number < len(self.explosion_frames):
                 image = self.explosion_frames[int(self.explosion_frame_number)]
         return image
 
@@ -69,13 +65,19 @@ class Ship(pygame.sprite.Sprite):
         self.boost_frames, self.boost_animation_speed, self.boost_frame_number = self.load_boost_frames()
         self.explosion_frames, self.explosion_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
 
-    def update(self):
+        self.rect = self.prepare_rect()
         self.image = self.get_image()
+        self.mask = self.prepare_mask()
 
+    def update(self):
         if self.state == ShipState.ALIVE:
             self.boost_frame_number += self.boost_animation_speed
+            if self.boost_frame_number >= len(self.boost_frames):
+                self.boost_frame_number = 0
         elif self.state == ShipState.DEAD:
             self.explosion_frame_number += self.explosion_animation_speed
+
+        self.image = self.get_image()
 
     def take_damage(self, damage):
         self.current_health -= damage

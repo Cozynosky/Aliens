@@ -4,6 +4,7 @@ import random
 
 from Aliens import SETTINGS
 from Aliens.Ship.ship import Ship, ShipState
+from Aliens.Bullets.easyenemy_bullet import EasyEnemyBullet
 
 
 class EasyEnemy(Ship):
@@ -14,9 +15,11 @@ class EasyEnemy(Ship):
         self.dest_x, self.dest_y = self.generate_destination()
 
         self.speed = int(3 * SETTINGS.SCALE)
-        self.hit_damage = NotImplemented
+        self.hit_damage = 3
         self.health_capacity = 10
         self.current_health = 10
+        self.shot_cooldown = 3
+        self.time_to_shot = 3
 
     def load_ship_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Ships", "EasyEnemy")
@@ -61,8 +64,14 @@ class EasyEnemy(Ship):
 
         return rect
 
+    def try_shot(self, shots):
+        self.time_to_shot += 0.016
+        if self.time_to_shot > self.shot_cooldown:
+            shots.add(self.shot())
+            self.time_to_shot = 0
+
     def shot(self):
-        raise NotImplementedError
+        return EasyEnemyBullet(self.rect.left, self.rect.centery, 6, self.hit_damage)
 
     def generate_destination(self):
         dest_x, dest_y = 0, 0
@@ -95,3 +104,7 @@ class EasyEnemy(Ship):
                     else:
                         self.go_down = False
                         self.go_up = True
+
+        elif self.state == ShipState.DEAD:
+            if self.explosion_frame_number >= len(self.explosion_frames):
+                self.kill()

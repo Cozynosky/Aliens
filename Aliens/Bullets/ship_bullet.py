@@ -5,8 +5,8 @@ from Aliens.Bullets.bullet import Bullet
 
 
 class ShipBullet(Bullet):
-    def __init__(self, init_x, init_y):
-        super(ShipBullet, self).__init__(init_x, init_y)
+    def __init__(self, init_x, init_y, speed, hit_damage):
+        super(ShipBullet, self).__init__(init_x, init_y, speed, hit_damage)
         # set moving to right
         self.go_right = True
 

@@ -9,7 +9,7 @@ class BulletState(Enum):
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, init_x, init_y):
+    def __init__(self, init_x, init_y, speed, hit_damage):
         pygame.sprite.Sprite.__init__(self)
         self.state = BulletState.ALIVE
         self.bullet_frames, self.bullet_frames_animation_speed, self.bullet_frame_number = self.load_bullet_frames()
@@ -21,7 +21,8 @@ class Bullet(pygame.sprite.Sprite):
         # movement
         self.go_right = False
         self.go_left = False
-        self.speed = int(10 * SETTINGS.SCALE)
+        self.speed = int(speed * SETTINGS.SCALE)
+        self.hit_damage = hit_damage
 
     def load_bullet_frames(self):
         raise NotImplementedError
