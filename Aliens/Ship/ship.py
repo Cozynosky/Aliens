@@ -5,6 +5,7 @@ from enum import Enum
 class ShipState(Enum):
     ALIVE = 0
     DEAD = 1
+    OUTOFLIVES = 2
 
 
 class Ship(pygame.sprite.Sprite):
@@ -80,9 +81,9 @@ class Ship(pygame.sprite.Sprite):
         self.image = self.get_image()
 
     def take_damage(self, damage):
-        self.current_health -= damage
+        self.current_health = max(0, self.current_health - damage)
         # check if still alive
-        if self.current_health <= 0:
+        if self.current_health == 0:
             self.state = ShipState.DEAD
             return True
         # change image depending od health

@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 from Aliens.scene import Scene
 from Aliens.EndlessGameCore.gamecore import Game
+from Aliens.EndlessGameCore.gamecore import GameState
 
 
 class EndlessMode(Scene):
@@ -13,8 +14,14 @@ class EndlessMode(Scene):
         self.game.refactor()
 
     def update(self):
-        self.app.background.update()
-        self.game.update()
+        if self.game.paused:
+            pass
+        else:
+            self.app.background.update()
+            self.game.update()
+
+            if self.game.state == GameState.GAMEOVER:
+                self.app.current_scene = self.app.game_scenes["GameMenu"]
 
     def render(self, screen):
         self.app.background.draw(screen)
@@ -29,6 +36,5 @@ class EndlessMode(Scene):
                 exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.game.reset()
                     self.app.current_scene = self.app.game_scenes["GameMenu"]
             self.game.handle_event(event)

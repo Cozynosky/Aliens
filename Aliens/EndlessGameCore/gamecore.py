@@ -8,47 +8,54 @@ from enum import Enum
 
 class GameState(Enum):
     STARTING = 0
-
+    GAME_ON = 1
     NEXT_WAVE = 2
     GAMEOVER = 3
 
 
 class Game:
     def __init__(self, ship):
+        self.state = GameState.GAME_ON
         self.ship = ship
         self.score = 0
-
         self.wave = Wave()
         self.player_shots = pygame.sprite.Group()
         self.enemies_shots = pygame.sprite.Group()
         self.hit_shots = pygame.sprite.Group()
         self.game_ui = GameUI(self)
+        self.paused = False
 
     def refactor(self):
         self.game_ui.refactor()
         self.ship.refactor()
 
-    def reset(self):
+    def new_game(self):
+        self.state = GameState.GAME_ON
         self.score = 0
-        self.ship.reset()
-        self.wave.reset()
+        self.ship.new_game()
+        self.wave.new_game()
         self.player_shots.empty()
         self.enemies_shots.empty()
         self.hit_shots.empty()
+        self.paused = False
 
     def update(self):
-        self.wave.update()
-        self.wave.get_shots(self.enemies_shots)
-        self.ship.update()
-        self.hit_shots.update()
-        self.player_shots.update()
-        self.enemies_shots.update()
-        # collisions
-        self.bullets_with_enemies_collisions()
-        self.bullets_with_player_collisions()
-        self.player_with_enemy_collisions()
-        # game ui update
-        self.game_ui.update()
+        if self.state == GameState.GAME_ON:
+            self.wave.update()
+            self.wave.get_shots(self.enemies_shots)
+            self.ship.update()
+            self.hit_shots.update()
+            self.player_shots.update()
+            self.enemies_shots.update()
+            # collisions
+            self.bullets_with_enemies_collisions()
+            self.bullets_with_player_collisions()
+            self.player_with_enemy_collisions()
+            # game ui update
+            self.game_ui.update()
+
+            if self.ship.state == ShipState.OUTOFLIVES:
+                self.state = GameState.GAMEOVER
 
     def draw(self, screen):
         self.wave.draw(screen)
@@ -60,11 +67,15 @@ class Game:
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                shot = self.ship.shot()
-                if shot:
-                    self.player_shots.add(shot)
-        self.ship.handle_event(event)
+            if event.key == pygame.K_p:
+                self.paused = not self.paused
+        if self.state == GameState.GAME_ON:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    shot = self.ship.shot()
+                    if shot:
+                        self.player_shots.add(shot)
+            self.ship.handle_event(event)
 
     def bullets_with_enemies_collisions(self):
         collisions = pygame.sprite.groupcollide(self.player_shots, self.wave.alive_enemies, False, False)
@@ -79,16 +90,17 @@ class Game:
                 self.player_shots.remove(shot)
 
     def bullets_with_player_collisions(self):
-        collisions = pygame.sprite.spritecollide(self.ship, self.enemies_shots, False)
-        for shot in collisions:
-            mask_collision = pygame.sprite.collide_mask(self.ship, shot)
-            if mask_collision:
-                if self.ship.take_damage(shot.hit_damage):
-                    # player is dead
-                    pass
-                shot.ship_hit()
-                self.hit_shots.add(shot)
-                self.enemies_shots.remove(shot)
+        if self.ship.state == ShipState.ALIVE:
+            collisions = pygame.sprite.spritecollide(self.ship, self.enemies_shots, False)
+            for shot in collisions:
+                mask_collision = pygame.sprite.collide_mask(self.ship, shot)
+                if mask_collision:
+                    if self.ship.take_damage(shot.hit_damage):
+                        # player is dead
+                        pass
+                    shot.ship_hit()
+                    self.hit_shots.add(shot)
+                    self.enemies_shots.remove(shot)
 
     def player_with_enemy_collisions(self):
         if self.ship.state == ShipState.ALIVE:

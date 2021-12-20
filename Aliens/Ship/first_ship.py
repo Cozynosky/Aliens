@@ -13,35 +13,39 @@ class FirstShip(Ship):
         self.hit_damage = 5
         self.health_capacity = 10
         self.current_health = 10
+        self.lives = 3
 
         self.magazine_size = 3
         self.in_magazine = 3
-        self.reload_time = 2                    # in seconds
+        self.reload_time = 1                   # in seconds
         self.to_reload = self.reload_time       # in seconds
         self.reloading = False
 
-    def reset(self):
-        self.state = ShipState.ALIVE
+    def new_game(self):
         self.go_left = False
         self.go_right = False
         self.go_up = False
         self.go_down = False
-
         self.health_capacity = 10
-        self.current_health = 10
-
+        self.hit_damage = 5
         self.magazine_size = 3
+        self.lives = 3
+        self.reload_time = 1
+
+        self.reset()
+
+        self.speed = int(7 * SETTINGS.SCALE)
+
+    def reset(self):
+        self.state = ShipState.ALIVE
+        self.current_health = self.health_capacity
         self.in_magazine = 3
-        self.reload_time = 2
         self.to_reload = self.reload_time
         self.reloading = False
 
         self.ship_frame_number = 0
         self.explosion_frame_number = 0
         self.boost_frame_number = 0
-
-        self.speed = int(7 * SETTINGS.SCALE)
-
         self.rect = self.prepare_rect()
 
     def refactor(self):
@@ -119,7 +123,10 @@ class FirstShip(Ship):
 
         elif self.state == ShipState.DEAD:
             if self.explosion_frame_number >= len(self.explosion_frames):
-                self.reset()
+                if self.lives == 0:
+                    self.state = ShipState.OUTOFLIVES
+                else:
+                    self.reset()
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -141,3 +148,9 @@ class FirstShip(Ship):
                 self.go_left = False
             if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
                 self.go_right = False
+
+    def take_damage(self, damage):
+        super(FirstShip, self).take_damage(damage)
+        if self.state == ShipState.DEAD:
+            self.lives -= 1
+

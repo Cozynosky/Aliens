@@ -11,7 +11,7 @@ class Wave:
         self.spawn_time = 3                           # in seconds
         self.to_spawn_time = 1                       # in seconds
 
-    def reset(self):
+    def new_game(self):
         self.wave_number = 1
         self.enemies_to_spawn = 5
         self.alive_enemies.empty()
