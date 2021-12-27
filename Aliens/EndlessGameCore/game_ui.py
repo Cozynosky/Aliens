@@ -85,7 +85,7 @@ class GameUI:
 
     def get_score_rect(self):
         rect = self.score_text.get_rect()
-        rect.topleft = (15 * SETTINGS.SCALE, 20 * SETTINGS.SCALE)
+        rect.topleft = (20 * SETTINGS.SCALE, 20 * SETTINGS.SCALE)
         return rect
 
     def get_wave_text(self):
@@ -95,19 +95,19 @@ class GameUI:
     def get_wave_rect(self):
         rect = self.wave_text.get_rect()
         rect.top = 20 * SETTINGS.SCALE
-        rect.right = SETTINGS.WINDOW_WIDTH - 15 * SETTINGS.SCALE
+        rect.right = SETTINGS.WINDOW_WIDTH - 20 * SETTINGS.SCALE
         return rect
 
     def get_enemies_left_text(self):
         enemies_left_text = self.small_font.render(
-            f"Enemies left {self.game.wave.enemies_to_spawn + len(self.game.wave.alive_enemies)}", True,
+            f"Enemies left {self.game.wave.enemies_left}", True,
             (255, 255, 255))
         return enemies_left_text
 
     def get_enemies_left_rect(self):
         rect = self.enemies_left_text.get_rect()
         rect.top = 90 * SETTINGS.SCALE
-        rect.right = SETTINGS.WINDOW_WIDTH - 15 * SETTINGS.SCALE
+        rect.right = SETTINGS.WINDOW_WIDTH - 20 * SETTINGS.SCALE
         return rect
 
     def get_in_magazine_text(self):

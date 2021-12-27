@@ -21,6 +21,7 @@ class EndlessMode(Scene):
             self.game.update()
 
             if self.game.state == GameState.GAMEOVER:
+                pygame.mouse.set_visible(True)
                 self.app.current_scene = self.app.game_scenes["GameMenu"]
 
     def render(self, screen):
@@ -36,5 +37,6 @@ class EndlessMode(Scene):
                 exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    pygame.mouse.set_visible(True)
                     self.app.current_scene = self.app.game_scenes["GameMenu"]
             self.game.handle_event(event)
