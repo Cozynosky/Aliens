@@ -21,7 +21,7 @@ class Bullet(pygame.sprite.Sprite):
         # movement
         self.go_right = False
         self.go_left = False
-        self.speed = int(speed * SETTINGS.SCALE)
+        self.speed = speed
         self.hit_damage = hit_damage
 
     def load_bullet_frames(self):
@@ -65,18 +65,17 @@ class Bullet(pygame.sprite.Sprite):
 
             if self.go_left:
                 self.rect.x -= self.speed
-                if self.rect.x < 0:
+                if self.rect.right < 0:
                     self.kill()
 
             elif self.go_right:
                 self.rect.x += self.speed
-                if self.rect.x > SETTINGS.WINDOW_WIDTH:
+                if self.rect.left > SETTINGS.WINDOW_WIDTH:
                     self.kill()
 
         elif self.state == BulletState.DEAD:
 
             self.explosion_frame_number += self.explosion_frames_animation_speed
-
 
     def ship_hit(self):
         self.state = BulletState.DEAD

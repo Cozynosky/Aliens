@@ -8,7 +8,7 @@ from Aliens.EndlessGameCore.gamecore import GameState
 class EndlessMode(Scene):
     def __init__(self, parent):
         super(EndlessMode, self).__init__(parent)
-        self.game = Game(ship=self.app.current_profile.ship)
+        self.game = Game(profile=self.app.current_profile, scene=self)
 
     def refactor_ui(self):
         self.game.refactor()
@@ -17,7 +17,6 @@ class EndlessMode(Scene):
         if self.game.paused:
             pass
         else:
-            self.app.background.update()
             self.game.update()
 
             if self.game.state == GameState.GAMEOVER:

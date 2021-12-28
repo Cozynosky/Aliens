@@ -11,18 +11,34 @@ class EasyEnemy(Ship):
     def __init__(self, wave_number):
         super(EasyEnemy, self).__init__()
         self.wave_number = wave_number
+        self.dest_x = self.generate_x_destination()
+        self.dest_y = 0
         self.go_left = True
-        self.dest_x, self.dest_y = self.generate_destination()
 
-        self.speed = round(3 * SETTINGS.SCALE)
+        self.speed = self.get_speed()
+        self.bullet_speed = self.get_bullet_speed()
         self.hit_damage = self.get_hit_damage()
         self.health_capacity = self.get_health_capacity()
         self.current_health = self.health_capacity
         self.shot_cooldown = self.get_shoot_cooldown()
-        self.time_to_shot = self.shot_cooldown
+        self.time_to_shot = self.get_time_to_shoot()
+
+    def get_speed(self):
+        # WAVE, VALUE: 1, 2 -> 5, 2.2 -> 10, 2.5 -> 20, 3 -> 50, 6
+        speed = 0.0119337 * self.wave_number ** 1.48289 + 2.04706
+        # make max speed value
+        speed = min(8, speed)
+        return round(speed * SETTINGS.SCALE)
+
+    def get_bullet_speed(self):
+        # WAVE, VALUE: 1, 4 -> 5, 4.5 -> 10, 6 -> 20, 10 -> 50, 22
+        bullet_speed = 0.168918 * self.wave_number ** 1.2 + 3.57386
+        # make max bullet speed
+        bullet_speed = min(24, bullet_speed)
+        return round(bullet_speed * SETTINGS.SCALE)
 
     def get_hit_damage(self):
-        # WAVE, VALUE: 1, 3 -> 5, 4-> 10, 7 -> 20, 15-> 50, 40
+        # WAVE, VALUE: 1, 3 -> 5, 4 -> 10, 7 -> 20, 15-> 50, 40
         hit_damage = 0.311198 * self.wave_number ** 1.22737 + 2.20444
         return round(hit_damage)
 
@@ -35,6 +51,10 @@ class EasyEnemy(Ship):
         # WAVE, VALUE: 1, 4 -> 5, 3.9 -> 10, 3.7 -> 20, 3.5 -> 50, 2.5
         cooldown = 4.00704 - 0.0196861 * self.wave_number ** 1.108
         return cooldown
+
+    def get_time_to_shoot(self):
+        time_to_shoot = random.uniform(self.shot_cooldown, self.shot_cooldown * 3)
+        return time_to_shoot
 
     def load_ship_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Ships", "EasyEnemy")
@@ -94,39 +114,54 @@ class EasyEnemy(Ship):
             self.time_to_shot = 0
 
     def shot(self):
-        return EasyEnemyBullet(self.rect.left, self.rect.centery, 6, self.hit_damage)
+        return EasyEnemyBullet(self.rect.left, self.rect.centery, self.bullet_speed, self.hit_damage)
 
-    def generate_destination(self):
-        dest_x, dest_y = 0, 0
-        if self.wave_number <= 5 and self.go_left:
-            dest_x = random.randint(SETTINGS.WINDOW_WIDTH // 2, round(SETTINGS.WINDOW_WIDTH - self.rect.width))
-            dest_y = 0
+    def generate_x_destination(self):
 
-        return dest_x, dest_y
+        dest_x = random.randint(SETTINGS.WINDOW_WIDTH // 2, round(SETTINGS.WINDOW_WIDTH - self.rect.width))
+
+        return dest_x
+
+    def generate_y_destination(self):
+
+        if self.wave_number <= 10:
+            dest_y = random.choice([0, round(SETTINGS.WINDOW_HEIGHT - self.rect.height)])
+        else:
+            dest_y = random.randint(0, round(SETTINGS.WINDOW_HEIGHT - self.rect.height))
+
+        if self.rect.y > dest_y:
+            self.go_up = True
+        else:
+            self.go_up = False
+        self.go_down = not self.go_up
+
+        return dest_y
 
     def update(self):
         super(EasyEnemy, self).update()
         if self.state == ShipState.ALIVE:
-            if self.wave_number <= 5:
-                if self.go_left:
-                    if self.rect.x > self.dest_x:
-                        self.rect.x -= self.speed
-                    else:
-                        self.go_left = False
-                        self.go_up = random.choice([True, False])
-                        self.go_down = not self.go_up
-                elif self.go_up:
-                    if self.rect.y > 0:
+            if self.go_left:
+                if self.rect.x > self.dest_x:
+                    self.rect.x -= self.speed
+                else:
+                    self.go_left = False
+                    self.dest_y = self.generate_y_destination()
+            else:
+                if self.go_up:
+                    if self.rect.y > self.dest_y:
                         self.rect.y -= self.speed
                     else:
-                        self.go_up = False
-                        self.go_down = True
+                        self.dest_y = self.generate_y_destination()
                 elif self.go_down:
-                    if self.rect.y < SETTINGS.WINDOW_HEIGHT - self.rect.height:
+                    if self.rect.y < self.dest_y:
                         self.rect.y += self.speed
                     else:
-                        self.go_down = False
-                        self.go_up = True
+                        self.dest_y = self.generate_y_destination()
+
+                if self.wave_number > 20:
+                    self.rect.x -= round(1 * SETTINGS.SCALE)
+                    if self.rect.right < 0:
+                        self.rect.left = SETTINGS.WINDOW_WIDTH
 
         elif self.state == ShipState.DEAD:
             if self.explosion_frame_number >= len(self.explosion_frames):

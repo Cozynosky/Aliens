@@ -15,6 +15,12 @@ class GameUI:
         self.score_text = self.get_score_text()
         self.score_rect = self.get_score_rect()
 
+        self.coins_earned_icon = self.get_coins_earned_icon()
+        self.coins_earned_icon_rect = self.get_coins_earned_icon_rect()
+
+        self.coins_earned_text = self.get_coins_earned_text()
+        self.coins_earned_text_rect = self.get_coins_earned_text_rect()
+
         self.wave_text = self.get_wave_text()
         self.wave_rect = self.get_wave_rect()
 
@@ -42,6 +48,12 @@ class GameUI:
         self.big_font, self.middle_font, self.small_font = self.load_font()
         self.score_text = self.get_score_text()
         self.score_rect = self.get_score_rect()
+
+        self.coins_earned_icon = self.get_coins_earned_icon()
+        self.coins_earned_icon_rect = self.get_coins_earned_icon_rect()
+
+        self.coins_earned_text = self.get_coins_earned_text()
+        self.coins_earned_text_rect = self.get_coins_earned_text_rect()
 
         self.wave_text = self.get_wave_text()
         self.wave_rect = self.get_wave_rect()
@@ -86,6 +98,30 @@ class GameUI:
     def get_score_rect(self):
         rect = self.score_text.get_rect()
         rect.topleft = (20 * SETTINGS.SCALE, 20 * SETTINGS.SCALE)
+        return rect
+
+    def get_coins_earned_icon(self):
+        images_folder = os.path.join("Data", "Sprites", "HUD")
+        filename = "coin.png"
+        icon = pygame.image.load(os.path.join(images_folder, filename)).convert_alpha()
+        rect = icon.get_rect()
+        icon = pygame.transform.smoothscale(icon, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
+        return icon
+
+    def get_coins_earned_icon_rect(self):
+        rect = self.coins_earned_icon.get_rect()
+        rect.top = 75 * SETTINGS.SCALE
+        rect.left = 20 * SETTINGS.SCALE
+        return rect
+
+    def get_coins_earned_text(self):
+        text = self.middle_font.render(f"{self.game.coins_earned}", True, (255, 255, 255))
+        return text
+
+    def get_coins_earned_text_rect(self):
+        rect = self.coins_earned_text.get_rect()
+        rect.top = 74 * SETTINGS.SCALE
+        rect.left = 70 * SETTINGS.SCALE
         return rect
 
     def get_wave_text(self):
@@ -170,10 +206,14 @@ class GameUI:
 
     def update(self):
         self.score_text = self.get_score_text()
+        self.coins_earned_text = self.get_coins_earned_text()
         self.wave_text = self.get_wave_text()
+        self.wave_rect = self.get_wave_rect()
         self.enemies_left_text = self.get_enemies_left_text()
+        self.enemies_left_rect = self.get_enemies_left_rect()
         self.in_magazine_text = self.get_in_magazine_text()
         self.lives_text = self.get_lives_text()
+        self.lives_text_rect = self.get_lives_text_rect()
 
         if self.game.ship.reloading:
             self.to_reload_rect = self.get_to_reload_rect()
@@ -183,6 +223,8 @@ class GameUI:
 
     def draw(self, screen):
         screen.blit(self.score_text, self.score_rect)
+        screen.blit(self.coins_earned_icon, self.coins_earned_icon_rect)
+        screen.blit(self.coins_earned_text, self.coins_earned_text_rect)
         screen.blit(self.wave_text, self.wave_rect)
         screen.blit(self.enemies_left_text, self.enemies_left_rect)
         screen.blit(self.in_magazine_text, self.in_magazine_rect)

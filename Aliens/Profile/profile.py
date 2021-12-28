@@ -1,8 +1,10 @@
-from Aliens.Ship.first_ship import FirstShip
+from Aliens.Ship.player_ship import PlayerShip
 
 
 class Profile:
     def __init__(self, name="Empty"):
         self.name = name
         self.currency = 0
-        self.ship = FirstShip()
+        self.ship = PlayerShip()
+        self.drop_rate = 1.0
+        self.coin_value = 1

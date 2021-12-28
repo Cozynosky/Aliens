@@ -5,42 +5,51 @@ from Aliens.Ship.ship import Ship, ShipState
 from Aliens.Bullets.ship_bullet import ShipBullet
 
 
-class FirstShip(Ship):
+class PlayerShip(Ship):
     def __init__(self):
-        super(FirstShip, self).__init__()
+        super(PlayerShip, self).__init__()
 
-        self.speed = int(7 * SETTINGS.SCALE)
-        self.hit_damage = 5
-        self.health_capacity = 10
-        self.current_health = 10
-        self.lives = 3
+        self.base_speed = round(4 * SETTINGS.SCALE)
+        self.base_bullet_speed = round(5 * SETTINGS.SCALE)
+        self.base_hit_damage = 5
+        self.base_health_capacity = 10
+        self.base_lives = 3
 
-        self.magazine_size = 3
-        self.in_magazine = 3
-        self.reload_time = 1                   # in seconds
-        self.to_reload = self.reload_time       # in seconds
+        self.base_magazine_size = 3
+        self.base_reload_time = 1                       # in seconds
         self.reloading = False
+
+        self.speed = self.base_speed
+        self.bullet_speed = self.base_bullet_speed
+        self.hit_damage = self.base_hit_damage
+        self.health_capacity = self.base_health_capacity
+        self.current_health = self.base_health_capacity
+        self.magazine_size = self.base_magazine_size
+        self.lives = self.base_lives
+        self.in_magazine = self.base_magazine_size
+        self.to_reload = self.base_reload_time          # in seconds
+        self.reload_time = self.base_reload_time
 
     def new_game(self):
         self.go_left = False
         self.go_right = False
         self.go_up = False
         self.go_down = False
-        self.health_capacity = 10
-        self.hit_damage = 5
-        self.magazine_size = 3
-        self.lives = 3
-        self.reload_time = 1
+        self.health_capacity = self.base_health_capacity
+        self.hit_damage = self.base_hit_damage
+        self.magazine_size = self.base_magazine_size
+        self.lives = self.base_lives
+        self.reload_time = self.base_reload_time
 
         self.reset()
 
-        self.speed = int(7 * SETTINGS.SCALE)
+        self.speed = self.speed
 
     def reset(self):
         self.state = ShipState.ALIVE
-        self.current_health = self.health_capacity
-        self.in_magazine = 3
-        self.to_reload = self.reload_time
+        self.current_health = self.base_health_capacity
+        self.in_magazine = self.base_magazine_size
+        self.to_reload = self.base_reload_time
         self.reloading = False
 
         self.ship_frame_number = 0
@@ -49,8 +58,11 @@ class FirstShip(Ship):
         self.rect = self.prepare_rect()
 
     def refactor(self):
-        super(FirstShip, self).refactor()
-        self.speed = int(7 * SETTINGS.SCALE)
+        super(PlayerShip, self).refactor()
+        self.base_speed = round(4 * SETTINGS.SCALE)
+        self.speed = self.base_speed
+        self.base_bullet_speed = round(5 * SETTINGS.SCALE)
+        self.bullet_speed = self.base_bullet_speed
 
     def load_ship_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Ships", "FirstShip")
@@ -95,12 +107,12 @@ class FirstShip(Ship):
     def shot(self):
         if self.in_magazine > 0:
             self.in_magazine -= 1
-            return ShipBullet(self.rect.right, self.rect.centery, 10, self.hit_damage)
+            return ShipBullet(self.rect.right, self.rect.centery, self.bullet_speed, self.hit_damage)
         else:
             return False
 
     def update(self):
-        super(FirstShip, self).update()
+        super(PlayerShip, self).update()
 
         if self.state == ShipState.ALIVE:
             if self.go_left and self.rect.left > 0:
@@ -150,7 +162,7 @@ class FirstShip(Ship):
                 self.go_right = False
 
     def take_damage(self, damage):
-        super(FirstShip, self).take_damage(damage)
+        super(PlayerShip, self).take_damage(damage)
         if self.state == ShipState.DEAD:
             self.lives -= 1
 

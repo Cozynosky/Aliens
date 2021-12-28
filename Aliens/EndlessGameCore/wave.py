@@ -46,8 +46,14 @@ class Wave:
         self.dead_enemies.update()
 
         if self.enemies_to_spawn > 0 > self.to_spawn_time:
-            self.alive_enemies.add(EasyEnemy(self.wave_number))
-            self.enemies_to_spawn -= 1
+            enemies_in_spawn = self.wave_number // 10 + 1
+            if enemies_in_spawn > self.enemies_to_spawn:
+                enemies_in_spawn = self.enemies_to_spawn
+
+            for _ in range(enemies_in_spawn):
+                self.alive_enemies.add(EasyEnemy(self.wave_number))
+                self.enemies_to_spawn -= 1
+
             self.to_spawn_time = self.spawn_time
         elif self.enemies_to_spawn == 0 and self.enemies_left == 0:
             self.next_wave()
