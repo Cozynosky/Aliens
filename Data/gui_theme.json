@@ -1,0 +1,116 @@
+{
+  "button": {
+    "colours": {
+      "normal_bg": "#25292e",
+      "hovered_bg": "#35393e",
+      "disabled_bg": "#25292e",
+      "selected_bg": "#25292e",
+      "active_bg": "#193784",
+      "normal_text": "#c5cbd8",
+      "hovered_text": "#FFFFFF",
+      "selected_text": "#FFFFFF",
+      "disabled_text": "#6d736f",
+      "active_text": "#6d736f",
+      "normal_border": "#25292e",
+      "hovered_border": "#25292e",
+      "disabled_border": "#25292e",
+      "selected_border": "#25292e",
+      "active_border": "#25292e"
+    },
+    "font": {
+      "name": "spacemission",
+      "size": "28",
+      "bold": "0",
+      "italic": "0",
+      "regular_path": "Data/Fonts/space-mission-font/SpaceMission-rgyw9.otf"
+    },
+    "misc": {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
+  "drop_down_menu": {
+    "misc": {
+      "expand_direction": "down",
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    },
+    "colours": {
+      "normal_bg": "#25292e",
+      "hovered_bg": "#35393e",
+      "normal_border": "#25292e"
+    }
+  },
+  "drop_down_menu.#expand_button": {
+    "misc": {
+      "expand_direction": "down",
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
+  "drop_down_menu.#selected_option": {
+      "misc": {
+      "expand_direction": "down",
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
+  "drop_down_menu.#drop_down_options_list": {
+    "colours": {
+      "normal_bg": "#25292e",
+      "hovered_bg": "#35393e",
+      "disabled_bg": "#25292e",
+      "selected_bg": "#25292e",
+      "active_bg": "#193784",
+      "normal_text": "#c5cbd8",
+      "hovered_text": "#FFFFFF",
+      "selected_text": "#FFFFFF",
+      "disabled_text": "#6d736f",
+      "active_text": "#6d736f",
+      "normal_border": "#25292e",
+      "hovered_border": "#25292e",
+      "disabled_border": "#25292e",
+      "selected_border": "#25292e",
+      "active_border": "#25292e"
+    },
+    "misc": {
+      "expand_direction": "down",
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10",
+      "list_item_height": "35"
+    }
+  },
+  "drop_down_menu.#drop_down_options_list.button": {
+    "misc": {
+      "expand_direction": "down",
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
+  "label": {
+        "colours": {
+      "normal_bg": "#25292e",
+      "hovered_bg": "#35393e",
+      "disabled_bg": "#25292e",
+      "selected_bg": "#25292e",
+      "active_bg": "#193784",
+      "normal_text": "#c5cbd8",
+      "hovered_text": "#FFFFFF",
+      "selected_text": "#FFFFFF",
+      "disabled_text": "#6d736f",
+      "active_text": "#6d736f",
+      "normal_border": "#25292e",
+      "hovered_border": "#25292e",
+      "disabled_border": "#25292e",
+      "selected_border": "#25292e",
+      "active_border": "#25292e"
+    },
+    "font": {
+      "name": "spacemission",
+      "size": "20",
+      "bold": "0",
+      "italic": "0",
+      "regular_path": "Data/Fonts/space-mission-font/SpaceMission-rgyw9.otf"
+    }
+  }
+}

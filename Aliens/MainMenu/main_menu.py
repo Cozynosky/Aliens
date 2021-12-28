@@ -1,5 +1,6 @@
 import pygame
 import pygame_gui
+import os.path
 
 from Aliens import SETTINGS
 from Aliens.scene import Scene
@@ -35,15 +36,18 @@ class MainMenu(Scene):
         game_logo = pygame.Surface((500, 200))
         game_logo.fill(pygame.Color('#808080'))
         game_logo_rect = game_logo.get_rect()
-        game_logo_rect.centerx = self.app.screen.get_rect().centerx
+        game_logo_rect.centerx = SETTINGS.WINDOW_WIDTH // 2
         game_logo_rect.y = 50
-        myfont = pygame.font.SysFont('Arial', 150)
-        textsurface = myfont.render('Aliens!', True, (0, 0, 0))
-        game_logo.blit(textsurface, (65, 10))
-        return game_logo, game_logo_rect
 
-    def prepare_manager(self):
-        return pygame_gui.UIManager(SETTINGS.WINDOW_SIZE)
+        fonts_path = os.path.join("Data", "Fonts", "space-mission-font")
+        font_name = "SpaceMission-rgyw9.otf"
+        myfont = pygame.font.Font(os.path.join(fonts_path, font_name), 130)
+        text = myfont.render('Aliens!', True, (255, 255, 255))
+        text_rect = game_logo.get_rect()
+        text_rect.x = 25
+        text_rect.y = 30
+        game_logo.blit(text, text_rect)
+        return game_logo, game_logo_rect
 
     def prepare_play_button(self):
         button = pygame_gui.elements.UIButton(
@@ -68,9 +72,6 @@ class MainMenu(Scene):
             relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH - 125, SETTINGS.WINDOW_HEIGHT - 75, 100, 50), text="EXIT",
             manager=self.manager)
         return button
-
-    def update(self):
-        pass
 
     def render(self, screen):
         self.app.background.draw(screen)

@@ -1,4 +1,6 @@
 import pygame
+import pygame_gui
+from Aliens import SETTINGS
 
 
 class Scene:
@@ -6,9 +8,13 @@ class Scene:
         pygame.init()
         self.app = parent
         self.clock = pygame.time.Clock()
+        self.manager = self.prepare_manager()
+
+    def prepare_manager(self):
+        return pygame_gui.UIManager(SETTINGS.WINDOW_SIZE, 'Data/gui_theme.json')
 
     def update(self):
-        raise NotImplementedError
+        self.app.background.update()
 
     def refactor_ui(self):
         raise NotImplementedError

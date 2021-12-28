@@ -11,7 +11,7 @@ class GameState(Enum):
     STARTING = 0
     GAME_ON = 1
     NEXT_WAVE = 2
-    GAMEOVER = 3
+    GAME_OFF = 3
 
 
 class Game:
@@ -69,7 +69,7 @@ class Game:
                 self.wave.dead_enemies.update()
                 self.game_ui.update()
             elif self.ship.state == ShipState.OUTOFLIVES:
-                self.state = GameState.GAMEOVER
+                self.state = GameState.GAME_OFF
 
     def draw(self, screen):
         self.coins.draw(screen)
@@ -81,9 +81,6 @@ class Game:
         self.game_ui.draw(screen)
 
     def handle_event(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p:
-                self.paused = not self.paused
         if self.state == GameState.GAME_ON:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
