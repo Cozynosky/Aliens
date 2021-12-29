@@ -82,8 +82,8 @@ class GameUI:
         self.health_bar.refactor()
 
     def load_font(self):
-        fonts_path = os.path.join("Data", "Fonts", "space-mission-font")
-        font_name = "SpaceMission-rgyw9.otf"
+        fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")
+        font_name = "Alien Eclipse.otf"
 
         big_font = pygame.font.Font(os.path.join(fonts_path, font_name), int(128 * SETTINGS.SCALE))
         middle_font = pygame.font.Font(os.path.join(fonts_path, font_name), int(50 * SETTINGS.SCALE))
@@ -120,7 +120,7 @@ class GameUI:
 
     def get_coins_earned_text_rect(self):
         rect = self.coins_earned_text.get_rect()
-        rect.top = 74 * SETTINGS.SCALE
+        rect.top = 71 * SETTINGS.SCALE
         rect.left = 70 * SETTINGS.SCALE
         return rect
 
@@ -153,7 +153,7 @@ class GameUI:
     def get_in_magazine_rect(self):
         rect = self.in_magazine_text.get_rect()
         rect.left = 44 * SETTINGS.SCALE
-        rect.top = 969 * SETTINGS.SCALE
+        rect.top = 965 * SETTINGS.SCALE
         return rect
 
     def load_ammo_icon(self):
@@ -176,7 +176,7 @@ class GameUI:
     def get_lives_text_rect(self):
         rect = self.lives_text.get_rect()
         rect.right = 270 * SETTINGS.SCALE
-        rect.top = 969 * SETTINGS.SCALE
+        rect.top = 965 * SETTINGS.SCALE
         return rect
 
     def load_lives_icon(self):
@@ -272,10 +272,10 @@ class HealthBar:
         self.health_text_rect = self.get_health_rect()
 
     def load_health_font(self):
-        fonts_path = os.path.join("Data", "Fonts", "space-mission-font")
-        font_name = "SpaceMission-rgyw9.otf"
+        fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")
+        font_name = "Alien Eclipse.otf"
 
-        health_font = pygame.font.Font(os.path.join(fonts_path, font_name), int(20 * SETTINGS.SCALE))
+        health_font = pygame.font.Font(os.path.join(fonts_path, font_name), int(27 * SETTINGS.SCALE))
 
         return health_font
 
@@ -317,7 +317,7 @@ class HealthBar:
     def get_health_rect(self):
         rect = self.health_text.get_rect()
         rect.centerx = self.red_bar_rect.centerx
-        rect.centery = self.red_bar_rect.centery
+        rect.centery = self.red_bar_rect.centery - 2
         return rect
 
     def update(self):

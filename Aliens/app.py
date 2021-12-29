@@ -1,8 +1,9 @@
 import pygame
-from Aliens.MainMenu.main_menu import MainMenu
-from Aliens.GameMenu.game_menu import GameMenu
-from Aliens.EndlessModeMenu.endless_mode_menu import EndlessMode
-from Aliens.SettingsMenu.settingsmenu import SettingsMenu
+from Aliens.MainMenuScene.mainmenuscene import MainMenuScene
+from Aliens.GameMenuScene.gamemenuscene import GameMenuScene
+from Aliens.EndlessModeScene.endlessmodescene import EndlessModeScene
+from Aliens.SettingsScene.settingsscene import SettingsScene
+from Aliens.StatisticsScene.statisticsscene import StatisticsScene
 from Aliens.Profile.profile import Profile
 from Aliens.background import EndlessBackground
 from Aliens import SETTINGS
@@ -26,12 +27,14 @@ class App:
         # game setup
         self.is_running = True
         self.game_scenes = {
-            MainMenu.__name__: MainMenu(self),
-            GameMenu.__name__: GameMenu(self),
-            EndlessMode.__name__: EndlessMode(self),
-            SettingsMenu.__name__: SettingsMenu(self)
+            MainMenuScene.__name__: MainMenuScene(self),
+            GameMenuScene.__name__: GameMenuScene(self),
+            EndlessModeScene.__name__: EndlessModeScene(self),
+            SettingsScene.__name__: SettingsScene(self),
+            StatisticsScene.__name__: StatisticsScene(self)
         }
-        self.current_scene = self.game_scenes[MainMenu.__name__]
+        self.current_scene = self.game_scenes[MainMenuScene.__name__]
+        self.previous_scene = self.current_scene
 
     def refactor_ui(self):
         # save user settings to file

@@ -13,7 +13,7 @@ class PlayerShip(Ship):
         self.base_bullet_speed = round(5 * SETTINGS.SCALE)
         self.base_hit_damage = 5
         self.base_health_capacity = 10
-        self.base_lives = 3
+        self.base_lives = 2
 
         self.base_magazine_size = 3
         self.base_reload_time = 1                       # in seconds

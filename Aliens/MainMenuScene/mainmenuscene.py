@@ -7,9 +7,9 @@ from Aliens.scene import Scene
 from sys import exit
 
 
-class MainMenu(Scene):
+class MainMenuScene(Scene):
     def __init__(self, parent):
-        super(MainMenu, self).__init__(parent)
+        super(MainMenuScene, self).__init__(parent)
         pygame.font.init()
         # game logo
         self.game_logo, self.game_logo_rect = self.prepare_game_logo()
@@ -39,9 +39,9 @@ class MainMenu(Scene):
         game_logo_rect.centerx = SETTINGS.WINDOW_WIDTH // 2
         game_logo_rect.y = 50
 
-        fonts_path = os.path.join("Data", "Fonts", "space-mission-font")
-        font_name = "SpaceMission-rgyw9.otf"
-        myfont = pygame.font.Font(os.path.join(fonts_path, font_name), 130)
+        fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")
+        font_name = "Alien Eclipse.otf"
+        myfont = pygame.font.Font(os.path.join(fonts_path, font_name), 125)
         text = myfont.render('Aliens!', True, (255, 255, 255))
         text_rect = game_logo.get_rect()
         text_rect.x = 25
@@ -89,9 +89,10 @@ class MainMenu(Scene):
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.play_button:
-                        self.app.current_scene = self.app.game_scenes['GameMenu']
+                        self.app.current_scene = self.app.game_scenes['GameMenuScene']
                     if event.ui_element == self.settings_button:
-                        self.app.current_scene = self.app.game_scenes['SettingsMenu']
+                        self.app.current_scene = self.app.game_scenes['SettingsScene']
+                        self.app.previous_scene = self.app.game_scenes['MainMenuScene']
                     if event.ui_element == self.instructions_button:
                         pass
                     if event.ui_element == self.exit_button:

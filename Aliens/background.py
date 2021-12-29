@@ -8,6 +8,7 @@ class EndlessBackground:
     def __init__(self, animation_speed=0.3):
         self.animation_speed = animation_speed
         self.layers = self.load_layers(self.animation_speed)
+        self.animate_background = True
 
     def load_layers(self, animation_speed):
         layers = []
@@ -20,8 +21,9 @@ class EndlessBackground:
             layer.reset()
 
     def update(self):
-        for layer in self.layers:
-            layer.update()
+        if self.animate_background:
+            for layer in self.layers:
+                layer.update()
 
     def refactor(self):
         self.layers = self.load_layers(self.animation_speed)

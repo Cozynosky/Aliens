@@ -22,7 +22,7 @@
       "size": "28",
       "bold": "0",
       "italic": "0",
-      "regular_path": "Data/Fonts/space-mission-font/SpaceMission-rgyw9.otf"
+      "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"
     },
     "misc": {
       "shape": "rounded_rectangle",
@@ -107,10 +107,10 @@
     },
     "font": {
       "name": "spacemission",
-      "size": "20",
+      "size": "15",
       "bold": "0",
       "italic": "0",
-      "regular_path": "Data/Fonts/space-mission-font/SpaceMission-rgyw9.otf"
+      "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"
     }
   }
 }

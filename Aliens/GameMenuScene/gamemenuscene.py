@@ -7,9 +7,9 @@ from Aliens import SETTINGS
 from sys import exit
 
 
-class GameMenu(Scene):
+class GameMenuScene(Scene):
     def __init__(self, parent):
-        super(GameMenu, self).__init__(parent)
+        super(GameMenuScene, self).__init__(parent)
         pygame.font.init()
         # game logo
         self.game_logo, self.game_logo_rect = self.prepare_game_logo()
@@ -43,9 +43,9 @@ class GameMenu(Scene):
         game_logo_rect.centerx = SETTINGS.WINDOW_WIDTH // 2
         game_logo_rect.y = 50
 
-        fonts_path = os.path.join("Data", "Fonts", "space-mission-font")
-        font_name = "SpaceMission-rgyw9.otf"
-        myfont = pygame.font.Font(os.path.join(fonts_path, font_name), 130)
+        fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")
+        font_name = "Alien Eclipse.otf"
+        myfont = pygame.font.Font(os.path.join(fonts_path, font_name), 125)
         text = myfont.render('Aliens!', True, (255, 255, 255))
         text_rect = game_logo.get_rect()
         text_rect.x = 25
@@ -112,15 +112,17 @@ class GameMenu(Scene):
                 exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.app.current_scene = self.app.game_scenes["MainMenu"]
+                    self.app.current_scene = self.app.game_scenes["MainMenuScene"]
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.endless_button:
-                        pygame.mouse.set_visible(False)
-                        self.app.game_scenes['EndlessMode'].game.new_game()
-                        self.app.current_scene = self.app.game_scenes['EndlessMode']
+                        self.app.game_scenes['EndlessModeScene'].game.new_game()
+                        self.app.current_scene = self.app.game_scenes['EndlessModeScene']
                     if event.ui_element == self.back_button:
-                        self.app.current_scene = self.app.game_scenes['MainMenu']
+                        self.app.current_scene = self.app.game_scenes['MainMenuScene']
+                    if event.ui_element == self.statistics_button:
+                        self.app.current_scene = self.app.game_scenes['StatisticsScene']
+                        self.app.current_scene.update()
                     if event.ui_element == self.exit_button:
                         pygame.quit()
                         exit()
