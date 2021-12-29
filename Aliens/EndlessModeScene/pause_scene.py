@@ -103,7 +103,7 @@ class PauseScene:
                     self.parent_scene.app.previous_scene = self.parent_scene.app.game_scenes['EndlessModeScene']
                     self.parent_scene.app.current_scene = self.parent_scene.app.game_scenes['SettingsScene']
                 elif event.ui_element == self.exit_game_button:
-                    pygame.quit()
-                    exit()
+                    self.game.save_progress()
+                    self.parent_scene.app.close_app()
         self.manager.process_events(event)
 

@@ -108,9 +108,7 @@ class SettingsScene(Scene):
         time_delta = self.clock.tick(60) / 1000.0
         for event in events:
             if event.type == pygame.QUIT:
-                self.app.is_running = False
-                pygame.quit()
-                exit()
+                self.app.close_app()
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.back_button:

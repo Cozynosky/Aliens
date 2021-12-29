@@ -57,6 +57,7 @@ class StatisticsScene(Scene):
         self.back_button = self.prepare_back_button()
 
     def update(self):
+        super(StatisticsScene, self).update()
         self.highest_score_text = self.get_highest_score_text()
         self.highest_wave_text = self.get_highest_wave_text()
         self.total_enemies_killed_text = self.get_total_enemies_killed_text()
@@ -171,13 +172,11 @@ class StatisticsScene(Scene):
         time_delta = self.clock.tick(60) / 1000.0
         for event in events:
             if event.type == pygame.QUIT:
-                self.app.is_running = False
-                pygame.quit()
-                exit()
+                self.app.close_app()
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.back_button:
-                        self.app.current_scene = self.app.previous_scene
+                        self.app.current_scene = self.app.game_scenes['GameMenuScene']
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:

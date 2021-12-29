@@ -10,7 +10,7 @@ from Aliens.EndlessModeScene.gameover_scene import GameOverScene
 class EndlessModeScene(Scene):
     def __init__(self, parent):
         super(EndlessModeScene, self).__init__(parent)
-        self.game = Game(profile=self.app.current_profile, scene=self)
+        self.game = Game(scene=self)
         self.pause_scene = PauseScene(self)
         self.game_over_scene = GameOverScene(self.game)
 
@@ -25,8 +25,10 @@ class EndlessModeScene(Scene):
             if self.game.state == GameState.GAME_ON:
                 self.game.update()
             elif self.game.state == GameState.GAME_OFF:
-                pygame.mouse.set_visible(True)
+                self.game.save_progress()
                 self.app.current_scene = self.app.game_scenes["GameMenuScene"]
+                self.game.new_game()
+                pygame.mouse.set_visible(True)
                 self.app.background.animate_background = True
 
     def render(self, screen):
@@ -42,8 +44,8 @@ class EndlessModeScene(Scene):
         time_delta = self.clock.tick(60) / 1000.0
         for event in events:
             if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
+                self.game.save_progress()
+                self.app.close_app()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE and self.game.state != GameState.GAME_OVER:
                     pygame.mouse.set_visible(not pygame.mouse.get_visible())

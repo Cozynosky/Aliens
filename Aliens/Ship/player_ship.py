@@ -6,28 +6,27 @@ from Aliens.Bullets.ship_bullet import ShipBullet
 
 
 class PlayerShip(Ship):
-    def __init__(self):
+    def __init__(self, profile):
         super(PlayerShip, self).__init__()
-
-        self.base_speed = round(4 * SETTINGS.SCALE)
-        self.base_bullet_speed = round(5 * SETTINGS.SCALE)
-        self.base_hit_damage = 5
-        self.base_health_capacity = 10
-        self.base_lives = 2
-
-        self.base_magazine_size = 3
-        self.base_reload_time = 1                       # in seconds
+        # upgradable values from current profile
+        self.base_speed = profile.base_speed
+        self.base_bullet_speed = profile.base_bullet_speed
+        self.base_hit_damage = profile.base_hit_damage
+        self.base_health_capacity = profile.base_health_capacity
+        self.base_lives = profile.base_lives
+        self.base_magazine_size = profile.base_magazine_size
+        self.base_reload_time = profile.base_reload_time                       # in seconds
         self.reloading = False
-
+        # set current vars to base
         self.speed = self.base_speed
         self.bullet_speed = self.base_bullet_speed
         self.hit_damage = self.base_hit_damage
         self.health_capacity = self.base_health_capacity
         self.current_health = self.base_health_capacity
         self.magazine_size = self.base_magazine_size
-        self.lives = self.base_lives
         self.in_magazine = self.base_magazine_size
-        self.to_reload = self.base_reload_time          # in seconds
+        self.lives = self.base_lives
+        self.to_reload = self.base_reload_time                                  # in seconds
         self.reload_time = self.base_reload_time
 
     def new_game(self):
@@ -35,15 +34,15 @@ class PlayerShip(Ship):
         self.go_right = False
         self.go_up = False
         self.go_down = False
+
         self.health_capacity = self.base_health_capacity
         self.hit_damage = self.base_hit_damage
         self.magazine_size = self.base_magazine_size
         self.lives = self.base_lives
         self.reload_time = self.base_reload_time
+        self.speed = self.base_speed
 
         self.reset()
-
-        self.speed = self.speed
 
     def reset(self):
         self.state = ShipState.ALIVE

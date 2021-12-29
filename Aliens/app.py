@@ -4,9 +4,11 @@ from Aliens.GameMenuScene.gamemenuscene import GameMenuScene
 from Aliens.EndlessModeScene.endlessmodescene import EndlessModeScene
 from Aliens.SettingsScene.settingsscene import SettingsScene
 from Aliens.StatisticsScene.statisticsscene import StatisticsScene
-from Aliens.Profile.profile import Profile
+from Aliens.Profile.load_profiles import load_profiles
+from Aliens.Profile.save_profiles import save_profiles
 from Aliens.background import EndlessBackground
 from Aliens import SETTINGS
+from sys import exit
 
 
 class App:
@@ -22,7 +24,7 @@ class App:
         # prepare endless background
         self.background = EndlessBackground()
         # temp profile selection
-        self.profiles = [Profile(), Profile(), Profile()]
+        self.profiles = load_profiles()
         self.current_profile = self.profiles[0]
         # game setup
         self.is_running = True
@@ -35,6 +37,12 @@ class App:
         }
         self.current_scene = self.game_scenes[MainMenuScene.__name__]
         self.previous_scene = self.current_scene
+
+    def close_app(self):
+        save_profiles(self.profiles)
+        self.is_running = False
+        pygame.quit()
+        exit()
 
     def refactor_ui(self):
         # save user settings to file

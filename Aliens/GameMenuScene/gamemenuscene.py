@@ -107,24 +107,20 @@ class GameMenuScene(Scene):
         time_delta = self.clock.tick(60) / 1000.0
         for event in events:
             if event.type == pygame.QUIT:
-                self.app.is_running = False
-                pygame.quit()
-                exit()
+                self.app.close_app()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.app.current_scene = self.app.game_scenes["MainMenuScene"]
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.endless_button:
-                        self.app.game_scenes['EndlessModeScene'].game.new_game()
                         self.app.current_scene = self.app.game_scenes['EndlessModeScene']
+                        pygame.mouse.set_visible(False)
                     if event.ui_element == self.back_button:
                         self.app.current_scene = self.app.game_scenes['MainMenuScene']
                     if event.ui_element == self.statistics_button:
                         self.app.current_scene = self.app.game_scenes['StatisticsScene']
-                        self.app.current_scene.update()
                     if event.ui_element == self.exit_button:
-                        pygame.quit()
-                        exit()
+                        self.app.close_app()
             self.manager.process_events(event)
         self.manager.update(time_delta)

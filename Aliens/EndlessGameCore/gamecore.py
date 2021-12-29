@@ -4,6 +4,7 @@ from datetime import datetime
 from Aliens.EndlessGameCore.wave import Wave
 from Aliens.EndlessGameCore.coin import Coin
 from Aliens.Ship.ship import ShipState
+from Aliens.Ship.player_ship import PlayerShip
 from Aliens.EndlessGameCore.game_ui import GameUI
 from enum import Enum
 
@@ -17,12 +18,12 @@ class GameState(Enum):
 
 
 class Game:
-    def __init__(self, profile, scene):
+    def __init__(self, scene):
         self.state = GameState.GAME_ON
         self.start_time = datetime.now()
-        self.profile = profile
+        self.end_time = self.start_time
         self.scene = scene
-        self.ship = profile.ship
+        self.ship = PlayerShip(scene.app.current_profile)
         self.score = 0
         self.total_killed = 0
         self.coins_earned = 0
@@ -40,8 +41,8 @@ class Game:
 
     def new_game(self):
         pygame.mouse.set_visible(False)
-        self.scene.app.background.animate_background = True
         self.start_time = datetime.now()
+        self.end_time = self.start_time
         self.state = GameState.GAME_ON
         self.score = 0
         self.coins_earned = 0
@@ -79,6 +80,7 @@ class Game:
 
             if self.ship.state == ShipState.OUTOFLIVES:
                 pygame.mouse.set_visible(True)
+                self.end_time = datetime.now()
                 self.state = GameState.GAME_OVER
                 self.scene.game_over_scene.update()
 
@@ -92,6 +94,18 @@ class Game:
 
         if self.state != GameState.GAME_OVER:
             self.game_ui.draw(screen)
+
+    def save_progress(self):
+        self.scene.app.current_profile.coins += self.coins_earned
+        self.scene.app.current_profile.total_enemies_killed += self.total_killed
+        self.scene.app.current_profile.total_coins_earned += self.coins_earned
+        self.scene.app.current_profile.total_time += self.end_time - self.start_time
+
+        if self.score > self.scene.app.current_profile.highest_score:
+            self.scene.app.current_profile.highest_score = self.score
+
+        if self.wave.wave_number > self.scene.app.current_profile.highest_wave:
+            self.scene.app.current_profile.highest_wave = self.wave.wave_number
 
     def handle_event(self, event):
         if self.state == GameState.GAME_ON:
@@ -110,7 +124,7 @@ class Game:
                 if enemy.take_damage(shot.hit_damage):
                     self.wave.enemy_killed(enemy)
                     self.score += int(enemy.health_capacity)
-                    Coin.drop_coin(self.profile.drop_rate, self.coins, enemy.rect.x, enemy.rect.y)
+                    Coin.drop_coin(self.scene.app.current_profile.drop_rate, self.coins, enemy.rect.x, enemy.rect.y)
                     self.total_killed += 1
                 shot.ship_hit()
                 self.hit_shots.add(shot)
@@ -138,7 +152,7 @@ class Game:
                     if enemy.take_damage(self.ship.health_capacity):
                         self.wave.enemy_killed(enemy)
                         self.score += int(enemy.health_capacity)
-                        Coin.drop_coin(self.profile.drop_rate, self.coins, enemy.rect.x, enemy.rect.y)
+                        Coin.drop_coin(self.scene.app.current_profile.drop_rate, self.coins, enemy.rect.x, enemy.rect.y)
                         self.total_killed += 1
                         self.scene.app.background.animate_background = False
 
@@ -148,5 +162,5 @@ class Game:
             for coin in collisions:
                 mask_collision = pygame.sprite.collide_mask(self.ship, coin)
                 if mask_collision:
-                    self.coins_earned += self.profile.coin_value
+                    self.coins_earned += self.scene.app.current_profile.coin_value
                     coin.kill()
