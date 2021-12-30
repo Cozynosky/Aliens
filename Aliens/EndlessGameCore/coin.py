@@ -15,6 +15,9 @@ class Coin(pygame.sprite.Sprite):
         self.mask = self.get_mask()
         self.speed = round(1 * SETTINGS.SCALE)
 
+    def refactor(self):
+        pass
+
     def load_coin_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Coins")
 

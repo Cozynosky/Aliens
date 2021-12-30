@@ -1,5 +1,5 @@
 import pygame
-from sys import exit
+from datetime import datetime
 from Aliens.scene import Scene
 from Aliens.EndlessGameCore.gamecore import Game
 from Aliens.EndlessGameCore.gamecore import GameState
@@ -25,9 +25,9 @@ class EndlessModeScene(Scene):
             if self.game.state == GameState.GAME_ON:
                 self.game.update()
             elif self.game.state == GameState.GAME_OFF:
+                self.game.end_time = datetime.now()
                 self.game.save_progress()
                 self.app.current_scene = self.app.game_scenes["GameMenuScene"]
-                self.game.new_game()
                 pygame.mouse.set_visible(True)
                 self.app.background.animate_background = True
 
@@ -44,6 +44,7 @@ class EndlessModeScene(Scene):
         time_delta = self.clock.tick(60) / 1000.0
         for event in events:
             if event.type == pygame.QUIT:
+                self.game.end_time = datetime.now()
                 self.game.save_progress()
                 self.app.close_app()
             if event.type == pygame.KEYDOWN:

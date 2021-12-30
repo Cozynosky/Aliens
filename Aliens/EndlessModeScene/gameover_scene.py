@@ -172,6 +172,7 @@ class GameOverScene:
                 if event.ui_element == self.game_menu_button:
                     self.game.state = GameState.GAME_OFF
                 elif event.ui_element == self.play_again_button:
+                    self.game.end_time = datetime.now()
                     self.game.save_progress()
                     self.game.new_game()
                     self.game.state = GameState.GAME_ON

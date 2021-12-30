@@ -1,5 +1,4 @@
 from datetime import timedelta
-from Aliens import SETTINGS
 
 
 class Profile:
@@ -7,8 +6,8 @@ class Profile:
         # profile name
         self.name = name
         # ship
-        self.base_speed = round(4 * SETTINGS.SCALE)
-        self.base_bullet_speed = round(5 * SETTINGS.SCALE)
+        self.base_speed = 4
+        self.base_bullet_speed = 5
         self.base_hit_damage = 5
         self.base_health_capacity = 10
         self.base_lives = 1

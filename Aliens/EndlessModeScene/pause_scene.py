@@ -2,6 +2,7 @@ import pygame
 import pygame_gui
 import os.path
 
+from datetime import datetime
 from Aliens import SETTINGS
 from Aliens.EndlessGameCore.gamecore import GameState
 
@@ -103,6 +104,7 @@ class PauseScene:
                     self.parent_scene.app.previous_scene = self.parent_scene.app.game_scenes['EndlessModeScene']
                     self.parent_scene.app.current_scene = self.parent_scene.app.game_scenes['SettingsScene']
                 elif event.ui_element == self.exit_game_button:
+                    self.game.end_time = datetime.now()
                     self.game.save_progress()
                     self.parent_scene.app.close_app()
         self.manager.process_events(event)

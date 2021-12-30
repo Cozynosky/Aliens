@@ -5,6 +5,7 @@ from Aliens.EndlessGameCore.wave import Wave
 from Aliens.EndlessGameCore.coin import Coin
 from Aliens.Ship.ship import ShipState
 from Aliens.Ship.player_ship import PlayerShip
+from Aliens.Bullets.bullet import Bullet
 from Aliens.EndlessGameCore.game_ui import GameUI
 from enum import Enum
 
@@ -38,6 +39,13 @@ class Game:
     def refactor(self):
         self.game_ui.refactor()
         self.ship.refactor()
+        self.wave.refactor()
+        for shot in self.player_shots:
+            shot.refactor()
+        for shot in self.enemies_shots:
+            shot.refactor()
+        for shot in self.hit_shots:
+            shot.refactor()
 
     def new_game(self):
         pygame.mouse.set_visible(False)
@@ -80,7 +88,6 @@ class Game:
 
             if self.ship.state == ShipState.OUTOFLIVES:
                 pygame.mouse.set_visible(True)
-                self.end_time = datetime.now()
                 self.state = GameState.GAME_OVER
                 self.scene.game_over_scene.update()
 

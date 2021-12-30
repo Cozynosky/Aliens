@@ -8,8 +8,9 @@ from Aliens.Bullets.ship_bullet import ShipBullet
 class PlayerShip(Ship):
     def __init__(self, profile):
         super(PlayerShip, self).__init__()
+        self.profile = profile
         # upgradable values from current profile
-        self.base_speed = profile.base_speed
+        self.base_speed = profile.base_speed * SETTINGS.SCALE
         self.base_bullet_speed = profile.base_bullet_speed
         self.base_hit_damage = profile.base_hit_damage
         self.base_health_capacity = profile.base_health_capacity
@@ -58,9 +59,9 @@ class PlayerShip(Ship):
 
     def refactor(self):
         super(PlayerShip, self).refactor()
-        self.base_speed = round(4 * SETTINGS.SCALE)
+        self.base_speed = self.profile.base_speed * SETTINGS.SCALE
+        self.base_bullet_speed = self.profile.base_bullet_speed * SETTINGS.SCALE
         self.speed = self.base_speed
-        self.base_bullet_speed = round(5 * SETTINGS.SCALE)
         self.bullet_speed = self.base_bullet_speed
 
     def load_ship_frames(self):

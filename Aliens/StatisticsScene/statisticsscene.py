@@ -139,9 +139,9 @@ class StatisticsScene(Scene):
 
     def get_time_text(self):
         time_spent = self.parent.current_profile.total_time
-        days, hours, minutes, seconds = str(time_spent.days).zfill(2), str(time_spent.seconds // 3600).zfill(2), str(time_spent.seconds // 60 % 60).zfill(2), str(time_spent.seconds).zfill(2)
+        days, hours, minutes, seconds = str(time_spent.days).zfill(2), str(time_spent.seconds // 3600 % 24).zfill(2), str(time_spent.seconds // 60 % 60).zfill(2), str(time_spent.seconds % 60).zfill(2)
 
-        text = self.small_font.render(f"Time spent: {days}:{hours}:{minutes}:{seconds}.s", True, (255, 255, 255))
+        text = self.small_font.render(f"Time spent: {days}:{hours}:{minutes}:{seconds}", True, (255, 255, 255))
         return text
 
     def get_time_text_rect(self):

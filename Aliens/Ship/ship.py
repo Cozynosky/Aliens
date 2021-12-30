@@ -1,6 +1,8 @@
 import pygame
 from enum import Enum
 
+from Aliens import SETTINGS
+
 
 class ShipState(Enum):
     ALIVE = 0
@@ -66,7 +68,8 @@ class Ship(pygame.sprite.Sprite):
         self.boost_frames, self.boost_animation_speed, self.boost_frame_number = self.load_boost_frames()
         self.explosion_frames, self.explosion_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
 
-        self.rect = self.prepare_rect()
+        self.rect.x *= SETTINGS.SCALE
+        self.rect.y *= SETTINGS.SCALE
         self.image = self.get_image()
         self.mask = self.prepare_mask()
 

@@ -21,8 +21,17 @@ class Bullet(pygame.sprite.Sprite):
         # movement
         self.go_right = False
         self.go_left = False
-        self.speed = speed
+        self.base_speed = speed
+        self.speed = (self.base_speed * SETTINGS.SCALE)
         self.hit_damage = hit_damage
+
+    def refactor(self):
+        self.bullet_frames, self.bullet_frames_animation_speed, self.bullet_frame_number = self.load_bullet_frames()
+        self.explosion_frames, self.explosion_frames_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
+        self.speed = (self.base_speed * SETTINGS.SCALE)
+
+        self.rect.x *= SETTINGS.SCALE
+        self.rect.y *= SETTINGS.SCALE
 
     def load_bullet_frames(self):
         raise NotImplementedError

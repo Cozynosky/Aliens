@@ -21,6 +21,12 @@ class Wave:
         self.spawn_time = self.get_spawn_time()
         self.to_spawn_time = 0
 
+    def refactor(self):
+        for enemy in self.alive_enemies:
+            enemy.refactor()
+        for enemy in self.dead_enemies:
+            enemy.refactor()
+
     def next_wave(self):
         self.wave_number += 1
         self.enemies_to_spawn = self.get_enemies_to_spawn()

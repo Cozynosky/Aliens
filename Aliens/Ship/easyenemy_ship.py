@@ -23,6 +23,11 @@ class EasyEnemy(Ship):
         self.shot_cooldown = self.get_shoot_cooldown()
         self.time_to_shot = self.get_time_to_shoot()
 
+    def refactor(self):
+        super(EasyEnemy, self).refactor()
+        self.speed = self.get_speed()
+        self.bullet_speed = self.get_bullet_speed()
+
     def get_speed(self):
         # WAVE, VALUE: 1, 2 -> 5, 2.2 -> 10, 2.5 -> 20, 3 -> 50, 6
         speed = 0.0119337 * self.wave_number ** 1.48289 + 2.04706
@@ -35,7 +40,7 @@ class EasyEnemy(Ship):
         bullet_speed = 0.168918 * self.wave_number ** 1.2 + 3.57386
         # make max bullet speed
         bullet_speed = min(24, bullet_speed)
-        return round(bullet_speed * SETTINGS.SCALE)
+        return bullet_speed
 
     def get_hit_damage(self):
         # WAVE, VALUE: 1, 3 -> 5, 4 -> 10, 7 -> 20, 15-> 50, 40
