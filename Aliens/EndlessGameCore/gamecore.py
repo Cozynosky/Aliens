@@ -82,6 +82,7 @@ class Game:
                 # game ui update
                 self.game_ui.update()
             elif self.ship.state == ShipState.DEAD:
+                self.scene.app.background.animate_background = False
                 self.ship.update()
                 self.wave.dead_enemies.update()
                 self.game_ui.update()
@@ -161,7 +162,6 @@ class Game:
                         self.score += int(enemy.health_capacity)
                         Coin.drop_coin(self.scene.app.current_profile.drop_rate, self.coins, enemy.rect.x, enemy.rect.y)
                         self.total_killed += 1
-                        self.scene.app.background.animate_background = False
 
     def player_with_coin_collision(self):
         if self.ship.state == ShipState.ALIVE:

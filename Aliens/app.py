@@ -42,7 +42,8 @@ class App:
         self.previous_scene = self.current_scene
 
     def close_app(self):
-        save_profiles(self.profiles)
+        if SETTINGS.AUTO_SAVE:
+            save_profiles(self.profiles)
         self.is_running = False
         pygame.quit()
         exit()

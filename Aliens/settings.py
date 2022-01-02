@@ -36,6 +36,9 @@ class Settings:
                 },
                 "fullscreen": True,
                 "title": "Aliens!"
+            },
+            "saves": {
+                "auto_save": True
             }
         }
         settings_dict = self.load_settings()
@@ -56,6 +59,8 @@ class Settings:
         self.SCALE = self.prepare_scale()
         # window title
         self.WINDOW_TITLE = settings_dict["window"]["title"]
+        # auto save
+        self.AUTO_SAVE = settings_dict["saves"]["auto_save"]
 
     def check_hardware_res(self):
         display_info = pygame.display.Info()
@@ -100,6 +105,9 @@ class Settings:
                 },
                 "fullscreen": self.FULLSCREEN,
                 "title": self.WINDOW_TITLE
+            },
+            "saves": {
+                "auto_save": self.AUTO_SAVE
             }
         }
         with open("Data/settings.json", "w") as file:

@@ -1,5 +1,3 @@
-from sys import exit
-
 import pygame
 import pygame_gui
 import os.path
@@ -20,10 +18,12 @@ class SettingsScene(Scene):
         # labels
         self.resolution_label = self.prepare_resolution_label()
         self.fullscreen_label = self.prepare_fullscreen_label()
+        self.auto_save_label = self.prepare_auto_save_label()
         # dropdown
         self.resolution_dropdown = self.prepare_resolution_dropdown()
         # button
         self.fullscreen_button = self.prepare_fullscreen_button()
+        self.auto_save_button = self.prepare_auto_save_button()
         self.back_button = self.prepare_back_button()
 
     def refactor_ui(self):
@@ -35,10 +35,12 @@ class SettingsScene(Scene):
         # labels
         self.resolution_label = self.prepare_resolution_label()
         self.fullscreen_label = self.prepare_fullscreen_label()
+        self.auto_save_label = self.prepare_auto_save_label()
         # dropdown
         self.resolution_dropdown = self.prepare_resolution_dropdown()
         # button
         self.fullscreen_button = self.prepare_fullscreen_button()
+        self.auto_save_button = self.prepare_auto_save_button()
         self.back_button = self.prepare_back_button()
 
     def prepare_settings_background(self):
@@ -78,6 +80,11 @@ class SettingsScene(Scene):
                                                             text="Fullscreen", manager=self.manager)
         return label
 
+    def prepare_auto_save_label(self):
+        label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 200, self.settings_text_rect.bottom + 150, 130, 40),
+                                                            text="Auto save", manager=self.manager)
+        return label
+
     def prepare_resolution_dropdown(self):
         resolution_dropdown = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 50, 250, 40),
                                                                  manager=self.manager,
@@ -88,6 +95,12 @@ class SettingsScene(Scene):
     def prepare_fullscreen_button(self):
         button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 100, 120, 40), text=f"{SETTINGS.FULLSCREEN}",
+            manager=self.manager)
+        return button
+
+    def prepare_auto_save_button(self):
+        button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 150, 120, 40), text=f"{SETTINGS.AUTO_SAVE}",
             manager=self.manager)
         return button
 
@@ -116,6 +129,10 @@ class SettingsScene(Scene):
                     if event.ui_element == self.fullscreen_button:
                         SETTINGS.FULLSCREEN = not SETTINGS.FULLSCREEN
                         self.app.refactor_ui()
+                    if event.ui_element == self.auto_save_button:
+                        SETTINGS.AUTO_SAVE = not SETTINGS.AUTO_SAVE
+                        self.auto_save_button.set_text(f"{SETTINGS.AUTO_SAVE}")
+                        SETTINGS.save_settings()
 
                 if event.user_type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
                     SETTINGS.WINDOW_SIZE = (SETTINGS.RESOLUTIONS[event.text]["width"], SETTINGS.RESOLUTIONS[event.text]["height"])
