@@ -4,7 +4,6 @@ import os.path
 
 from Aliens import SETTINGS
 from Aliens.scene import Scene
-from sys import exit
 
 
 class MainMenuScene(Scene):
@@ -87,7 +86,10 @@ class MainMenuScene(Scene):
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.play_button:
-                        self.app.current_scene = self.app.game_scenes['GameMenuScene']
+                        if self.app.profile_selected:
+                            self.app.current_scene = self.app.game_scenes['GameMenuScene']
+                        else:
+                            self.app.current_scene = self.app.game_scenes['ProfileScene']
                     if event.ui_element == self.settings_button:
                         self.app.current_scene = self.app.game_scenes['SettingsScene']
                         self.app.previous_scene = self.app.game_scenes['MainMenuScene']

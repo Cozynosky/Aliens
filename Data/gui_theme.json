@@ -29,6 +29,96 @@
       "shape_corner_radius": "10"
     }
   },
+  "@select_profile_button": {
+        "colours": {
+      "normal_bg": "#25292e",
+      "hovered_bg": "#35393e",
+      "disabled_bg": "#25292e",
+      "selected_bg": "#25292e",
+      "active_bg": "#193784",
+      "normal_text": "#c5cbd8",
+      "hovered_text": "#FFFFFF",
+      "selected_text": "#FFFFFF",
+      "disabled_text": "#6d736f",
+      "active_text": "#6d736f",
+      "normal_border": "#25292e",
+      "hovered_border": "#25292e",
+      "disabled_border": "#25292e",
+      "selected_border": "#25292e",
+      "active_border": "#25292e"
+    },
+    "font": {
+      "name": "spacemission",
+      "size": "20",
+      "bold": "0",
+      "italic": "0",
+      "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"
+    },
+    "misc": {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
+  "@delete_profile_button": {
+          "colours": {
+      "normal_bg": "#C70000",
+      "hovered_bg": "#E70000",
+      "disabled_bg": "#25292e",
+      "selected_bg": "#25292e",
+      "active_bg": "#193784",
+      "normal_text": "#c5cbd8",
+      "hovered_text": "#FFFFFF",
+      "selected_text": "#FFFFFF",
+      "disabled_text": "#6d736f",
+      "active_text": "#6d736f",
+      "normal_border": "#C70000",
+      "hovered_border": "#C70000",
+      "disabled_border": "#C70000",
+      "selected_border": "#C70000",
+      "active_border": "#C70000"
+    },
+    "font": {
+      "name": "spacemission",
+      "size": "20",
+      "bold": "0",
+      "italic": "0",
+      "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"
+    },
+    "misc": {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
+  "@edit_profile_button": {
+          "colours": {
+      "normal_bg": "#ffc20e",
+      "hovered_bg": "#ffcf41",
+      "disabled_bg": "#25292e",
+      "selected_bg": "#25292e",
+      "active_bg": "#193784",
+      "normal_text": "#FFFFFF",
+      "hovered_text": "#FFFFFF",
+      "selected_text": "#FFFFFF",
+      "disabled_text": "#6d736f",
+      "active_text": "#6d736f",
+      "normal_border": "#ffc20e",
+      "hovered_border": "#ffc20e",
+      "disabled_border": "#ffc20e",
+      "selected_border": "#ffc20e",
+      "active_border": "#ffc20e"
+    },
+    "font": {
+      "name": "spacemission",
+      "size": "15",
+      "bold": "0",
+      "italic": "0",
+      "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"
+    },
+    "misc": {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
   "drop_down_menu": {
     "misc": {
       "expand_direction": "down",
@@ -111,6 +201,29 @@
       "bold": "0",
       "italic": "0",
       "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"
+    }
+  },
+  "text_entry_line": {
+        "colours": {
+             "dark_bg": "#808080",
+             "selected_bg": "#55595e",
+            "disabled_dark_bg": "#808080",
+          "disabled_text": "#FFFFFF",
+             "normal_text": "#FFFFFF",
+             "selected_text": "#FFFFFF",
+             "normal_border": "#808080",
+          "disabled_border": "#808080"
+    },
+        "font": {
+      "name": "spacemission",
+      "size": "30",
+      "bold": "0",
+      "italic": "0",
+      "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"
+    },
+    "misc": {
+      "border_width": 0,
+      "shadow_width": 0
     }
   }
 }

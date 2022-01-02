@@ -6,6 +6,7 @@ from Aliens.SettingsScene.settingsscene import SettingsScene
 from Aliens.StatisticsScene.statisticsscene import StatisticsScene
 from Aliens.Profile.load_profiles import load_profiles
 from Aliens.Profile.save_profiles import save_profiles
+from Aliens.ProfilesScene.profilesscene import ProfileScene
 from Aliens.background import EndlessBackground
 from Aliens import SETTINGS
 from sys import exit
@@ -26,10 +27,12 @@ class App:
         # temp profile selection
         self.profiles = load_profiles()
         self.current_profile = self.profiles[0]
+        self.profile_selected = False
         # game setup
         self.is_running = True
         self.game_scenes = {
             MainMenuScene.__name__: MainMenuScene(self),
+            ProfileScene.__name__: ProfileScene(self),
             GameMenuScene.__name__: GameMenuScene(self),
             EndlessModeScene.__name__: EndlessModeScene(self),
             SettingsScene.__name__: SettingsScene(self),
