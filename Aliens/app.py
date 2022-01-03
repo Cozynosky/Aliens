@@ -44,14 +44,13 @@ class App:
     def close_app(self):
         if SETTINGS.AUTO_SAVE:
             save_profiles(self.profiles)
+            # save user settings to file
+        SETTINGS.save_settings()
         self.is_running = False
         pygame.quit()
         exit()
 
     def refactor_ui(self):
-        # save user settings to file
-        SETTINGS.save_settings()
-
         pygame.display.quit()
         pygame.display.init()
         pygame.display.set_caption(SETTINGS.WINDOW_TITLE)

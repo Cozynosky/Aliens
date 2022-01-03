@@ -19,6 +19,7 @@ class GameMenuScene(Scene):
         self.endless_button = self.prepare_endless_button()
         self.upgrades_button = self.prepare_upgrades_button()
         self.statistics_button = self.prepare_statistics_button()
+        self.logout_button = self.prepare_logout_button()
         self.back_button = self.prepare_back_button()
         self.exit_button = self.prepare_exit_button()
 
@@ -33,6 +34,7 @@ class GameMenuScene(Scene):
         self.endless_button = self.prepare_endless_button()
         self.upgrades_button = self.prepare_upgrades_button()
         self.statistics_button = self.prepare_statistics_button()
+        self.logout_button = self.prepare_logout_button()
         self.back_button = self.prepare_back_button()
         self.exit_button = self.prepare_exit_button()
 
@@ -83,6 +85,13 @@ class GameMenuScene(Scene):
 
         return button
 
+    def prepare_logout_button(self):
+        button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(25, 25, 64, 64),
+            text="", manager=self.manager, object_id=pygame_gui.core.ObjectID(class_id="@logout_button", object_id="@logout_button")
+        )
+        return button
+
     def prepare_back_button(self):
         button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(25, SETTINGS.WINDOW_HEIGHT - 75, 100, 50), text="BACK",
@@ -120,6 +129,9 @@ class GameMenuScene(Scene):
                         self.app.current_scene = self.app.game_scenes['MainMenuScene']
                     if event.ui_element == self.statistics_button:
                         self.app.current_scene = self.app.game_scenes['StatisticsScene']
+                    if event.ui_element == self.logout_button:
+                        self.app.profile_selected = False
+                        self.app.current_scene = self.app.game_scenes['ProfileScene']
                     if event.ui_element == self.exit_button:
                         self.app.close_app()
             self.manager.process_events(event)

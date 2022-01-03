@@ -11,11 +11,11 @@
       "selected_text": "#FFFFFF",
       "disabled_text": "#6d736f",
       "active_text": "#6d736f",
-      "normal_border": "#25292e",
-      "hovered_border": "#25292e",
-      "disabled_border": "#25292e",
-      "selected_border": "#25292e",
-      "active_border": "#25292e"
+      "normal_border": "#00000000",
+      "hovered_border": "#00000000",
+      "disabled_border": "#00000000",
+      "selected_border": "#00000000",
+      "active_border": "#00000000"
     },
     "font": {
       "name": "spacemission",
@@ -26,7 +26,9 @@
     },
     "misc": {
       "shape": "rounded_rectangle",
-      "shape_corner_radius": "10"
+      "shape_corner_radius": "10",
+      "border_width": 0,
+      "shadow_width": 0
     }
   },
   "@select_profile_button": {
@@ -41,11 +43,11 @@
       "selected_text": "#FFFFFF",
       "disabled_text": "#6d736f",
       "active_text": "#6d736f",
-      "normal_border": "#25292e",
-      "hovered_border": "#25292e",
-      "disabled_border": "#25292e",
-      "selected_border": "#25292e",
-      "active_border": "#25292e"
+      "normal_border": "#00000000",
+      "hovered_border": "#00000000",
+      "disabled_border": "#00000000",
+      "selected_border": "#00000000",
+      "active_border": "#00000000"
     },
     "font": {
       "name": "spacemission",
@@ -71,11 +73,11 @@
       "selected_text": "#FFFFFF",
       "disabled_text": "#6d736f",
       "active_text": "#6d736f",
-      "normal_border": "#C70000",
-      "hovered_border": "#C70000",
-      "disabled_border": "#C70000",
-      "selected_border": "#C70000",
-      "active_border": "#C70000"
+      "normal_border": "#00000000",
+      "hovered_border": "#00000000",
+      "disabled_border": "#00000000",
+      "selected_border": "#00000000",
+      "active_border": "#00000000"
     },
     "font": {
       "name": "spacemission",
@@ -101,11 +103,11 @@
       "selected_text": "#FFFFFF",
       "disabled_text": "#6d736f",
       "active_text": "#6d736f",
-      "normal_border": "#ffc20e",
-      "hovered_border": "#ffc20e",
-      "disabled_border": "#ffc20e",
-      "selected_border": "#ffc20e",
-      "active_border": "#ffc20e"
+      "normal_border": "#00000000",
+      "hovered_border": "#00000000",
+      "disabled_border": "#00000000",
+      "selected_border": "#00000000",
+      "active_border": "#00000000"
     },
     "font": {
       "name": "spacemission",
@@ -118,6 +120,44 @@
       "shape": "rounded_rectangle",
       "shape_corner_radius": "10"
     }
+  },
+  "@logout_button": {
+             "colours":
+         {
+             "normal_bg": "#00000000",
+             "hovered_bg": "#00000000",
+             "disabled_bg": "#00000000",
+             "selected_bg": "#00000000",
+             "active_bg": "#00000000",
+             "normal_text": "#00000000",
+             "hovered_text": "#00000000",
+             "selected_text": "#00000000",
+             "disabled_text": "#00000000",
+             "active_text": "#00000000",
+             "normal_border": "#00000000",
+             "hovered_border": "#00000000",
+             "disabled_border": "#00000000",
+             "selected_border": "#00000000",
+             "active_border": "#00000000"
+         },
+         "images":
+         {
+             "normal_image": {
+                 "path": "Data/Sprites/HUD/change_profile.png"
+             },
+             "hovered_image": {
+                 "path": "Data/Sprites/HUD/change_profile_hovered.png"
+             },
+             "selected_image": {
+                 "path": "Data/Sprites/HUD/change_profile_selected.png"
+             },
+             "disabled_image": {
+                 "path": "Data/Sprites/HUD/change_profile.png"
+             }
+         },
+        "misc": {
+          "shape": "rectangle"
+        }
   },
   "drop_down_menu": {
     "misc": {
@@ -205,14 +245,14 @@
   },
   "text_entry_line": {
         "colours": {
-             "dark_bg": "#808080",
-             "selected_bg": "#55595e",
-            "disabled_dark_bg": "#808080",
+             "dark_bg": "#00000000",
+             "selected_bg": "#00000000",
+            "disabled_dark_bg": "#00000000",
           "disabled_text": "#FFFFFF",
              "normal_text": "#FFFFFF",
-             "selected_text": "#FFFFFF",
-             "normal_border": "#808080",
-          "disabled_border": "#808080"
+             "selected_text": "#00000000",
+             "normal_border": "#00000000",
+          "disabled_border": "#00000000"
     },
         "font": {
       "name": "spacemission",
