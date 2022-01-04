@@ -7,6 +7,7 @@ from Aliens.StatisticsScene.statisticsscene import StatisticsScene
 from Aliens.Profile.load_profiles import load_profiles
 from Aliens.Profile.save_profiles import save_profiles
 from Aliens.ProfilesScene.profilesscene import ProfileScene
+from Aliens.UpgradesScene.upgradesscene import UpgradesScene
 from Aliens.background import EndlessBackground
 from Aliens import SETTINGS
 from sys import exit
@@ -36,7 +37,8 @@ class App:
             GameMenuScene.__name__: GameMenuScene(self),
             EndlessModeScene.__name__: EndlessModeScene(self),
             SettingsScene.__name__: SettingsScene(self),
-            StatisticsScene.__name__: StatisticsScene(self)
+            StatisticsScene.__name__: StatisticsScene(self),
+            UpgradesScene.__name__: UpgradesScene(self)
         }
         self.current_scene = self.game_scenes[MainMenuScene.__name__]
         self.previous_scene = self.current_scene

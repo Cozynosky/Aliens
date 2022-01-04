@@ -6,17 +6,24 @@ class Profile:
         # profile name
         self.name = ""
         self.empty_profile = True
-        # ship
-        self.base_speed = 4
-        self.base_bullet_speed = 5
-        self.base_hit_damage = 5
-        self.base_health_capacity = 10
-        self.base_lives = 1
-        self.base_magazine_size = 3
-        self.base_reload_time = 1                       # in seconds
-        # upgradable values
-        self.drop_rate = 1.0
-        self.coin_value = 1
+
+        # ---------------- ship upgradables ----------------------
+        self.ship_speed_level = 1
+        # weapon
+        self.shots_in_shot_level = 1
+        self.bullet_speed_level = 1
+        self.bullet_damage_level = 1
+        # health
+        self.health_capacity_level = 1
+        self.lives_level = 1
+        # magazine
+        self.magazine_size_level = 1
+        self.reload_time_level = 1                       # in seconds
+        # coins
+        self.drop_rate_level = 0.3
+        self.coin_value_level = 1
+        # ---------------------------------------------------
+
         # earned coins
         self.coins = 0
         # statistics
@@ -30,17 +37,24 @@ class Profile:
         # profile name
         self.name = ""
         self.empty_profile = True
-        # ship
-        self.base_speed = 4
-        self.base_bullet_speed = 5
-        self.base_hit_damage = 5
-        self.base_health_capacity = 10
-        self.base_lives = 1
-        self.base_magazine_size = 3
-        self.base_reload_time = 1                       # in seconds
-        # upgradable values
-        self.drop_rate = 1.0
-        self.coin_value = 1
+
+        # ---------------- ship upgradables ----------------------
+        self.ship_speed_level = 1
+        # weapon
+        self.shots_in_shot_level = 1
+        self.bullet_speed_level = 1
+        self.bullet_damage_level = 1
+        # health
+        self.health_capacity_level = 1
+        self.lives_level = 1
+        # magazine
+        self.magazine_size_level = 1
+        self.reload_time_level = 1                       # in seconds
+        # coins
+        self.drop_rate_level = 0.3
+        self.coin_value_level = 1
+        # ---------------------------------------------------
+
         # earned coins
         self.coins = 0
         # statistics

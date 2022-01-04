@@ -22,7 +22,7 @@ class Bullet(pygame.sprite.Sprite):
         self.go_right = False
         self.go_left = False
         self.base_speed = speed
-        self.speed = (self.base_speed * SETTINGS.SCALE)
+        self.speed = round(self.base_speed * SETTINGS.SCALE)
         self.hit_damage = hit_damage
 
     def refactor(self):

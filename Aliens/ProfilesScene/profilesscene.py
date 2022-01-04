@@ -124,11 +124,17 @@ class ProfileBanner:
 
     def refactor(self, manager):
         self.manager = manager
+        self.font = self.load_fonts()
+
         self.banner = self.prepare_banner()
         self.banner_rect = self.get_banner_rect(self.banner_rect.y)
         self.name_entry = self.prepare_name_entry()
         self.time_in_text = self.get_time_in_text()
         self.time_in_text_rect = self.get_time_in_text_rect()
+        self.coins_icon = self.prepare_coins_icon()
+        self.coins_icon_rect = self.get_coins_icon_rect()
+        self.coins_text = self.get_coins_text()
+        self.coins_text_rect = self.get_coins_text_rect()
         self.select_button = self.prepare_select_button()
         self.delete_button = self.prepare_delete_button()
         self.edit_button = self.prepare_edit_button()

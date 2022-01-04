@@ -1,9 +1,11 @@
 import pygame
 from Aliens.Ship.easyenemy_ship import EasyEnemy
+from Aliens.EndlessGameCore.game_state import GameState
 
 
 class Wave:
-    def __init__(self):
+    def __init__(self, game):
+        self.game = game
         self.wave_number = 1
         self.enemies_to_spawn = self.get_enemies_to_spawn()
         self.enemies_left = self.enemies_to_spawn
@@ -61,7 +63,8 @@ class Wave:
                 self.enemies_to_spawn -= 1
 
             self.to_spawn_time = self.spawn_time
-        elif self.enemies_to_spawn == 0 and self.enemies_left == 0:
+        elif self.enemies_to_spawn == 0 and len(self.dead_enemies) == 0 and len(self.alive_enemies) == 0:
+            #self.game.state = GameState.NEXT_WAVE
             self.next_wave()
 
     def get_shots(self, shots):
@@ -73,7 +76,6 @@ class Wave:
         self.dead_enemies.draw(screen)
 
     def enemy_killed(self, enemy):
-        self.to_spawn_time -= self.spawn_time / 2
         self.dead_enemies.add(enemy)
         self.alive_enemies.remove(enemy)
         self.enemies_left -= 1

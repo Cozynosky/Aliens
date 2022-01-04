@@ -21,15 +21,7 @@ class EndlessModeScene(Scene):
 
     def update(self):
         super(EndlessModeScene, self).update()
-        if not self.game.paused:
-            if self.game.state == GameState.GAME_ON:
-                self.game.update()
-            elif self.game.state == GameState.GAME_OFF:
-                self.game.end_time = datetime.now()
-                self.game.save_progress()
-                self.app.current_scene = self.app.game_scenes["GameMenuScene"]
-                pygame.mouse.set_visible(True)
-                self.app.background.animate_background = True
+        self.game.update()
 
     def render(self, screen):
         self.app.background.draw(screen)
@@ -47,11 +39,6 @@ class EndlessModeScene(Scene):
                 self.game.end_time = datetime.now()
                 self.game.save_progress()
                 self.app.close_app()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE and self.game.state != GameState.GAME_OVER:
-                    pygame.mouse.set_visible(not pygame.mouse.get_visible())
-                    self.game.paused = not self.game.paused
-                    self.app.background.animate_background = not self.app.background.animate_background
             self.game.handle_event(event)
 
             if self.game.state == GameState.GAME_OVER:

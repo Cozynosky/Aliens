@@ -29,7 +29,7 @@ class Ship(pygame.sprite.Sprite):
         self.go_down = False
         # variables depending on ship
         self.speed = NotImplemented
-        self.hit_damage = NotImplemented
+        self.bullet_damage = NotImplemented
         self.health_capacity = NotImplemented
         self.current_health = NotImplemented
 
@@ -68,8 +68,11 @@ class Ship(pygame.sprite.Sprite):
         self.boost_frames, self.boost_animation_speed, self.boost_frame_number = self.load_boost_frames()
         self.explosion_frames, self.explosion_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
 
-        self.rect.x *= SETTINGS.SCALE
-        self.rect.y *= SETTINGS.SCALE
+        new_x = self.rect.x * SETTINGS.SCALE
+        new_y = self.rect.y * SETTINGS.SCALE
+        self.rect = self.prepare_rect()
+        self.rect.x = new_x
+        self.rect.y = new_y
         self.image = self.get_image()
         self.mask = self.prepare_mask()
 
@@ -86,7 +89,7 @@ class Ship(pygame.sprite.Sprite):
     def take_damage(self, damage):
         self.current_health = max(0, self.current_health - damage)
         # check if still alive
-        if self.current_health == 0:
+        if self.current_health <= 0:
             self.state = ShipState.DEAD
             return True
         # change image depending od health

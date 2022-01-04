@@ -40,21 +40,22 @@ class EasyEnemy(Ship):
         bullet_speed = 0.168918 * self.wave_number ** 1.2 + 3.57386
         # make max bullet speed
         bullet_speed = min(24, bullet_speed)
-        return bullet_speed
+        return round(bullet_speed)
 
     def get_hit_damage(self):
         # WAVE, VALUE: 1, 3 -> 5, 4 -> 10, 7 -> 20, 15-> 50, 40
         hit_damage = 0.311198 * self.wave_number ** 1.22737 + 2.20444
-        return round(hit_damage)
+        return round(hit_damage, 2)
 
     def get_health_capacity(self):
         # WAVE, VALUE: 1, 10 -> 5, 15-> 10, 22-> 20, 50 -> 50, 140
         health_capacity = 0.814922 * self.wave_number ** 1.30038 + 8.25383
-        return round(health_capacity)
+        return round(health_capacity, 2)
 
     def get_shoot_cooldown(self):
         # WAVE, VALUE: 1, 4 -> 5, 3.9 -> 10, 3.7 -> 20, 3.5 -> 50, 2.5
         cooldown = 4.00704 - 0.0196861 * self.wave_number ** 1.108
+        cooldown = max(cooldown, 0.5)
         return cooldown
 
     def get_time_to_shoot(self):

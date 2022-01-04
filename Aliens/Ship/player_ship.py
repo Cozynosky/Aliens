@@ -3,53 +3,53 @@ import os.path
 from Aliens import SETTINGS
 from Aliens.Ship.ship import Ship, ShipState
 from Aliens.Bullets.ship_bullet import ShipBullet
+from Aliens.Upgrades.upgrades import *
 
 
 class PlayerShip(Ship):
-    def __init__(self, profile):
+    def __init__(self, app):
         super(PlayerShip, self).__init__()
-        self.profile = profile
+        self.app = app
         # upgradable values from current profile
-        self.base_speed = profile.base_speed * SETTINGS.SCALE
-        self.base_bullet_speed = profile.base_bullet_speed
-        self.base_hit_damage = profile.base_hit_damage
-        self.base_health_capacity = profile.base_health_capacity
-        self.base_lives = profile.base_lives
-        self.base_magazine_size = profile.base_magazine_size
-        self.base_reload_time = profile.base_reload_time                       # in seconds
+        self.speed = round(ShipSpeed.get_value(self.app.current_profile.ship_speed_level) * SETTINGS.SCALE)
+        self.bullet_speed = BulletSpeed.get_value(self.app.current_profile.bullet_speed_level)
+        self.bullet_damage = BulletDamage.get_value(self.app.current_profile.bullet_damage_level)
+        self.health_capacity = HealthCapacity.get_value(self.app.current_profile.health_capacity_level)
+        self.lives = Lives.get_value(self.app.current_profile.lives_level)
+        self.magazine_size = MagazineSize.get_value(self.app.current_profile.magazine_size_level)
+        self.reload_time = ReloadTime.get_value(self.app.current_profile.reload_time_level)                       # in seconds
         self.reloading = False
-        # set current vars to base
-        self.speed = self.base_speed
-        self.bullet_speed = self.base_bullet_speed
-        self.hit_damage = self.base_hit_damage
-        self.health_capacity = self.base_health_capacity
-        self.current_health = self.base_health_capacity
-        self.magazine_size = self.base_magazine_size
-        self.in_magazine = self.base_magazine_size
-        self.lives = self.base_lives
-        self.to_reload = self.base_reload_time                                  # in seconds
-        self.reload_time = self.base_reload_time
+        self.current_health = self.health_capacity
+        self.in_magazine = self.magazine_size
+        self.to_reload = self.reload_time
 
     def new_game(self):
         self.go_left = False
         self.go_right = False
         self.go_up = False
         self.go_down = False
+        self.reloading = False
 
-        self.health_capacity = self.base_health_capacity
-        self.hit_damage = self.base_hit_damage
-        self.magazine_size = self.base_magazine_size
-        self.lives = self.base_lives
-        self.reload_time = self.base_reload_time
-        self.speed = self.base_speed
+        # upgradable values from current profile
+        self.speed = round(ShipSpeed.get_value(self.app.current_profile.ship_speed_level) * SETTINGS.SCALE)
+        self.bullet_speed = BulletSpeed.get_value(self.app.current_profile.bullet_speed_level)
+        self.bullet_damage = BulletDamage.get_value(self.app.current_profile.bullet_damage_level)
+        self.health_capacity = HealthCapacity.get_value(self.app.current_profile.health_capacity_level)
+        self.lives = Lives.get_value(self.app.current_profile.lives_level)
+        self.magazine_size = MagazineSize.get_value(self.app.current_profile.magazine_size_level)
+        self.reload_time = ReloadTime.get_value(self.app.current_profile.reload_time_level)                       # in seconds
+        self.reloading = False
+        self.current_health = self.health_capacity
+        self.in_magazine = self.magazine_size
+        self.to_reload = self.reload_time
 
         self.reset()
 
     def reset(self):
         self.state = ShipState.ALIVE
-        self.current_health = self.base_health_capacity
-        self.in_magazine = self.base_magazine_size
-        self.to_reload = self.base_reload_time
+        self.current_health = self.health_capacity
+        self.in_magazine = self.magazine_size
+        self.to_reload = self.reload_time
         self.reloading = False
 
         self.ship_frame_number = 0
@@ -59,10 +59,8 @@ class PlayerShip(Ship):
 
     def refactor(self):
         super(PlayerShip, self).refactor()
-        self.base_speed = self.profile.base_speed * SETTINGS.SCALE
-        self.base_bullet_speed = self.profile.base_bullet_speed * SETTINGS.SCALE
-        self.speed = self.base_speed
-        self.bullet_speed = self.base_bullet_speed
+        self.speed = round(ShipSpeed.get_value(self.app.current_profile.ship_speed_level) * SETTINGS.SCALE)
+        self.bullet_speed = BulletSpeed.get_value(self.app.current_profile.bullet_speed_level)
 
     def load_ship_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Ships", "FirstShip")
@@ -107,7 +105,7 @@ class PlayerShip(Ship):
     def shot(self):
         if self.in_magazine > 0:
             self.in_magazine -= 1
-            return ShipBullet(self.rect.right, self.rect.centery, self.bullet_speed, self.hit_damage)
+            return ShipBullet(self.rect.right, self.rect.centery, self.bullet_speed, self.bullet_damage)
         else:
             return False
 
@@ -162,7 +160,12 @@ class PlayerShip(Ship):
                 self.go_right = False
 
     def take_damage(self, damage):
-        super(PlayerShip, self).take_damage(damage)
-        if self.state == ShipState.DEAD:
+        if super(PlayerShip, self).take_damage(damage):
             self.lives -= 1
+            return True
+        else:
+            return False
+
+
+
 
