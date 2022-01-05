@@ -10,6 +10,8 @@ class Coin(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.coin_frames, self.coin_frames_animation_speed, self.coin_frame_number = self.load_coin_frames()
         self.rect = self.prepare_rect(init_x, init_y)
+        self.real_x = self.rect.x
+        self.real_y = self.rect.y
         self.coin_masks = self.prepare_masks()
         self.image = self.get_image()
         self.mask = self.get_mask()
@@ -56,7 +58,9 @@ class Coin(pygame.sprite.Sprite):
         self.mask = self.get_mask()
         self.coin_frame_number += self.coin_frames_animation_speed
 
-        self.rect.left -= self.speed
+        self.real_x -= self.speed
+        self.rect.x = int(self.real_x)
+        self.rect.y = int(self.real_y)
 
         if self.rect.right < 0:
             self.kill()

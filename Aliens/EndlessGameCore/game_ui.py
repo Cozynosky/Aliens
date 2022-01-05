@@ -47,6 +47,9 @@ class GameUI:
 
         self.health_bar = HealthBar(self)
 
+        self.top_alpha = 255
+        self.bottom_alpha = 255
+
     def refactor(self):
         self.big_font, self.middle_font, self.small_font = self.load_font()
 
@@ -83,7 +86,10 @@ class GameUI:
         self.lives_text = self.get_lives_text()
         self.lives_text_rect = self.get_lives_text_rect()
 
-        self.health_bar.refactor()
+        self.health_bar = HealthBar(self)
+
+        self.top_alpha = 255
+        self.bottom_alpha = 255
 
     def load_font(self):
         fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")
@@ -117,8 +123,8 @@ class GameUI:
 
     def get_bottom_hud_fg_rect(self):
         rect = self.bottom_hud_fg.get_rect()
-        rect.centerx = SETTINGS.WINDOW_WIDTH // 2
-        rect.bottom = SETTINGS.WINDOW_HEIGHT
+        rect.x = 0
+        rect.y = 0
         return rect
 
     def load_top_hud_bg(self):
@@ -143,7 +149,7 @@ class GameUI:
 
     def get_top_hud_fg_rect(self):
         rect = self.top_hud_fg.get_rect()
-        rect.centerx = SETTINGS.WINDOW_WIDTH // 2 - (70 * SETTINGS.SCALE)
+        rect.x = 0
         rect.top = 0
         return rect
 
@@ -153,8 +159,8 @@ class GameUI:
 
     def get_score_rect(self):
         rect = self.score_text.get_rect()
-        rect.top = self.top_hud_fg_rect.top + (56 * SETTINGS.SCALE)
-        rect.centerx = self.top_hud_fg_rect.left + (381 * SETTINGS.SCALE)
+        rect.top = 56 * SETTINGS.SCALE
+        rect.centerx = 381 * SETTINGS.SCALE
         return rect
 
     def get_coins_earned_text(self):
@@ -163,8 +169,8 @@ class GameUI:
 
     def get_coins_earned_text_rect(self):
         rect = self.coins_earned_text.get_rect()
-        rect.top = self.top_hud_fg_rect.top + (4 * SETTINGS.SCALE)
-        rect.left = self.top_hud_fg_rect.left + (81 * SETTINGS.SCALE)
+        rect.top = 4 * SETTINGS.SCALE
+        rect.left = 81 * SETTINGS.SCALE
         return rect
 
     def get_wave_text(self):
@@ -173,8 +179,8 @@ class GameUI:
 
     def get_wave_rect(self):
         rect = self.wave_text.get_rect()
-        rect.top = self.top_hud_fg_rect.top + (12 * SETTINGS.SCALE)
-        rect.left = self.top_hud_fg_rect.left + (213 * SETTINGS.SCALE)
+        rect.top = 12 * SETTINGS.SCALE
+        rect.left = 213 * SETTINGS.SCALE
         return rect
 
     def get_enemies_left_text(self):
@@ -185,8 +191,8 @@ class GameUI:
 
     def get_enemies_left_rect(self):
         rect = self.enemies_left_text.get_rect()
-        rect.top = self.top_hud_fg_rect.top + (12 * SETTINGS.SCALE)
-        rect.right = self.top_hud_fg_rect.left + (507 * SETTINGS.SCALE)
+        rect.top = 12 * SETTINGS.SCALE
+        rect.right = 507 * SETTINGS.SCALE
         return rect
 
     def get_in_magazine_text(self):
@@ -195,8 +201,8 @@ class GameUI:
 
     def get_in_magazine_rect(self):
         rect = self.in_magazine_text.get_rect()
-        rect.right = self.bottom_hud_fg_rect.left + (211 * SETTINGS.SCALE)
-        rect.top = self.bottom_hud_fg_rect.top + (21 * SETTINGS.SCALE)
+        rect.right = 211 * SETTINGS.SCALE
+        rect.top = 21 * SETTINGS.SCALE
         return rect
 
     def get_lives_text(self):
@@ -205,14 +211,14 @@ class GameUI:
 
     def get_lives_text_rect(self):
         rect = self.lives_text.get_rect()
-        rect.left = self.bottom_hud_fg_rect.left + (285 * SETTINGS.SCALE)
-        rect.top = self.bottom_hud_fg_rect.top + (21 * SETTINGS.SCALE)
+        rect.left = 285 * SETTINGS.SCALE
+        rect.top = 21 * SETTINGS.SCALE
         return rect
 
     def get_to_reload_rect(self):
         size = (
         400 * max(0, (self.game.ship.to_reload / self.game.ship.reload_time)) * SETTINGS.SCALE, 15 * SETTINGS.SCALE)
-        rect = pygame.Rect((self.bottom_hud_fg_rect.left + 49 * SETTINGS.SCALE, self.bottom_hud_fg_rect.top + 69 * SETTINGS.SCALE), size)
+        rect = pygame.Rect((49 * SETTINGS.SCALE, 69 * SETTINGS.SCALE), size)
         return rect
 
     def get_to_reload_bar(self):
@@ -221,6 +227,8 @@ class GameUI:
         return bar
 
     def update(self):
+        self.bottom_alpha = 255
+        self.top_alpha = 255
         self.score_text = self.get_score_text()
         self.score_rect = self.get_score_rect()
         self.coins_earned_text = self.get_coins_earned_text()
@@ -239,22 +247,31 @@ class GameUI:
         self.health_bar.update()
 
     def draw(self, screen):
-        screen.blit(self.bottom_hud_bg, self.bottom_hud_bg_rect)
+        self.top_hud_bg = self.load_top_hud_bg()
+        self.top_hud_bg.blit(self.score_text, self.score_rect)
+        self.top_hud_bg.blit(self.coins_earned_text, self.coins_earned_text_rect)
+        self.top_hud_bg.blit(self.wave_text, self.wave_rect)
+        self.top_hud_bg.blit(self.enemies_left_text, self.enemies_left_rect)
+        self.top_hud_bg.blit(self.top_hud_fg, self.top_hud_fg_rect)
+        self.top_hud_bg.set_alpha(self.top_alpha)
         screen.blit(self.top_hud_bg, self.top_hud_bg_rect)
-        screen.blit(self.score_text, self.score_rect)
-        screen.blit(self.coins_earned_text, self.coins_earned_text_rect)
-        screen.blit(self.wave_text, self.wave_rect)
-        screen.blit(self.enemies_left_text, self.enemies_left_rect)
-        screen.blit(self.in_magazine_text, self.in_magazine_rect)
-        screen.blit(self.lives_text, self.lives_text_rect)
 
-        self.health_bar.draw(screen)
-
+        self.bottom_hud_bg = self.load_bottom_hud_bg()
+        self.bottom_hud_bg.blit(self.in_magazine_text, self.in_magazine_rect)
+        self.bottom_hud_bg.blit(self.lives_text, self.lives_text_rect)
+        self.health_bar.draw(self.bottom_hud_bg)
         if self.game.ship.reloading:
-            screen.blit(self.to_reload_bar, self.to_reload_rect)
+            self.bottom_hud_bg.blit(self.to_reload_bar, self.to_reload_rect)
+        self.bottom_hud_bg.blit(self.bottom_hud_fg, self.bottom_hud_fg_rect)
 
-        screen.blit(self.bottom_hud_fg, self.bottom_hud_fg_rect)
-        screen.blit(self.top_hud_fg, self.top_hud_fg_rect)
+        self.bottom_hud_bg.set_alpha(self.bottom_alpha)
+        screen.blit(self.bottom_hud_bg, self.bottom_hud_bg_rect)
+
+    def hide_top_hud(self):
+        self.top_alpha = 128
+
+    def hide_bottom_hud(self):
+        self.bottom_alpha = 128
 
 
 class HealthBar:
@@ -282,7 +299,7 @@ class HealthBar:
         self.green_bar_rect = self.get_green_bar_rect()
 
     def get_red_bar_rect(self):
-        bar_rect = pygame.Rect((self.hud.bottom_hud_fg_rect.left + (32 * SETTINGS.SCALE), self.hud.bottom_hud_fg_rect.top + (91 * SETTINGS.SCALE)),
+        bar_rect = pygame.Rect(((32 * SETTINGS.SCALE), (91 * SETTINGS.SCALE)),
                                (434 * SETTINGS.SCALE, 25 * SETTINGS.SCALE))
         return bar_rect
 
@@ -292,7 +309,7 @@ class HealthBar:
         return bar
 
     def get_yellow_bar_rect(self):
-        bar_rect = pygame.Rect((self.hud.bottom_hud_fg_rect.left + (32 * SETTINGS.SCALE), self.hud.bottom_hud_fg_rect.top + (91 * SETTINGS.SCALE)),
+        bar_rect = pygame.Rect(((32 * SETTINGS.SCALE), (91 * SETTINGS.SCALE)),
                                (434 * SETTINGS.SCALE, 25 * SETTINGS.SCALE))
         return bar_rect
 
@@ -303,7 +320,7 @@ class HealthBar:
 
     def get_green_bar_rect(self):
         health_scale = self.hud.game.ship.current_health / self.hud.game.ship.health_capacity
-        bar_rect = pygame.Rect((self.hud.bottom_hud_fg_rect.left + (32 * SETTINGS.SCALE), self.hud.bottom_hud_fg_rect.top + (91 * SETTINGS.SCALE)),
+        bar_rect = pygame.Rect(((32 * SETTINGS.SCALE), + (91 * SETTINGS.SCALE)),
                                (434 * SETTINGS.SCALE * health_scale,  25 * SETTINGS.SCALE))
         return bar_rect
 

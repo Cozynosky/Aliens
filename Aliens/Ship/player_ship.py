@@ -55,6 +55,8 @@ class PlayerShip(Ship):
         self.explosion_frame_number = 0
         self.boost_frame_number = 0
         self.rect = self.prepare_rect()
+        self.real_x = self.rect.x
+        self.real_y = self.rect.y
 
     def refactor(self):
         super(PlayerShip, self).refactor()
@@ -113,13 +115,13 @@ class PlayerShip(Ship):
 
         if self.state == ShipState.ALIVE:
             if self.go_left and self.rect.left > 0:
-                self.rect.x -= self.speed
+                self.real_x -= self.speed
             if self.go_right and self.rect.right < SETTINGS.WINDOW_WIDTH:
-                self.rect.x += self.speed
+                self.real_x += self.speed
             if self.go_up and self.rect.top > (-25 * SETTINGS.SCALE):
-                self.rect.y -= self.speed
+                self.real_y -= self.speed
             if self.go_down and self.rect.bottom < SETTINGS.WINDOW_HEIGHT + (25 * SETTINGS.SCALE):
-                self.rect.y += self.speed
+                self.real_y += self.speed
 
             if self.in_magazine < self.magazine_size:
                 self.reloading = True

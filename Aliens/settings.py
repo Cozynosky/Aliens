@@ -8,8 +8,7 @@ class Settings:
         "1280 x 720": {"width": 1280, "height": 720},
         "1366 x 768": {"width": 1366, "height": 768},
         "1600 x 900": {"width": 1920, "height": 1080},
-        "1920 x 1080": {"width": 1920, "height": 1080},
-        "2560 x 1440": {"width": 2560, "height": 1440}
+        "1920 x 1080": {"width": 1920, "height": 1080}
     }
 
     def __init__(self):

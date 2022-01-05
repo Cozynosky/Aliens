@@ -69,13 +69,18 @@ class Game:
                     self.hit_shots.update()
                     self.player_shots.update()
                     self.enemies_shots.update()
+                    # game ui update
+                    self.game_ui.update()
                     # collisions
                     self.bullets_with_enemies_collisions()
                     self.bullets_with_player_collisions()
                     self.player_with_enemy_collisions()
                     self.player_with_coin_collision()
-                    # game ui update
-                    self.game_ui.update()
+                    if self.bottom_hud_collision():
+                        self.game_ui.hide_bottom_hud()
+                    if self.top_hud_collision():
+                        self.game_ui.hide_top_hud()
+
                 elif self.ship.state == ShipState.DEAD:
                     self.ship.update()
                     self.wave.dead_enemies.update()
@@ -188,3 +193,56 @@ class Game:
                 if mask_collision:
                     self.coins_earned += self.scene.app.current_profile.coin_value.get_value()
                     coin.kill()
+
+    def bottom_hud_collision(self):
+        if self.game_ui.bottom_hud_bg_rect.colliderect(self.ship.rect):
+            return True
+
+        for shot in self.player_shots:
+            if self.game_ui.bottom_hud_bg_rect.colliderect(shot.rect):
+                return True
+
+        for shot in self.enemies_shots:
+            if self.game_ui.bottom_hud_bg_rect.colliderect(shot.rect):
+                return True
+
+        for coin in self.coins:
+            if self.game_ui.bottom_hud_bg_rect.colliderect(coin.rect):
+                return True
+
+        for enemy in self.wave.alive_enemies:
+            if self.game_ui.bottom_hud_bg_rect.colliderect(enemy.rect):
+                return True
+
+        for enemy in self.wave.dead_enemies:
+            if self.game_ui.bottom_hud_bg_rect.colliderect(enemy.rect):
+                return True
+
+        return False
+
+    def top_hud_collision(self):
+        if self.game_ui.top_hud_bg_rect.colliderect(self.ship.rect):
+            return True
+
+        for shot in self.player_shots:
+            if self.game_ui.top_hud_bg_rect.colliderect(shot.rect):
+                return True
+
+        for shot in self.enemies_shots:
+            if self.game_ui.top_hud_bg_rect.colliderect(shot.rect):
+                return True
+
+        for coin in self.coins:
+            if self.game_ui.top_hud_bg_rect.colliderect(coin.rect):
+                return True
+
+        for enemy in self.wave.alive_enemies:
+            if self.game_ui.top_hud_bg_rect.colliderect(enemy.rect):
+                return True
+
+        for enemy in self.wave.dead_enemies:
+            if self.game_ui.top_hud_bg_rect.colliderect(enemy.rect):
+                return True
+
+        return False
+

@@ -27,6 +27,8 @@ class EasyEnemy(Ship):
         super(EasyEnemy, self).refactor()
         self.speed = self.get_speed()
         self.bullet_speed = self.get_bullet_speed()
+        self.dest_y *= SETTINGS.SCALE
+        self.dest_x *= SETTINGS.SCALE
 
     def get_speed(self):
         # WAVE, VALUE: 1, 2 -> 5, 2.2 -> 10, 2.5 -> 20, 3 -> 50, 6
@@ -148,19 +150,19 @@ class EasyEnemy(Ship):
         if self.state == ShipState.ALIVE:
             if self.go_left:
                 if self.rect.x > self.dest_x:
-                    self.rect.x -= self.speed
+                    self.real_x -= self.speed
                 else:
                     self.go_left = False
                     self.dest_y = self.generate_y_destination()
             else:
                 if self.go_up:
                     if self.rect.y > self.dest_y:
-                        self.rect.y -= self.speed
+                        self.real_y -= self.speed
                     else:
                         self.dest_y = self.generate_y_destination()
                 elif self.go_down:
                     if self.rect.y < self.dest_y:
-                        self.rect.y += self.speed
+                        self.real_y += self.speed
                     else:
                         self.dest_y = self.generate_y_destination()
 

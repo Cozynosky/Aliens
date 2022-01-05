@@ -70,16 +70,19 @@ class Ship(pygame.sprite.Sprite):
         self.boost_frames, self.boost_animation_speed, self.boost_frame_number = self.load_boost_frames()
         self.explosion_frames, self.explosion_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
 
-        new_x = self.rect.x * SETTINGS.SCALE
-        new_y = self.rect.y * SETTINGS.SCALE
-        self.rect = self.prepare_rect()
-        self.rect.x = new_x
-        self.rect.y = new_y
+        self.rect.x *= SETTINGS.SCALE
+        self.rect.y *= SETTINGS.SCALE
+        self.real_x = self.rect.x
+        self.real_y = self.rect.y
         self.image = self.get_image()
+        self.rect = self.image.get_rect()
+
         self.mask = self.prepare_mask()
 
     def update(self):
         if self.state == ShipState.ALIVE:
+            self.rect.x = int(self.real_x)
+            self.rect.y = int(self.real_y)
             self.boost_frame_number += self.boost_animation_speed
             if self.boost_frame_number >= len(self.boost_frames):
                 self.boost_frame_number = 0

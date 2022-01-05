@@ -15,6 +15,8 @@ class Bullet(pygame.sprite.Sprite):
         self.bullet_frames, self.bullet_frames_animation_speed, self.bullet_frame_number = self.load_bullet_frames()
         self.explosion_frames, self.explosion_frames_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
         self.rect = self.prepare_rect(init_x, init_y)
+        self.real_x = self.rect.x
+        self.real_y = self.rect.y
         self.bullet_masks = self.prepare_masks()
         self.current_mask = self.get_mask()
         self.image = self.get_image()
@@ -22,7 +24,7 @@ class Bullet(pygame.sprite.Sprite):
         self.go_right = False
         self.go_left = False
         self.base_speed = speed
-        self.speed = round(self.base_speed * SETTINGS.SCALE)
+        self.speed = self.base_speed * SETTINGS.SCALE
         self.hit_damage = hit_damage
 
     def refactor(self):
@@ -32,6 +34,8 @@ class Bullet(pygame.sprite.Sprite):
 
         self.rect.x *= SETTINGS.SCALE
         self.rect.y *= SETTINGS.SCALE
+        self.real_x = self.rect.x
+        self.real_y = self.rect.y
 
     def load_bullet_frames(self):
         raise NotImplementedError
@@ -71,14 +75,15 @@ class Bullet(pygame.sprite.Sprite):
         if self.state == BulletState.ALIVE:
             self.current_mask = self.get_mask()
             self.bullet_frame_number += self.bullet_frames_animation_speed
-
+            self.rect.x = int(self.real_x)
+            self.rect.y = int(self.real_y)
             if self.go_left:
-                self.rect.x -= self.speed
+                self.real_x -= self.speed
                 if self.rect.right < 0:
                     self.kill()
 
             elif self.go_right:
-                self.rect.x += self.speed
+                self.real_x += self.speed
                 if self.rect.left > SETTINGS.WINDOW_WIDTH:
                     self.kill()
 

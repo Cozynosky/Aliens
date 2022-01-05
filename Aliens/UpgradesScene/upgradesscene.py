@@ -244,7 +244,11 @@ class UpgradeCard:
         return rect
 
     def prepare_level_text(self):
-        text = self.font.render(f'{self.upgrade.get_level()} lvl', True, (255, 255, 255))
+        if self.upgrade.is_max():
+            text = "Max lvl"
+        else:
+            text = f'{self.upgrade.get_level()} lvl'
+        text = self.font.render(text, True, (255, 255, 255))
         text = pygame.transform.rotate(text, 45)
         return text
 

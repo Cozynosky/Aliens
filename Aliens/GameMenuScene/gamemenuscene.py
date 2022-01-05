@@ -15,7 +15,6 @@ class GameMenuScene(Scene):
         self.game_logo, self.game_logo_rect = self.prepare_game_logo()
 
         # prepare buttons
-        self.adventure_button = self.prepare_adventure_button()
         self.endless_button = self.prepare_endless_button()
         self.upgrades_button = self.prepare_upgrades_button()
         self.statistics_button = self.prepare_statistics_button()
@@ -33,7 +32,6 @@ class GameMenuScene(Scene):
         self.game_logo, self.game_logo_rect = self.prepare_game_logo()
 
         # prepare buttons
-        self.adventure_button = self.prepare_adventure_button()
         self.endless_button = self.prepare_endless_button()
         self.upgrades_button = self.prepare_upgrades_button()
         self.statistics_button = self.prepare_statistics_button()
@@ -61,23 +59,16 @@ class GameMenuScene(Scene):
         game_logo.blit(text, text_rect)
         return game_logo, game_logo_rect
 
-    def prepare_adventure_button(self):
-        button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 300, 300, 75), text="ADVENTURE MODE",
-            manager=self.manager)
-
-        return button
-
     def prepare_endless_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 375, 300, 75), text="ENDLESS MODE",
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 300, 300, 75), text="Let's GO!",
             manager=self.manager)
 
         return button
 
     def prepare_upgrades_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 450, 300, 75),
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 375, 300, 75),
             text="UPGRADES",
             manager=self.manager)
 
@@ -85,7 +76,7 @@ class GameMenuScene(Scene):
 
     def prepare_statistics_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 525, 300, 75),
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 450, 300, 75),
             text="STATISTICS",
             manager=self.manager)
 
