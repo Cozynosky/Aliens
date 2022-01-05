@@ -20,6 +20,8 @@ class Ship(pygame.sprite.Sprite):
         self.explosion_frames, self.explosion_animation_speed, self.explosion_frame_number = self.load_explosion_frames()
         # sprite rect and mask
         self.rect = self.prepare_rect()
+        self.real_x = self.rect.x
+        self.real_y = self.rect.y
         self.image = self.get_image()
         self.mask = self.prepare_mask()
         # movement

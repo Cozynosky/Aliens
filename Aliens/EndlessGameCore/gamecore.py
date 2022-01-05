@@ -147,7 +147,7 @@ class Game:
                 if enemy.take_damage(shot.hit_damage):
                     self.wave.enemy_killed(enemy)
                     self.score += int(enemy.health_capacity)
-                    Coin.drop_coin(self.scene.app.current_profile.drop_rate_level, self.coins, enemy.rect.x, enemy.rect.y)
+                    Coin.drop_coin(self.scene.app.current_profile.drop_rate.get_value(), self.coins, enemy.rect.x, enemy.rect.y)
                     self.total_killed += 1
                 shot.ship_hit()
                 self.hit_shots.add(shot)
@@ -177,7 +177,7 @@ class Game:
                     if enemy.take_damage(self.ship.health_capacity):
                         self.wave.enemy_killed(enemy)
                         self.score += int(enemy.health_capacity)
-                        Coin.drop_coin(DropRate.get_value(self.scene.app.current_profile.drop_rate_level), self.coins, enemy.rect.x, enemy.rect.y)
+                        Coin.drop_coin(self.scene.app.current_profile.drop_rate.get_value(), self.coins, enemy.rect.x, enemy.rect.y)
                         self.total_killed += 1
 
     def player_with_coin_collision(self):
@@ -186,5 +186,5 @@ class Game:
             for coin in collisions:
                 mask_collision = pygame.sprite.collide_mask(self.ship, coin)
                 if mask_collision:
-                    self.coins_earned += CoinValue.get_value(self.scene.app.current_profile.coin_value_level)
+                    self.coins_earned += self.scene.app.current_profile.coin_value.get_value()
                     coin.kill()

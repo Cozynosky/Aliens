@@ -1,22 +1,25 @@
 
 
 class Upgrade:
-    max_level = NotImplemented
+    max_level = None
 
     def __init__(self):
-        pass
+        self.level = 1
 
-    @staticmethod
-    def get_cost(level):
+    def get_cost(self):
         raise NotImplementedError
 
-    @staticmethod
-    def get_value(level):
+    def get_value(self):
         raise NotImplementedError
 
-    @staticmethod
-    def is_max(self, level):
-        return level == self.max_level
+    def is_max(self):
+        return self.level == self.max_level
+
+    def get_level(self):
+        return self.level
+
+    def upgrade_bought(self):
+        self.level += 1
 
 
 class ShipSpeed(Upgrade):
@@ -25,14 +28,12 @@ class ShipSpeed(Upgrade):
     def __init__(self):
         super(ShipSpeed, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 1.82048 * level ** 1.1668 + 3.24627
+    def get_cost(self):
+        cost = 1.82048 * self.level ** 1.1668 + 3.24627
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        value = 0.0662882 * level ** 1.15149 + 3.99239
+    def get_value(self):
+        value = 0.0662882 * self.level ** 1.15149 + 3.99239
         return round(value, 2)
 
 
@@ -42,31 +43,26 @@ class BulletSpeed(Upgrade):
     def __init__(self):
         super(BulletSpeed, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 1.82048 * level ** 1.1668 + 3.24627
+    def get_cost(self):
+        cost = 1.82048 * self.level ** 1.1668 + 3.24627
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        value = 0.143538 * level ** 1.25424 + 4.62921
+    def get_value(self):
+        value = 0.143538 * self.level ** 1.25424 + 4.62921
         return round(value, 2)
 
 
 class BulletDamage(Upgrade):
-    max_level = None
 
     def __init__(self):
         super(BulletDamage, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 0.451257 * level ** 1.95251 + 9.54874
+    def get_cost(self):
+        cost = 0.451257 * self.level ** 1.95251 + 9.54874
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        value = 0.407461 * level ** 1.30038 + 4.12692
+    def get_value(self):
+        value = 0.407461 * self.level ** 1.30038 + 4.12692
         return round(value, 2)
 
 
@@ -76,30 +72,25 @@ class BulletsInShot(Upgrade):
     def __init__(self):
         super(BulletsInShot, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
+    def get_cost(self):
         costs = [100, 500, 1000, 2500, 5000, 10000, 15000, 30000]
-        return costs[level-1]
+        return costs[self.level-1]
 
-    @staticmethod
-    def get_value(level):
-        return level
+    def get_value(self):
+        return self.level
 
 
 class HealthCapacity(Upgrade):
-    max_level = None
 
     def __init__(self):
         super(HealthCapacity, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 0.451257 * level ** 1.95251 + 9.54874
+    def get_cost(self):
+        cost = 0.451257 * self.level ** 1.95251 + 9.54874
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        value = 0.74265 * level ** 1.52678 + 8.41349
+    def get_value(self):
+        value = 0.74265 * self.level ** 1.52678 + 8.41349
         return round(value, 2)
 
 
@@ -109,14 +100,12 @@ class Lives(Upgrade):
     def __init__(self):
         super(Lives, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 62.5 * level - 12.5
+    def get_cost(self):
+        cost = 62.5 * self.level - 12.5
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        return level
+    def get_value(self):
+        return self.level
 
 
 class MagazineSize(Upgrade):
@@ -125,14 +114,12 @@ class MagazineSize(Upgrade):
     def __init__(self):
         super(MagazineSize, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 62.5 * level - 12.5
+    def get_cost(self):
+        cost = 62.5 * self.level - 12.5
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        return level + 2
+    def get_value(self):
+        return self.level + 2
 
 
 class ReloadTime(Upgrade):
@@ -141,14 +128,12 @@ class ReloadTime(Upgrade):
     def __init__(self):
         super(ReloadTime, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 1.82048 * level ** 1.1668 + 3.24627
+    def get_cost(self):
+        cost = 1.82048 * self.level ** 1.1668 + 3.24627
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        value = 3.15807 - 0.158066 * level ** 0.668186
+    def get_value(self):
+        value = 3.15807 - 0.158066 * self.level ** 0.668186
         return round(value, 2)
 
 
@@ -158,28 +143,23 @@ class DropRate(Upgrade):
     def __init__(self):
         super(DropRate, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 1.82048 * level ** 1.1668 + 3.24627
+    def get_cost(self):
+        cost = 1.82048 * self.level ** 1.1668 + 3.24627
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        value = 0.000226774 * level ** 2 + 0.00264101 * level + 0.299937
-        return value
+    def get_value(self):
+        value = 0.000226774 * self.level ** 2 + 0.00264101 * self.level + 0.299937
+        return round(value, 2)
 
 
 class CoinValue(Upgrade):
-    max_level = None
 
     def __init__(self):
         super(CoinValue, self).__init__()
 
-    @staticmethod
-    def get_cost(level):
-        cost = 40.6279 * level ** 2.58859 + 24.2367
+    def get_cost(self):
+        cost = 40.6279 * self.level ** 2.58859 + 24.2367
         return round(cost)
 
-    @staticmethod
-    def get_value(level):
-        return level
+    def get_value(self):
+        return self.level
