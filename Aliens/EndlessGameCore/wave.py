@@ -64,8 +64,7 @@ class Wave:
 
             self.to_spawn_time = self.spawn_time
         elif self.enemies_to_spawn == 0 and len(self.dead_enemies) == 0 and len(self.alive_enemies) == 0:
-            #self.game.state = GameState.NEXT_WAVE
-            self.next_wave()
+            self.game.state = GameState.NEXT_WAVE
 
     def get_shots(self, shots):
         for enemy in self.alive_enemies:

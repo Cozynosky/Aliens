@@ -98,6 +98,8 @@ class Game:
                 self.hit_shots.update()
                 self.player_shots.update()
                 self.enemies_shots.update()
+                self.wave.next_wave()
+                self.state = GameState.GAME_ON
 
             elif self.state == GameState.GAME_OFF:
                 self.end_time = datetime.now()

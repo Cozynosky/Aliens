@@ -62,7 +62,7 @@ class BulletDamage(Upgrade):
         return round(cost)
 
     def get_value(self):
-        value = 0.407461 * self.level ** 1.30038 + 4.12692
+        value = 0.814922 * self.level ** 1.30038 + 8.25383
         return round(value, 2)
 
 
