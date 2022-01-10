@@ -9,6 +9,8 @@ class PlayerShip(Ship):
     def __init__(self, app):
         super(PlayerShip, self).__init__()
         self.app = app
+        self.state = ShipState.RESPAWNING
+        self.respawn_speed = 10 * SETTINGS.SCALE
         # upgradable values from current profile
         self.speed = self.app.current_profile.ship_speed.get_value() * SETTINGS.SCALE
         self.bullet_speed = self.app.current_profile.bullet_speed.get_value()
@@ -30,7 +32,7 @@ class PlayerShip(Ship):
         self.reloading = False
 
         # upgradable values from current profile
-        self.speed = round(self.app.current_profile.ship_speed.get_value() * SETTINGS.SCALE)
+        self.speed = self.app.current_profile.ship_speed.get_value() * SETTINGS.SCALE
         self.bullet_speed = self.app.current_profile.bullet_speed.get_value()
         self.bullet_damage = self.app.current_profile.bullet_damage.get_value()
         self.health_capacity = self.app.current_profile.health_capacity.get_value()
@@ -45,7 +47,7 @@ class PlayerShip(Ship):
         self.reset()
 
     def reset(self):
-        self.state = ShipState.ALIVE
+        self.state = ShipState.RESPAWNING
         self.current_health = self.health_capacity
         self.in_magazine = self.magazine_size
         self.to_reload = self.reload_time
@@ -100,7 +102,8 @@ class PlayerShip(Ship):
 
     def prepare_rect(self):
         rect = self.ship_frames[0].get_rect()
-        rect.center = (rect.width, SETTINGS.WINDOW_HEIGHT // 2)
+        rect.centery = SETTINGS.WINDOW_HEIGHT // 2
+        rect.right = 0
         return rect
 
     def shot(self):
@@ -135,30 +138,38 @@ class PlayerShip(Ship):
         elif self.state == ShipState.DEAD:
             if self.explosion_frame_number >= len(self.explosion_frames):
                 if self.lives == 0:
+                    self.rect = self.prepare_rect()
                     self.state = ShipState.OUTOFLIVES
                 else:
                     self.reset()
 
-    def handle_event(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w or event.key == pygame.K_UP:
-                self.go_up = True
-            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                self.go_down = True
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                self.go_left = True
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                self.go_right = True
+        elif self.state == ShipState.RESPAWNING:
+            if self.rect.right < self.rect.width * 2:
+                self.real_x += self.respawn_speed * SETTINGS.SCALE
+            else:
+                self.state = ShipState.ALIVE
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_w or event.key == pygame.K_UP:
-                self.go_up = False
-            if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-                self.go_down = False
-            if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-                self.go_left = False
-            if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-                self.go_right = False
+    def handle_event(self, event):
+        if self.state == ShipState.ALIVE:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    self.go_up = True
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    self.go_down = True
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    self.go_left = True
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    self.go_right = True
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_w or event.key == pygame.K_UP:
+                    self.go_up = False
+                if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+                    self.go_down = False
+                if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+                    self.go_left = False
+                if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+                    self.go_right = False
 
     def take_damage(self, damage):
         if super(PlayerShip, self).take_damage(damage):

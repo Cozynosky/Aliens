@@ -8,6 +8,7 @@ class ShipState(Enum):
     ALIVE = 0
     DEAD = 1
     OUTOFLIVES = 2
+    RESPAWNING = 3
 
 
 class Ship(pygame.sprite.Sprite):
@@ -53,11 +54,11 @@ class Ship(pygame.sprite.Sprite):
 
     def get_image(self):
         image = pygame.surface.Surface((0,0))
-        if self.state == ShipState.ALIVE:
+        if self.state == ShipState.ALIVE or self.state.RESPAWNING:
             image = self.boost_frames[int(self.boost_frame_number)].copy()
             image.blit(self.ship_frames[self.ship_frame_number], (0, 0))
         # ship dead
-        else:
+        if self.state == ShipState.DEAD:
             if self.explosion_frame_number < len(self.explosion_frames):
                 image = self.explosion_frames[int(self.explosion_frame_number)]
         return image
@@ -80,7 +81,7 @@ class Ship(pygame.sprite.Sprite):
         self.mask = self.prepare_mask()
 
     def update(self):
-        if self.state == ShipState.ALIVE:
+        if self.state == ShipState.ALIVE or self.state == ShipState.RESPAWNING:
             self.rect.x = int(self.real_x)
             self.rect.y = int(self.real_y)
             self.boost_frame_number += self.boost_animation_speed

@@ -18,7 +18,7 @@ class Bullet(pygame.sprite.Sprite):
         self.real_x = self.rect.x
         self.real_y = self.rect.y
         self.bullet_masks = self.prepare_masks()
-        self.current_mask = self.get_mask()
+        self.mask = self.get_mask()
         self.image = self.get_image()
         # movement
         self.go_right = False
@@ -73,7 +73,7 @@ class Bullet(pygame.sprite.Sprite):
     def update(self):
         self.image = self.get_image()
         if self.state == BulletState.ALIVE:
-            self.current_mask = self.get_mask()
+            self.mask = self.get_mask()
             self.bullet_frame_number += self.bullet_frames_animation_speed
             self.rect.x = int(self.real_x)
             self.rect.y = int(self.real_y)

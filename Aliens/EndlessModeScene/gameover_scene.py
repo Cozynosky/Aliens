@@ -175,5 +175,4 @@ class GameOverScene:
                     self.game.end_time = datetime.now()
                     self.game.save_progress()
                     self.game.new_game()
-                    self.game.state = GameState.GAME_ON
         self.manager.process_events(event)

@@ -43,20 +43,23 @@ class Profile:
         self.empty_profile = True
 
         # ---------------- ship upgradables ----------------------
-        self.ship_speed_level = 1
-        # weapon
-        self.shots_in_shot_level = 1
-        self.bullet_speed_level = 1
-        self.bullet_damage_level = 1
+        self.ship_speed = ShipSpeed()
         # health
-        self.health_capacity_level = 1
-        self.lives_level = 1
+        self.health_capacity = HealthCapacity()
+        self.lives = Lives()
+
+        # weapon
+        self.bullets_in_shot = BulletsInShot()
+        self.bullet_speed = BulletSpeed()
+        self.bullet_damage = BulletDamage()
+
         # magazine
-        self.magazine_size_level = 1
-        self.reload_time_level = 1                       # in seconds
+        self.magazine_size = MagazineSize()
+        self.reload_time = ReloadTime()                       # in seconds
+
         # coins
-        self.drop_rate_level = 0.3
-        self.coin_value_level = 1
+        self.drop_rate = DropRate()
+        self.coin_value = CoinValue()
         # ---------------------------------------------------
 
         # earned coins

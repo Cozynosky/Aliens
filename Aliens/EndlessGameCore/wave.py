@@ -1,6 +1,6 @@
 import pygame
 from Aliens.Ship.easyenemy_ship import EasyEnemy
-from Aliens.EndlessGameCore.game_state import GameState
+from Aliens.EndlessGameCore.enums import GameState
 
 
 class Wave:

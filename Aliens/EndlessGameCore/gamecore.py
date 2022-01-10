@@ -6,8 +6,7 @@ from Aliens.EndlessGameCore.coin import Coin
 from Aliens.Ship.ship import ShipState
 from Aliens.Ship.player_ship import PlayerShip
 from Aliens.EndlessGameCore.game_ui import GameUI
-from Aliens.EndlessGameCore.game_state import GameState
-from Aliens.Upgrades.upgrades import DropRate, CoinValue
+from Aliens.EndlessGameCore.enums import GameState, UIState
 
 
 class Game:
@@ -41,10 +40,12 @@ class Game:
 
     def new_game(self):
         pygame.mouse.set_visible(False)
+        self.game_ui.state = UIState.SHOWING_UP
+        self.game_ui.reset()
         self.scene.app.background.animate_background = True
         self.start_time = datetime.now()
         self.end_time = self.start_time
-        self.state = GameState.GAME_ON
+        self.state = GameState.STARTING
         self.score = 0
         self.coins_earned = 0
         self.total_killed = 0
@@ -59,7 +60,10 @@ class Game:
     def update(self):
         if not self.paused:
             if self.state == GameState.STARTING:
-                pass
+                self.ship.update()
+                self.game_ui.update()
+                if self.ship.state == ShipState.ALIVE and self.game_ui.state == UIState.SHOWED:
+                    self.state = GameState.GAME_ON
             elif self.state == GameState.GAME_ON:
                 if self.ship.state == ShipState.ALIVE:
                     self.coins.update()
@@ -198,53 +202,76 @@ class Game:
 
     def bottom_hud_collision(self):
         if self.game_ui.bottom_hud_bg_rect.colliderect(self.ship.rect):
-            return True
+            offset = (self.ship.rect.x - self.game_ui.bottom_hud_bg_rect.x, self.ship.rect.y - self.game_ui.bottom_hud_bg_rect.y)
+            if self.game_ui.bottom_hud_bg_mask.overlap(self.ship.mask, offset):
+                return True
 
         for shot in self.player_shots:
             if self.game_ui.bottom_hud_bg_rect.colliderect(shot.rect):
-                return True
+                offset = (shot.rect.x - self.game_ui.bottom_hud_bg_rect.x, shot.rect.y - self.game_ui.bottom_hud_bg_rect.y)
+                if self.game_ui.bottom_hud_bg_mask.overlap(shot.mask, offset):
+                    return True
 
         for shot in self.enemies_shots:
             if self.game_ui.bottom_hud_bg_rect.colliderect(shot.rect):
-                return True
+                offset = (shot.rect.x - self.game_ui.bottom_hud_bg_rect.x, shot.rect.y - self.game_ui.bottom_hud_bg_rect.y)
+                if self.game_ui.bottom_hud_bg_mask.overlap(shot.mask, offset):
+                    return True
 
         for coin in self.coins:
             if self.game_ui.bottom_hud_bg_rect.colliderect(coin.rect):
-                return True
+                offset = (coin.rect.x - self.game_ui.bottom_hud_bg_rect.x, coin.rect.y - self.game_ui.bottom_hud_bg_rect.y)
+                if self.game_ui.bottom_hud_bg_mask.overlap(coin.mask, offset):
+                    return True
 
         for enemy in self.wave.alive_enemies:
             if self.game_ui.bottom_hud_bg_rect.colliderect(enemy.rect):
-                return True
+                offset = (enemy.rect.x - self.game_ui.bottom_hud_bg_rect.x, enemy.rect.y - self.game_ui.bottom_hud_bg_rect.y)
+                if self.game_ui.bottom_hud_bg_mask.overlap(enemy.mask, offset):
+                    return True
 
         for enemy in self.wave.dead_enemies:
             if self.game_ui.bottom_hud_bg_rect.colliderect(enemy.rect):
-                return True
+                offset = (enemy.rect.x - self.game_ui.bottom_hud_bg_rect.x, enemy.rect.y - self.game_ui.bottom_hud_bg_rect.y)
+                if self.game_ui.bottom_hud_bg_mask.overlap(enemy.mask, offset):
+                    return True
 
         return False
 
     def top_hud_collision(self):
         if self.game_ui.top_hud_bg_rect.colliderect(self.ship.rect):
-            return True
+            offset = (self.ship.rect.x - self.game_ui.top_hud_bg_rect.x, self.ship.rect.y - self.game_ui.top_hud_bg_rect.y)
+            if self.game_ui.top_hud_bg_mask.overlap(self.ship.mask, offset):
+                return True
 
         for shot in self.player_shots:
             if self.game_ui.top_hud_bg_rect.colliderect(shot.rect):
-                return True
+                offset = (shot.rect.x - self.game_ui.top_hud_bg_rect.x, shot.rect.y - self.game_ui.top_hud_bg_rect.y)
+                if self.game_ui.top_hud_bg_mask.overlap(shot.mask, offset):
+                    return True
 
         for shot in self.enemies_shots:
             if self.game_ui.top_hud_bg_rect.colliderect(shot.rect):
-                return True
+                offset = (shot.rect.x - self.game_ui.top_hud_bg_rect.x, shot.rect.y - self.game_ui.top_hud_bg_rect.y)
+                if self.game_ui.top_hud_bg_mask.overlap(shot.mask, offset):
+                    return True
 
         for coin in self.coins:
             if self.game_ui.top_hud_bg_rect.colliderect(coin.rect):
-                return True
-
+                offset = (coin.rect.x - self.game_ui.top_hud_bg_rect.x, coin.rect.y - self.game_ui.top_hud_bg_rect.y)
+                if self.game_ui.top_hud_bg_mask.overlap(coin.mask, offset):
+                    return True
         for enemy in self.wave.alive_enemies:
             if self.game_ui.top_hud_bg_rect.colliderect(enemy.rect):
-                return True
+                offset = (enemy.rect.x - self.game_ui.top_hud_bg_rect.x, enemy.rect.y - self.game_ui.top_hud_bg_rect.y)
+                if self.game_ui.top_hud_bg_mask.overlap(enemy.mask, offset):
+                    return True
 
         for enemy in self.wave.dead_enemies:
             if self.game_ui.top_hud_bg_rect.colliderect(enemy.rect):
-                return True
+                offset = (enemy.rect.x - self.game_ui.top_hud_bg_rect.x, enemy.rect.y - self.game_ui.top_hud_bg_rect.y)
+                if self.game_ui.top_hud_bg_mask.overlap(enemy.mask, offset):
+                    return True
 
         return False
 

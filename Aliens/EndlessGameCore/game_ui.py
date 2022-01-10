@@ -3,23 +3,28 @@ import os.path
 import pygame
 
 from Aliens import SETTINGS
+from Aliens.EndlessGameCore.enums import UIState
 
 
 class GameUI:
     def __init__(self, gamecore):
         pygame.init()
+        self.state = UIState.SHOWING_UP
+        self.showing_speed = 4 * SETTINGS.SCALE
         self.game = gamecore
 
         self.big_font, self.middle_font, self.small_font = self.load_font()
 
         self.bottom_hud_bg = self.load_bottom_hud_bg()
         self.bottom_hud_bg_rect = self.get_bottom_hud_bg_rect()
+        self.bottom_hud_bg_mask = self.get_bottom_hud_bg_mask()
 
         self.bottom_hud_fg = self.load_bottom_hud_fg()
         self.bottom_hud_fg_rect = self.get_bottom_hud_fg_rect()
 
         self.top_hud_bg = self.load_top_hud_bg()
         self.top_hud_bg_rect = self.get_top_hud_bg_rect()
+        self.top_hud_bg_mask = self.get_top_hud_bg_mask()
 
         self.top_hud_fg = self.load_top_hud_fg()
         self.top_hud_fg_rect = self.get_top_hud_fg_rect()
@@ -55,12 +60,14 @@ class GameUI:
 
         self.bottom_hud_bg = self.load_bottom_hud_bg()
         self.bottom_hud_bg_rect = self.get_bottom_hud_bg_rect()
+        self.bottom_hud_bg_mask = self.get_bottom_hud_bg_mask()
 
         self.bottom_hud_fg = self.load_bottom_hud_fg()
         self.bottom_hud_fg_rect = self.get_bottom_hud_fg_rect()
 
         self.top_hud_bg = self.load_top_hud_bg()
         self.top_hud_bg_rect = self.get_top_hud_bg_rect()
+        self.top_hud_bg_mask = self.get_top_hud_bg_mask()
 
         self.top_hud_fg = self.load_top_hud_fg()
         self.top_hud_fg_rect = self.get_top_hud_fg_rect()
@@ -91,6 +98,10 @@ class GameUI:
         self.top_alpha = 255
         self.bottom_alpha = 255
 
+    def reset(self):
+        self.top_hud_bg_rect = self.get_top_hud_bg_rect()
+        self.bottom_hud_bg_rect = self.get_bottom_hud_bg_rect()
+
     def load_font(self):
         fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")
         font_name = "Alien Eclipse.otf"
@@ -111,8 +122,12 @@ class GameUI:
     def get_bottom_hud_bg_rect(self):
         rect = self.bottom_hud_bg.get_rect()
         rect.centerx = SETTINGS.WINDOW_WIDTH // 2
-        rect.bottom = SETTINGS.WINDOW_HEIGHT
+        rect.top = SETTINGS.WINDOW_HEIGHT
         return rect
+
+    def get_bottom_hud_bg_mask(self):
+        mask = pygame.mask.from_surface(self.bottom_hud_bg)
+        return mask
 
     def load_bottom_hud_fg(self):
         images_folder = os.path.join("Data", "Sprites", "HUD")
@@ -137,8 +152,12 @@ class GameUI:
     def get_top_hud_bg_rect(self):
         rect = self.top_hud_bg.get_rect()
         rect.centerx = SETTINGS.WINDOW_WIDTH // 2 - (70 * SETTINGS.SCALE)
-        rect.top = 0
+        rect.bottom = 0
         return rect
+
+    def get_top_hud_bg_mask(self):
+        mask = pygame.mask.from_surface(self.top_hud_bg)
+        return mask
 
     def load_top_hud_fg(self):
         images_folder = os.path.join("Data", "Sprites", "HUD")
@@ -227,6 +246,15 @@ class GameUI:
         return bar
 
     def update(self):
+        if self.state == UIState.SHOWING_UP:
+            if self.bottom_hud_bg_rect.bottom > SETTINGS.WINDOW_HEIGHT:
+                self.bottom_hud_bg_rect.bottom -= self.showing_speed
+            if self.top_hud_bg_rect.top < 0:
+                self.top_hud_bg_rect.top += self.showing_speed
+
+            if self.bottom_hud_bg_rect.bottom <= SETTINGS.WINDOW_HEIGHT and self.top_hud_bg_rect.top >=0:
+                self.state = UIState.SHOWED
+
         self.bottom_alpha = 255
         self.top_alpha = 255
         self.score_text = self.get_score_text()
