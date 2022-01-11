@@ -21,7 +21,7 @@ class NextWaveScene:
         self.font = self.prepare_font()
         self.text = self.prepare_text()
         self.text_rect = self.get_text_rect()
-        self.speed = 5 * SETTINGS.SCALE
+        self.speed = 50 * SETTINGS.SCALE
 
     def prepare_font(self):
         fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")

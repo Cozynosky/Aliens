@@ -38,6 +38,10 @@ class Settings:
             },
             "saves": {
                 "auto_save": True
+            },
+            "sounds": {
+                "music_volume": 1.0,
+                "sounds_volume": 1.0
             }
         }
         settings_dict = self.load_settings()
@@ -60,6 +64,9 @@ class Settings:
         self.WINDOW_TITLE = settings_dict["window"]["title"]
         # auto save
         self.AUTO_SAVE = settings_dict["saves"]["auto_save"]
+        # sounds volume
+        self.MUSIC_VOLUME = settings_dict["sounds"]["music_volume"]
+        self.SOUNDS_VOLUME = settings_dict["sounds"]["sounds_volume"]
 
     def check_hardware_res(self):
         display_info = pygame.display.Info()
@@ -107,6 +114,10 @@ class Settings:
             },
             "saves": {
                 "auto_save": self.AUTO_SAVE
+            },
+            "sounds": {
+                "music_volume": self.MUSIC_VOLUME,
+                "sounds_volume": self.SOUNDS_VOLUME
             }
         }
         with open("Data/settings.json", "w") as file:

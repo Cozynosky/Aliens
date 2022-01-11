@@ -53,7 +53,7 @@ class Bullet(pygame.sprite.Sprite):
 
     def prepare_rect(self, x, y):
         rect = self.bullet_frames[0].get_rect()
-        rect.topleft = (x, y)
+        rect.topleft = (int(x), int(y))
         return rect
 
     def get_image(self):

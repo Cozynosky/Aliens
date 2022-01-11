@@ -2,7 +2,7 @@ import pygame
 import pygame_gui
 import os.path
 
-from Aliens import SETTINGS
+from Aliens import SETTINGS, SOUNDS
 from Aliens.scene import Scene
 
 
@@ -45,6 +45,9 @@ class UpgradesScene(Scene):
         super(UpgradesScene, self).update()
         self.coin_text = self.prepare_coin_text()
         self.upgrades_cards.update()
+
+    def load_user_upgrades(self):
+        self.upgrades_cards.reload_cards()
 
     def load_fonts(self):
         fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")
@@ -120,6 +123,7 @@ class UpgradesScene(Scene):
 
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    SOUNDS.button_click.play()
                     if event.ui_element == self.back_button:
                         self.app.current_scene = self.app.game_scenes['GameMenuScene']
 
@@ -151,6 +155,18 @@ class UpgradesCardsGroup:
             UpgradeCard(0 + 390, 0 + 175, "coin_value.png", self.manager, self.app.current_profile.coin_value, self.cards_surface_rect, self.app)
 
         ]
+
+    def reload_cards(self):
+        self.cards[0].upgrade = self.app.current_profile.ship_speed
+        self.cards[1].upgrade = self.app.current_profile.health_capacity
+        self.cards[2].upgrade = self.app.current_profile.lives
+        self.cards[3].upgrade = self.app.current_profile.bullet_speed
+        self.cards[4].upgrade = self.app.current_profile.bullet_damage
+        self.cards[5].upgrade = self.app.current_profile.bullets_in_shot
+        self.cards[6].upgrade = self.app.current_profile.magazine_size
+        self.cards[7].upgrade = self.app.current_profile.reload_time
+        self.cards[8].upgrade = self.app.current_profile.drop_rate
+        self.cards[9].upgrade = self.app.current_profile.coin_value
 
     def get_cards_surface_rect(self):
         rect = pygame.rect.Rect(SETTINGS.WINDOW_WIDTH / 2 - 235, 240 * SETTINGS.SCALE, 470, 500)

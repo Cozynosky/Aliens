@@ -18,14 +18,18 @@ class Coin(pygame.sprite.Sprite):
         self.speed = round(1 * SETTINGS.SCALE)
 
     def refactor(self):
-        pass
+        self.coin_frames, self.coin_frames_animation_speed, self.coin_frame_number = self.load_coin_frames()
+        self.coin_masks = self.prepare_masks()
+        self.image = self.get_image()
+        self.mask = self.get_mask()
+        self.speed = round(1 * SETTINGS.SCALE)
 
     def load_coin_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Coins")
 
         coin_frames = [pygame.image.load(os.path.join(images_folder, f"coin-{i}.png")).convert_alpha() for i in range(8)]
         coin_rect = coin_frames[0].get_rect()
-        coin_frames = [pygame.transform.smoothscale(bullet_frame, (coin_rect.width * SETTINGS.SCALE, coin_rect.height * SETTINGS.SCALE)) for bullet_frame in coin_frames]
+        coin_frames = [pygame.transform.smoothscale(bullet_frame, (int(coin_rect.width * SETTINGS.SCALE), int(coin_rect.height * SETTINGS.SCALE))) for bullet_frame in coin_frames]
 
         coin_frames_animation_speed = 0.1
         coin_frame_number = 0
@@ -34,8 +38,8 @@ class Coin(pygame.sprite.Sprite):
 
     def prepare_rect(self, init_x, init_y):
         rect = self.coin_frames[0].get_rect()
-        rect.x = init_x
-        rect.y = init_y
+        rect.x = int(init_x)
+        rect.y = int(init_y)
         return rect
 
     def prepare_masks(self):

@@ -2,7 +2,7 @@ import pygame
 import pygame_gui
 import os.path
 
-from Aliens import SETTINGS
+from Aliens import SETTINGS, SOUNDS
 
 from Aliens.scene import Scene
 
@@ -19,12 +19,17 @@ class SettingsScene(Scene):
         self.resolution_label = self.prepare_resolution_label()
         self.fullscreen_label = self.prepare_fullscreen_label()
         self.auto_save_label = self.prepare_auto_save_label()
+        self.music_volume_label = self.prepare_music_volume_label()
+        self.sounds_volume_label = self.prepare_sounds_volume_label()
         # dropdown
         self.resolution_dropdown = self.prepare_resolution_dropdown()
         # button
         self.fullscreen_button = self.prepare_fullscreen_button()
         self.auto_save_button = self.prepare_auto_save_button()
         self.back_button = self.prepare_back_button()
+        #sliders
+        self.music_volume_slider = self.prepare_music_volume_slider()
+        self.sounds_volume_slider = self.prepare_sounds_volume_slider()
 
     def refactor_ui(self):
         self.manager = self.prepare_manager()
@@ -36,12 +41,17 @@ class SettingsScene(Scene):
         self.resolution_label = self.prepare_resolution_label()
         self.fullscreen_label = self.prepare_fullscreen_label()
         self.auto_save_label = self.prepare_auto_save_label()
+        self.music_volume_label = self.prepare_music_volume_label()
+        self.sounds_volume_label = self.prepare_sounds_volume_label()
         # dropdown
         self.resolution_dropdown = self.prepare_resolution_dropdown()
         # button
         self.fullscreen_button = self.prepare_fullscreen_button()
         self.auto_save_button = self.prepare_auto_save_button()
         self.back_button = self.prepare_back_button()
+        #sliders
+        self.music_volume_slider = self.prepare_music_volume_slider()
+        self.sounds_volume_slider = self.prepare_sounds_volume_slider()
 
     def prepare_settings_background(self):
         images_folder = os.path.join("Data", "Sprites", "Background")
@@ -85,6 +95,16 @@ class SettingsScene(Scene):
                                                             text="Auto save", manager=self.manager)
         return label
 
+    def prepare_music_volume_label(self):
+        label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 200, self.settings_text_rect.bottom + 200, 130, 40),
+                                                            text="Music volume", manager=self.manager)
+        return label
+
+    def prepare_sounds_volume_label(self):
+        label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 200, self.settings_text_rect.bottom + 250, 130, 40),
+                                                            text="Sounds volume", manager=self.manager)
+        return label
+
     def prepare_resolution_dropdown(self):
         resolution_dropdown = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 50, 250, 40),
                                                                  manager=self.manager,
@@ -103,6 +123,24 @@ class SettingsScene(Scene):
             relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 150, 120, 40), text=f"{SETTINGS.AUTO_SAVE}",
             manager=self.manager)
         return button
+
+    def prepare_music_volume_slider(self):
+        slider = pygame_gui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 200, 250, 40),
+            start_value=SETTINGS.MUSIC_VOLUME,
+            value_range=(0.0, 1.0),
+            manager=self.manager
+        )
+        return slider
+
+    def prepare_sounds_volume_slider(self):
+        slider = pygame_gui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 250, 250, 40),
+            start_value=SETTINGS.SOUNDS_VOLUME,
+            value_range=(0.0, 1.0),
+            manager=self.manager
+        )
+        return slider
 
     def prepare_back_button(self):
         button = pygame_gui.elements.UIButton(
@@ -125,7 +163,8 @@ class SettingsScene(Scene):
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == self.back_button:
-                        self.app.current_scene = self.app.previous_scene
+                        SOUNDS.button_click.play()
+                        self.app.current_scene = self.app.game_scenes['MainMenuScene']
                     if event.ui_element == self.fullscreen_button:
                         SETTINGS.FULLSCREEN = not SETTINGS.FULLSCREEN
                         self.app.refactor_ui()
@@ -140,9 +179,21 @@ class SettingsScene(Scene):
                     SETTINGS.WINDOW_HEIGHT = int(event.text.split(" x ")[1])
                     SETTINGS.SCALE = SETTINGS.prepare_scale()
                     self.app.refactor_ui()
+
+            if event.type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
+                if event.ui_element == self.music_volume_slider:
+                    value = self.music_volume_slider.get_current_value()
+                    SETTINGS.MUSIC_VOLUME = value
+                    SOUNDS.set_playback_volume(value)
+
+                if event.ui_element == self.sounds_volume_slider:
+                    value = self.sounds_volume_slider.get_current_value()
+                    SETTINGS.SOUNDS_VOLUME = value
+                    SOUNDS.set_sounds_volume(value)
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.app.current_scene = self.app.previous_scene
+                    self.app.current_scene = self.app.game_scenes['MainMenuScene']
 
             self.manager.process_events(event)
         self.manager.update(time_delta)

@@ -71,7 +71,7 @@ class EasyEnemy(Ship):
                        range(3)]
         rect = ship_frames[0].get_rect()
         ship_frames = [
-            pygame.transform.smoothscale(ship_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)) for
+            pygame.transform.smoothscale(ship_frame, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE))) for
             ship_frame in ship_frames]
 
         ship_frame_number = 0
@@ -85,7 +85,7 @@ class EasyEnemy(Ship):
                         range(6)]
         rect = boost_frames[0].get_rect()
         boost_frames = [
-            pygame.transform.smoothscale(boost_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)) for
+            pygame.transform.smoothscale(boost_frame, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE))) for
             boost_frame in boost_frames]
 
         boost_animation_speed = 0.10
@@ -100,7 +100,7 @@ class EasyEnemy(Ship):
                             range(8)]
         rect = explosion_frames[0].get_rect()
         explosion_frames = [
-            pygame.transform.smoothscale(explosion_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
+            pygame.transform.smoothscale(explosion_frame, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE)))
             for explosion_frame in explosion_frames]
 
         explosion_animation_speed = 0.20

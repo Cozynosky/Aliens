@@ -15,7 +15,7 @@ class EasyEnemyBullet(Bullet):
 
         bullet_frames = [pygame.image.load(os.path.join(images_folder, f"bullet-{i}.png")).convert_alpha() for i in range(6)]
         bullet_rect = bullet_frames[0].get_rect()
-        bullet_frames = [pygame.transform.smoothscale(bullet_frame, (bullet_rect.width * SETTINGS.SCALE, bullet_rect.height * SETTINGS.SCALE)) for bullet_frame in bullet_frames]
+        bullet_frames = [pygame.transform.smoothscale(bullet_frame, (int(bullet_rect.width * SETTINGS.SCALE), int(bullet_rect.height * SETTINGS.SCALE))) for bullet_frame in bullet_frames]
 
         bullet_frames_animation_speed = 0.10
         bullet_frame_number = 0
@@ -27,7 +27,7 @@ class EasyEnemyBullet(Bullet):
 
         explosion_frames = [pygame.image.load(os.path.join(images_folder, f"explode-{i}.png")).convert_alpha() for i in range(5)]
         explosion_rect = explosion_frames[0].get_rect()
-        explosion_frames = [pygame.transform.smoothscale(explosion_frame, (explosion_rect.width * SETTINGS.SCALE, explosion_rect.height * SETTINGS.SCALE)) for explosion_frame in explosion_frames]
+        explosion_frames = [pygame.transform.smoothscale(explosion_frame, (int(explosion_rect.width * SETTINGS.SCALE), int(explosion_rect.height * SETTINGS.SCALE))) for explosion_frame in explosion_frames]
 
         explosion_frames_animation_speed = 0.3
         explosion_frame_number = 0

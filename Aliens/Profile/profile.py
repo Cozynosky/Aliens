@@ -5,7 +5,7 @@ from Aliens.Upgrades.upgrades import *
 class Profile:
     def __init__(self):
         # profile name
-        self.name = ""
+        self.name = "Empty profile"
         self.empty_profile = True
 
         # ---------------- ship upgradables ----------------------
@@ -39,7 +39,7 @@ class Profile:
 
     def reset_profile(self):
         # profile name
-        self.name = ""
+        self.name = "Empty profile"
         self.empty_profile = True
 
         # ---------------- ship upgradables ----------------------

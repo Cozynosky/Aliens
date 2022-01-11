@@ -18,7 +18,6 @@ class PauseScene:
         self.pause_text_rect = self.get_pause_text_rect()
         self.resume_button = self.prepare_resume_button()
         self.game_menu_button = self.prepare_game_menu_button()
-        self.settings_game_button = self.prepare_settings_button()
         self.exit_game_button = self.prepare_exit_game_button()
 
     def prepare_manager(self):
@@ -61,16 +60,9 @@ class PauseScene:
             manager=self.manager)
         return button
 
-    def prepare_settings_button(self):
-        button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(self.pause_background_rect.centerx - 150, self.pause_text_rect.bottom + 190, 300, 75),
-            text="SETTINGS",
-            manager=self.manager)
-        return button
-
     def prepare_exit_game_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(self.pause_background_rect.centerx - 150, self.pause_text_rect.bottom + 275, 300, 75),
+            relative_rect=pygame.Rect(self.pause_background_rect.centerx - 150, self.pause_text_rect.bottom + 190, 300, 75),
             text="EXIT GAME",
             manager=self.manager)
         return button
@@ -82,7 +74,6 @@ class PauseScene:
         self.pause_text_rect = self.get_pause_text_rect()
         self.resume_button = self.prepare_resume_button()
         self.game_menu_button = self.prepare_game_menu_button()
-        self.settings_game_button = self.prepare_settings_button()
         self.exit_game_button = self.prepare_exit_game_button()
 
     def render(self, screen):
@@ -100,9 +91,6 @@ class PauseScene:
                 elif event.ui_element == self.game_menu_button:
                     self.game.state = GameState.GAME_OFF
                     self.game.paused = False
-                elif event.ui_element == self.settings_game_button:
-                    self.parent_scene.app.previous_scene = self.parent_scene.app.game_scenes['EndlessModeScene']
-                    self.parent_scene.app.current_scene = self.parent_scene.app.game_scenes['SettingsScene']
                 elif event.ui_element == self.exit_game_button:
                     self.game.end_time = datetime.now()
                     self.game.save_progress()

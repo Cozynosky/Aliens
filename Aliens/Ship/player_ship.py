@@ -73,7 +73,7 @@ class PlayerShip(Ship):
 
         ship_frames = [pygame.image.load(os.path.join(images_folder, f"ship-{i}.png")).convert_alpha() for i in range(3)]
         rect = ship_frames[0].get_rect()
-        ship_frames = [pygame.transform.smoothscale(ship_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)) for ship_frame in ship_frames]
+        ship_frames = [pygame.transform.smoothscale(ship_frame, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE))) for ship_frame in ship_frames]
 
         ship_frame_number = 0
 
@@ -84,7 +84,7 @@ class PlayerShip(Ship):
 
         boost_frames = [pygame.image.load(os.path.join(images_folder, f"boost-{i}.png")).convert_alpha() for i in range(3)]
         rect = boost_frames[0].get_rect()
-        boost_frames = [pygame.transform.smoothscale(boost_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)) for boost_frame in boost_frames]
+        boost_frames = [pygame.transform.smoothscale(boost_frame, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE))) for boost_frame in boost_frames]
 
         boost_animation_speed = 0.15
         boost_frame_number = 0
@@ -96,7 +96,7 @@ class PlayerShip(Ship):
 
         boost_frames = [pygame.image.load(os.path.join(images_folder, f"explode-{i}.png")).convert_alpha() for i in range(7)]
         rect = boost_frames[0].get_rect()
-        boost_frames = [pygame.transform.smoothscale(boost_frame, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE)) for boost_frame in boost_frames]
+        boost_frames = [pygame.transform.smoothscale(boost_frame, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE))) for boost_frame in boost_frames]
 
         boost_animation_speed = 0.2
         boost_frame_number = 0
@@ -111,8 +111,22 @@ class PlayerShip(Ship):
 
     def shot(self):
         if self.in_magazine > 0:
+            number_of_shots = self.app.current_profile.bullets_in_shot.get_value()
+            shot = ShipBullet(self.rect.right, self.rect.centery - (20 * SETTINGS.SCALE), self.bullet_speed, self.bullet_damage)
+            if number_of_shots % 2 == 0:
+                shot.real_y -= shot.rect.height / 2
+                shot.rect.y = int(shot.real_y)
+
+            shots = [shot]
+            for i in range(number_of_shots-1):
+                if i % 2 == 0:
+                    vertical_number = (i + 2) // 2
+                else:
+                    vertical_number = (i+1) // -2
+                new_shot = ShipBullet(self.rect.right, shot.rect.top + (shot.rect.height * vertical_number), self.bullet_speed, self.bullet_damage)
+                shots.append(new_shot)
             self.in_magazine -= 1
-            return ShipBullet(self.rect.right, self.rect.centery, self.bullet_speed, self.bullet_damage)
+            return shots
         else:
             return False
 

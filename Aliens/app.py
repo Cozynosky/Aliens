@@ -23,6 +23,7 @@ class App:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT))
+        pygame.display.set_icon(pygame.image.load("Data/Sprites/icon.png").convert_alpha())
         # prepare endless background
         self.background = EndlessBackground()
         # temp profile selection
@@ -41,7 +42,6 @@ class App:
             UpgradesScene.__name__: UpgradesScene(self)
         }
         self.current_scene = self.game_scenes[MainMenuScene.__name__]
-        self.previous_scene = self.current_scene
 
     def close_app(self):
         if SETTINGS.AUTO_SAVE:
@@ -60,6 +60,7 @@ class App:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((SETTINGS.WINDOW_WIDTH, SETTINGS.WINDOW_HEIGHT))
+        pygame.display.set_icon(pygame.image.load("Data/Sprites/icon.png").convert_alpha())
         self.background.refactor()
         for scene in self.game_scenes.values():
             scene.refactor_ui()
