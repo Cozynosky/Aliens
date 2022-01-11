@@ -148,6 +148,8 @@ class ProfileBanner:
         return font
 
     def update(self):
+        self.time_in_text = self.get_time_in_text()
+        self.coins_text = self.get_coins_text()
         if not self.name_entry.is_focused and self.name_entry.get_text() == "":
             self.set_profile_name()
 

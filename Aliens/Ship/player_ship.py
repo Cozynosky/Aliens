@@ -25,10 +25,7 @@ class PlayerShip(Ship):
         self.to_reload = self.reload_time
 
     def new_game(self):
-        self.go_left = False
-        self.go_right = False
-        self.go_up = False
-        self.go_down = False
+        self.reset_directions()
         self.reloading = False
 
         # upgradable values from current profile
@@ -59,6 +56,12 @@ class PlayerShip(Ship):
         self.rect = self.prepare_rect()
         self.real_x = self.rect.x
         self.real_y = self.rect.y
+
+    def reset_directions(self):
+        self.go_left = False
+        self.go_right = False
+        self.go_up = False
+        self.go_down = False
 
     def refactor(self):
         super(PlayerShip, self).refactor()

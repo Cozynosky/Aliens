@@ -64,6 +64,8 @@ class Wave:
 
             self.to_spawn_time = self.spawn_time
         elif self.enemies_to_spawn == 0 and len(self.dead_enemies) == 0 and len(self.alive_enemies) == 0:
+            self.game.scene.app.background.animate_background = False
+            self.game.ship.reset_directions()
             self.game.state = GameState.NEXT_WAVE
 
     def get_shots(self, shots):

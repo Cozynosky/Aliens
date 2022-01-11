@@ -7,6 +7,7 @@ from Aliens.Ship.ship import ShipState
 from Aliens.Ship.player_ship import PlayerShip
 from Aliens.EndlessGameCore.game_ui import GameUI
 from Aliens.EndlessGameCore.enums import GameState, UIState
+from Aliens.EndlessGameCore.nextwave_scene import NextWaveScene
 
 
 class Game:
@@ -26,11 +27,13 @@ class Game:
         self.coins = pygame.sprite.Group()
         self.game_ui = GameUI(self)
         self.paused = False
+        self.nextwave_scene = NextWaveScene()
 
     def refactor(self):
         self.game_ui.refactor()
         self.ship.refactor()
         self.wave.refactor()
+        self.nextwave_scene.refactor()
         for shot in self.player_shots:
             shot.refactor()
         for shot in self.enemies_shots:
@@ -96,14 +99,12 @@ class Game:
                     self.scene.game_over_scene.update()
 
             elif self.state == GameState.NEXT_WAVE:
-                self.coins.update()
-                self.game_ui.update()
-                self.ship.update()
-                self.hit_shots.update()
-                self.player_shots.update()
-                self.enemies_shots.update()
-                self.wave.next_wave()
-                self.state = GameState.GAME_ON
+                self.nextwave_scene.update()
+                if self.nextwave_scene.is_ready:
+                    self.scene.app.background.animate_background = True
+                    self.nextwave_scene.reset()
+                    self.wave.next_wave()
+                    self.state = GameState.GAME_ON
 
             elif self.state == GameState.GAME_OFF:
                 self.end_time = datetime.now()
@@ -122,6 +123,9 @@ class Game:
 
         if self.state != GameState.GAME_OVER:
             self.game_ui.draw(screen)
+
+        if self.state == GameState.NEXT_WAVE:
+            self.nextwave_scene.render(screen)
 
     def save_progress(self):
         self.scene.app.current_profile.coins += self.coins_earned
