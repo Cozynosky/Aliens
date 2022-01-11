@@ -56,6 +56,7 @@ class GameUI:
         self.bottom_alpha = 255
 
     def refactor(self):
+        self.showing_speed = 4 * SETTINGS.SCALE
         self.big_font, self.middle_font, self.small_font = self.load_font()
 
         self.bottom_hud_bg = self.load_bottom_hud_bg()
@@ -99,6 +100,7 @@ class GameUI:
         self.bottom_alpha = 255
 
     def reset(self):
+        self.state = UIState.SHOWING_UP
         self.top_hud_bg_rect = self.get_top_hud_bg_rect()
         self.bottom_hud_bg_rect = self.get_bottom_hud_bg_rect()
 
@@ -116,7 +118,7 @@ class GameUI:
         images_folder = os.path.join("Data", "Sprites", "HUD")
         bottom_hud_back = pygame.image.load(os.path.join(images_folder, "bottom_hud_back.png")).convert_alpha()
         rect = bottom_hud_back.get_rect()
-        bottom_hud_back = pygame.transform.smoothscale(bottom_hud_back, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
+        bottom_hud_back = pygame.transform.smoothscale(bottom_hud_back, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE)))
         return bottom_hud_back
 
     def get_bottom_hud_bg_rect(self):
@@ -133,7 +135,7 @@ class GameUI:
         images_folder = os.path.join("Data", "Sprites", "HUD")
         front_hud_back = pygame.image.load(os.path.join(images_folder, "bottom_hud_front.png")).convert_alpha()
         rect = front_hud_back.get_rect()
-        front_hud_back = pygame.transform.smoothscale(front_hud_back, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
+        front_hud_back = pygame.transform.smoothscale(front_hud_back, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE)))
         return front_hud_back
 
     def get_bottom_hud_fg_rect(self):
@@ -146,7 +148,7 @@ class GameUI:
         images_folder = os.path.join("Data", "Sprites", "HUD")
         top_hud_bg= pygame.image.load(os.path.join(images_folder, "top_hud_back.png")).convert_alpha()
         rect = top_hud_bg.get_rect()
-        top_hud_bg = pygame.transform.smoothscale(top_hud_bg, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
+        top_hud_bg = pygame.transform.smoothscale(top_hud_bg, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE)))
         return top_hud_bg
 
     def get_top_hud_bg_rect(self):
@@ -163,7 +165,7 @@ class GameUI:
         images_folder = os.path.join("Data", "Sprites", "HUD")
         fg = pygame.image.load(os.path.join(images_folder, "top_hud_front.png")).convert_alpha()
         rect = fg.get_rect()
-        fg = pygame.transform.smoothscale(fg, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
+        fg = pygame.transform.smoothscale(fg, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE)))
         return fg
 
     def get_top_hud_fg_rect(self):
@@ -236,7 +238,7 @@ class GameUI:
 
     def get_to_reload_rect(self):
         size = (
-        400 * max(0, (self.game.ship.to_reload / self.game.ship.reload_time)) * SETTINGS.SCALE, 15 * SETTINGS.SCALE)
+            int(400 * max(0, (self.game.ship.to_reload / self.game.ship.reload_time)) * SETTINGS.SCALE), int(15 * SETTINGS.SCALE))
         rect = pygame.Rect((49 * SETTINGS.SCALE, 69 * SETTINGS.SCALE), size)
         return rect
 

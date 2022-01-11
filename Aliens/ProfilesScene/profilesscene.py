@@ -2,7 +2,7 @@ import pygame
 import pygame_gui
 import os.path
 
-from Aliens import SETTINGS
+from Aliens import SETTINGS, SOUNDS
 from Aliens.scene import Scene
 from Aliens.Profile.save_profiles import save_profiles
 
@@ -120,7 +120,6 @@ class ProfileBanner:
         self.coins_text_rect = self.get_coins_text_rect()
         self.select_button = self.prepare_select_button()
         self.delete_button = self.prepare_delete_button()
-        self.edit_button = self.prepare_edit_button()
 
     def refactor(self, manager):
         self.manager = manager
@@ -137,7 +136,6 @@ class ProfileBanner:
         self.coins_text_rect = self.get_coins_text_rect()
         self.select_button = self.prepare_select_button()
         self.delete_button = self.prepare_delete_button()
-        self.edit_button = self.prepare_edit_button()
 
     def load_fonts(self):
         fonts_path = os.path.join("Data", "Fonts", "alien_eclipse")
@@ -150,19 +148,11 @@ class ProfileBanner:
     def update(self):
         self.time_in_text = self.get_time_in_text()
         self.coins_text = self.get_coins_text()
-        if not self.name_entry.is_focused and self.name_entry.get_text() == "":
-            self.set_profile_name()
-
-    def reload(self):
-        if self.profile.name == "":
-            self.name_entry.set_text("Enter name")
-        else:
-            self.name_entry.set_text(self.profile.name)
-        self.name_entry.disable()
-        if self.profile.empty_profile:
-            self.edit_button.visible = 0
-        else:
-            self.edit_button.visible = 1
+        if not self.name_entry.is_focused:
+            if self.name_entry.get_text() == "":
+                self.name_entry.set_text(self.profile.name)
+            elif self.profile.empty_profile:
+                self.set_profile_name()
 
     def prepare_banner(self):
         banner = pygame.surface.Surface((600, 100))
@@ -176,13 +166,9 @@ class ProfileBanner:
         return rect
 
     def prepare_name_entry(self):
-        entry = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(self.banner_rect.left + 10, self.banner_rect.top + 10, 210, 120), manager=self.manager)
-        entry.set_text_length_limit(10)
-        if self.profile.name == "":
-            entry.set_text("Enter name")
-        else:
-            entry.set_text(self.profile.name)
-        entry.disable()
+        entry = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(self.banner_rect.left + 10, self.banner_rect.top + 10, 250, 40), manager=self.manager)
+        entry.set_text_length_limit(13)
+        entry.set_text(self.profile.name)
         return entry
 
     def get_time_in_text(self):
@@ -223,24 +209,15 @@ class ProfileBanner:
 
     def prepare_select_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(self.banner_rect.right - 110, self.banner_rect.bottom - 50, 100, 40), text="Select",
+            relative_rect=pygame.Rect(self.banner_rect.right - 120, self.banner_rect.bottom - 50, 110, 40), text="Select",
             manager=self.manager, object_id=pygame_gui.core.ObjectID(object_id="@select_profile_button", class_id="@select_profile_button"))
         return button
 
     def prepare_delete_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(self.banner_rect.right - 150, self.banner_rect.bottom - 50, 40, 40),
+            relative_rect=pygame.Rect(self.banner_rect.right - 160, self.banner_rect.bottom - 50, 42, 40),
             text="X", manager=self.manager, object_id=pygame_gui.core.ObjectID(object_id="@delete_profile_button", class_id="@delete_profile_button")
         )
-        return button
-
-    def prepare_edit_button(self):
-        button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(self.banner_rect.left + 220, self.banner_rect.top + 10, 60, 40),
-            text="edit", manager=self.manager, object_id=pygame_gui.core.ObjectID(object_id="@edit_profile_button", class_id="@edit_profile_button")
-        )
-        if self.profile.empty_profile:
-            button.visible = 0
         return button
 
     def draw(self, screen):
@@ -252,16 +229,9 @@ class ProfileBanner:
 
     def set_profile_name(self):
         entered_name = self.name_entry.get_text()
-        if entered_name != "" and entered_name != "Enter name":
+        if entered_name != "" and entered_name != "Empty profile":
             self.profile.name = entered_name
             self.profile.empty_profile = False
-            self.edit_button.visible = 1
-            self.name_entry.disable()
-        else:
-            if self.profile.name == "":
-                self.name_entry.set_text("Enter name")
-            else:
-                self.name_entry.set_text(self.profile.name)
         self.name_entry.unfocus()
 
     def profile_selected(self):
@@ -269,20 +239,14 @@ class ProfileBanner:
         if self.profile.empty_profile:
             self.manager.set_focus_set(self.name_entry)
             self.name_entry.set_text("")
-            self.name_entry.enable()
         else:
-            self.app.profile_selected = True
             self.app.current_profile = self.profile
-            save_profiles(self.app.profiles)
+            self.app.profile_selected = True
+            self.app.game_scenes['UpgradesScene'].load_user_upgrades()
 
     def delete_profile(self):
         self.profile.reset_profile()
-        self.reload()
-
-    def edit_profile_name(self):
-        self.manager.set_focus_set(self.name_entry)
-        self.name_entry.set_text("")
-        self.name_entry.enable()
+        self.name_entry.set_text(self.profile.name)
 
     def handle_events(self, event):
         if event.type == pygame.USEREVENT:
@@ -291,11 +255,9 @@ class ProfileBanner:
                     self.set_profile_name()
 
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                SOUNDS.button_click.play()
                 if event.ui_element == self.select_button:
                     self.profile_selected()
 
                 if event.ui_element == self.delete_button:
                     self.delete_profile()
-
-                if event.ui_element == self.edit_button:
-                    self.edit_profile_name()

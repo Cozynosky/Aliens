@@ -34,6 +34,8 @@ class Game:
         self.ship.refactor()
         self.wave.refactor()
         self.nextwave_scene.refactor()
+        for coin in self.coins:
+            coin.refactor()
         for shot in self.player_shots:
             shot.refactor()
         for shot in self.enemies_shots:
@@ -43,7 +45,6 @@ class Game:
 
     def new_game(self):
         pygame.mouse.set_visible(False)
-        self.game_ui.state = UIState.SHOWING_UP
         self.game_ui.reset()
         self.scene.app.background.animate_background = True
         self.start_time = datetime.now()
@@ -144,14 +145,16 @@ class Game:
             if event.key == pygame.K_ESCAPE and self.state != GameState.GAME_OVER:
                 pygame.mouse.set_visible(not pygame.mouse.get_visible())
                 self.paused = not self.paused
-                self.scene.app.background.animate_background = not self.scene.app.background.animate_background
+                if self.state != GameState.NEXT_WAVE:
+                    self.scene.app.background.animate_background = not self.scene.app.background.animate_background
                 
         if self.state == GameState.GAME_ON:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    shot = self.ship.shot()
-                    if shot:
-                        self.player_shots.add(shot)
+                    shots = self.ship.shot()
+                    if shots:
+                        for shot in shots:
+                            self.player_shots.add(shot)
             self.ship.handle_event(event)
 
     def bullets_with_enemies_collisions(self):

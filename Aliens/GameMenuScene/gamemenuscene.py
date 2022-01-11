@@ -3,7 +3,7 @@ import pygame_gui
 import os.path
 
 from Aliens.scene import Scene
-from Aliens import SETTINGS
+from Aliens import SETTINGS, SOUNDS
 from Aliens.Profile.save_profiles import save_profiles
 
 
@@ -84,14 +84,14 @@ class GameMenuScene(Scene):
 
     def prepare_logout_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(25, 25, 80, 32),
+            relative_rect=pygame.Rect(25, 25, 90, 32),
             text="Logout", manager=self.manager, object_id=pygame_gui.core.ObjectID(class_id="@logout_button", object_id="@logout_button")
         )
         return button
 
     def prepare_save_button(self):
         button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(25, 58, 80, 32),
+            relative_rect=pygame.Rect(25, 58, 90, 32),
             text="Save", manager=self.manager, object_id=pygame_gui.core.ObjectID(class_id="@save_button", object_id="@save_button")
         )
         return button
@@ -107,7 +107,7 @@ class GameMenuScene(Scene):
     def prepare_game_saved_text_rect(self):
         rect = self.game_saved_text.get_rect()
         rect.centery = 74
-        rect.x = 110
+        rect.x = 120
         return rect
 
     def prepare_back_button(self):
@@ -147,6 +147,7 @@ class GameMenuScene(Scene):
                     self.app.current_scene = self.app.game_scenes["MainMenuScene"]
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    SOUNDS.button_click.play()
                     if event.ui_element == self.endless_button:
                         self.app.current_scene = self.app.game_scenes['EndlessModeScene']
                         self.app.current_scene.game.new_game()

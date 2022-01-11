@@ -80,3 +80,4 @@ class Wave:
         self.dead_enemies.add(enemy)
         self.alive_enemies.remove(enemy)
         self.enemies_left -= 1
+        self.to_spawn_time -= self.to_spawn_time/2

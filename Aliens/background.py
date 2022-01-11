@@ -38,16 +38,14 @@ class BackgroundLayer:
 
     def __init__(self, filename, speed):
         self.image, self.rect, self.following_rect = self.load_image(filename)
-        self.rect_x = self.rect.x
-        self.rect_y = self.rect.y
-        self.following_rect_x = self.following_rect.x
-        self.following_rect_y = self.following_rect.y
+        self.rect_real_x = self.rect.x
+        self.following_rect_real_x = self.following_rect.x
         self.speed = speed * SETTINGS.SCALE
 
     def load_image(self, filename):
         image = pygame.image.load(os.path.join(self.images_folder, filename)).convert_alpha()
         rect = image.get_rect()
-        image = pygame.transform.smoothscale(image, (rect.width * SETTINGS.SCALE, rect.height * SETTINGS.SCALE))
+        image = pygame.transform.smoothscale(image, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE)))
         rect = image.get_rect()
         rect.topleft = (0, 0)
         following_rect = rect.copy()
@@ -56,22 +54,22 @@ class BackgroundLayer:
 
     def reset(self):
         self.rect.left = 0
-        self.rect_x = 0
+        self.rect_real_x = 0
         self.following_rect.left = self.rect.right
-        self.following_rect_x = self.following_rect.x
+        self.following_rect_real_x = self.following_rect.x
 
     def update(self):
-        self.rect_x -= self.speed
-        self.rect.x = int(self.rect_x)
-        self.following_rect_x -= self.speed
-        self.following_rect.x = int(self.following_rect_x)
-
         if self.rect.right <= 0:
             self.rect.left = self.following_rect.right
-            self.rect_x = self.rect.x
+            self.rect_real_x = self.rect.x
         if self.following_rect.right <= 0:
             self.following_rect.left = self.rect.right
-            self.following_rect_x = self.following_rect.x
+            self.following_rect_real_x = self.following_rect.x
+
+        self.rect_real_x -= self.speed
+        self.rect.x = int(self.rect_real_x)
+        self.following_rect_real_x -= self.speed
+        self.following_rect.x = int(self.following_rect_real_x)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

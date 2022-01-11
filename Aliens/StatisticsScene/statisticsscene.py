@@ -1,10 +1,8 @@
-from sys import exit
-
 import pygame
 import pygame_gui
 import os.path
 
-from Aliens import SETTINGS
+from Aliens import SETTINGS, SOUNDS
 from Aliens.scene import Scene
 
 
@@ -175,6 +173,7 @@ class StatisticsScene(Scene):
                 self.app.close_app()
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    SOUNDS.button_click.play()
                     if event.ui_element == self.back_button:
                         self.app.current_scene = self.app.game_scenes['GameMenuScene']
 
