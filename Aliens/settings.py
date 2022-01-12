@@ -24,16 +24,16 @@ class Settings:
                     "height": self.RESOLUTIONS["1920 x 1080"]["height"],
                 },
                 "user": {
-                    "resolution": (self.hardware_resolution["width"], self.hardware_resolution["height"]),
-                    "width": self.hardware_resolution["width"],
-                    "height": self.hardware_resolution["height"],
+                    "resolution": (self.RESOLUTIONS["1280 x 720"]["width"], self.RESOLUTIONS["1280 x 720"]["height"]),
+                    "width": self.RESOLUTIONS["1280 x 720"]["width"],
+                    "height": self.RESOLUTIONS["1280 x 720"]["height"],
                 },
                 "hardware": {
                     "resolution": (self.hardware_resolution["width"], self.hardware_resolution["height"]),
                     "width": self.hardware_resolution["width"],
                     "height": self.hardware_resolution["height"],
                 },
-                "fullscreen": True,
+                "fullscreen": False,
                 "title": "Aliens!"
             },
             "saves": {

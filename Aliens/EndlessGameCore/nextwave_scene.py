@@ -1,7 +1,7 @@
 import pygame
 import os.path
 
-from Aliens import SETTINGS
+from Aliens import SETTINGS,SOUNDS
 
 
 class NextWaveScene:
@@ -59,6 +59,7 @@ class NextWaveScene:
         else:
             self.stop_time -= 0.016
             if self.stop_time <= 0:
+                SOUNDS.swosh.play()
                 self.is_moving = True
                 self.stop_made = True
 

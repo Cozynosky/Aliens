@@ -163,3 +163,38 @@ class CoinValue(Upgrade):
 
     def get_value(self):
         return self.level
+
+
+class StartingWave(Upgrade):
+    def __init__(self):
+        super(StartingWave, self).__init__()
+        self.starting_wave = 1
+
+    def get_cost(self):
+        cost = 7.35757 * self.level ** 1.86217+2.91343
+        return round(cost)
+
+    def get_value(self):
+        return self.starting_wave
+
+    def upgrade_available(self):
+        return self.level == self.starting_wave
+
+    def can_go_lower(self):
+        return self.starting_wave > 1
+
+    def can_go_higher(self):
+        return self.starting_wave < self.level
+
+    def go_lower(self):
+        self.starting_wave -= 1
+
+    def go_higher(self):
+        self.starting_wave += 1
+
+    def get_starting_wave(self):
+        return self.starting_wave
+
+    def upgrade_bought(self):
+        super(StartingWave, self).upgrade_bought()
+        self.starting_wave = self.level

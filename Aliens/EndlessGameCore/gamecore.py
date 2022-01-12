@@ -8,6 +8,8 @@ from Aliens.Ship.player_ship import PlayerShip
 from Aliens.EndlessGameCore.game_ui import GameUI
 from Aliens.EndlessGameCore.enums import GameState, UIState
 from Aliens.EndlessGameCore.nextwave_scene import NextWaveScene
+from Aliens.OnlineScores.onlinescores import update_highscores, get_smallest_value
+from Aliens import SOUNDS
 
 
 class Game:
@@ -28,6 +30,7 @@ class Game:
         self.game_ui = GameUI(self)
         self.paused = False
         self.nextwave_scene = NextWaveScene()
+        self.smallest_online_highscore = get_smallest_value()
 
     def refactor(self):
         self.game_ui.refactor()
@@ -54,7 +57,7 @@ class Game:
         self.coins_earned = 0
         self.total_killed = 0
         self.ship.new_game()
-        self.wave.new_game()
+        self.wave.new_game(self.scene.app.current_profile.starting_wave.get_value())
         self.player_shots.empty()
         self.enemies_shots.empty()
         self.hit_shots.empty()
@@ -69,7 +72,7 @@ class Game:
                 if self.ship.state == ShipState.ALIVE and self.game_ui.state == UIState.SHOWED:
                     self.state = GameState.GAME_ON
             elif self.state == GameState.GAME_ON:
-                if self.ship.state == ShipState.ALIVE:
+                if self.ship.state == ShipState.ALIVE or self.ship.state == ShipState.RESPAWNING:
                     self.coins.update()
                     self.wave.update()
                     self.wave.get_shots(self.enemies_shots)
@@ -98,6 +101,7 @@ class Game:
                     pygame.mouse.set_visible(True)
                     self.state = GameState.GAME_OVER
                     self.scene.game_over_scene.update()
+                    SOUNDS.game_over.play()
 
             elif self.state == GameState.NEXT_WAVE:
                 self.nextwave_scene.update()
@@ -108,6 +112,9 @@ class Game:
                     self.state = GameState.GAME_ON
 
             elif self.state == GameState.GAME_OFF:
+                if self.score > self.smallest_online_highscore:
+                    update_highscores(self.score, self.scene.app.current_profile.name)
+                    self.smallest_online_highscore = get_smallest_value()
                 self.end_time = datetime.now()
                 self.save_progress()
                 self.scene.app.current_scene = self.scene.app.game_scenes["GameMenuScene"]
@@ -204,6 +211,7 @@ class Game:
             for coin in collisions:
                 mask_collision = pygame.sprite.collide_mask(self.ship, coin)
                 if mask_collision:
+                    SOUNDS.collect_coin.play()
                     self.coins_earned += self.scene.app.current_profile.coin_value.get_value()
                     coin.kill()
 

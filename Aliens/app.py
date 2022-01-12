@@ -8,6 +8,8 @@ from Aliens.Profile.load_profiles import load_profiles
 from Aliens.Profile.save_profiles import save_profiles
 from Aliens.ProfilesScene.profilesscene import ProfileScene
 from Aliens.UpgradesScene.upgradesscene import UpgradesScene
+from Aliens.OnlineScoresScene.onlinescoresscene import OnlineHighScoresScene
+from Aliens.InstructionsScene.instructionsscene import InstructionsScene
 from Aliens.background import EndlessBackground
 from Aliens import SETTINGS
 from sys import exit
@@ -39,7 +41,9 @@ class App:
             EndlessModeScene.__name__: EndlessModeScene(self),
             SettingsScene.__name__: SettingsScene(self),
             StatisticsScene.__name__: StatisticsScene(self),
-            UpgradesScene.__name__: UpgradesScene(self)
+            UpgradesScene.__name__: UpgradesScene(self),
+            OnlineHighScoresScene.__name__: OnlineHighScoresScene(self),
+            InstructionsScene.__name__: InstructionsScene(self)
         }
         self.current_scene = self.game_scenes[MainMenuScene.__name__]
 

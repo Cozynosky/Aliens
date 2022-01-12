@@ -150,8 +150,8 @@
   },
   "@logout_button": {
           "colours": {
-      "normal_bg": "#ffc20e",
-      "hovered_bg": "#ffcf41",
+      "normal_bg": "#dab600",
+      "hovered_bg": "#e9d700",
       "disabled_bg": "#25292e",
       "selected_bg": "#25292e",
       "active_bg": "#193784",
@@ -242,6 +242,36 @@
     "font": {
       "name": "spacemission",
       "size": "15",
+      "bold": "0",
+      "italic": "0",
+      "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"
+    },
+    "misc": {
+      "shape": "rounded_rectangle",
+      "shape_corner_radius": "10"
+    }
+  },
+    "@online_highscores_button": {
+          "colours": {
+      "normal_bg": "#dab600",
+      "hovered_bg": "#e9d700",
+      "disabled_bg": "#25292e",
+      "selected_bg": "#25292e",
+      "active_bg": "#193784",
+      "normal_text": "#FFFFFF",
+      "hovered_text": "#FFFFFF",
+      "selected_text": "#FFFFFF",
+      "disabled_text": "#6d736f",
+      "active_text": "#6d736f",
+      "normal_border": "#00000000",
+      "hovered_border": "#00000000",
+      "disabled_border": "#00000000",
+      "selected_border": "#00000000",
+      "active_border": "#00000000"
+    },
+    "font": {
+      "name": "spacemission",
+      "size": "28",
       "bold": "0",
       "italic": "0",
       "regular_path": "Data/Fonts/alien_eclipse/Alien Eclipse.otf"

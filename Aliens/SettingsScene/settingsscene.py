@@ -182,14 +182,16 @@ class SettingsScene(Scene):
 
             if event.type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
                 if event.ui_element == self.music_volume_slider:
-                    value = self.music_volume_slider.get_current_value()
+                    value = round(self.music_volume_slider.get_current_value(), 2)
                     SETTINGS.MUSIC_VOLUME = value
                     SOUNDS.set_playback_volume(value)
+                    print(value, SOUNDS.playback.get_volume())
 
                 if event.ui_element == self.sounds_volume_slider:
                     value = self.sounds_volume_slider.get_current_value()
                     SETTINGS.SOUNDS_VOLUME = value
                     SOUNDS.set_sounds_volume(value)
+
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:

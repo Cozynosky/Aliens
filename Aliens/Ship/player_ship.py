@@ -1,6 +1,6 @@
 import pygame
 import os.path
-from Aliens import SETTINGS
+from Aliens import SETTINGS, SOUNDS
 from Aliens.Ship.ship import Ship, ShipState
 from Aliens.Bullets.ship_bullet import ShipBullet
 
@@ -23,6 +23,8 @@ class PlayerShip(Ship):
         self.current_health = self.health_capacity
         self.in_magazine = self.magazine_size
         self.to_reload = self.reload_time
+        # immortal bubble
+        self.bubble_frames, self.bubble_frame_number, self.bubble_animation_speed = self.load_bubble_frames()
 
     def new_game(self):
         self.reset_directions()
@@ -40,6 +42,8 @@ class PlayerShip(Ship):
         self.current_health = self.health_capacity
         self.in_magazine = self.magazine_size
         self.to_reload = self.reload_time
+        # immortal bubble
+        self.bubble_frames, self.bubble_frame_number, self.bubble_animation_speed = self.load_bubble_frames()
 
         self.reset()
 
@@ -53,9 +57,12 @@ class PlayerShip(Ship):
         self.ship_frame_number = 0
         self.explosion_frame_number = 0
         self.boost_frame_number = 0
+        self.bubble_frame_number = 0
         self.rect = self.prepare_rect()
         self.real_x = self.rect.x
         self.real_y = self.rect.y
+        self.app.background.animate_background = True
+        self.reset_directions()
 
     def reset_directions(self):
         self.go_left = False
@@ -78,6 +85,18 @@ class PlayerShip(Ship):
         ship_frame_number = 0
 
         return ship_frames, ship_frame_number
+
+    def load_bubble_frames(self):
+        images_folder = os.path.join("Data", "Sprites", "Ships", "FirstShip")
+
+        bubble_frames = [pygame.image.load(os.path.join(images_folder, f"bubble-{i}.png")).convert_alpha() for i in range(9)]
+        rect = bubble_frames[0].get_rect()
+        bubble_frames = [pygame.transform.smoothscale(bubble_frame, (int(rect.width * SETTINGS.SCALE), int(rect.height * SETTINGS.SCALE))) for bubble_frame in bubble_frames]
+
+        bubble_frame_number = 0
+        bubble_animation_speed = 0.4
+
+        return bubble_frames, bubble_frame_number, bubble_animation_speed
 
     def load_boost_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Ships", "FirstShip")
@@ -109,8 +128,13 @@ class PlayerShip(Ship):
         rect.right = 0
         return rect
 
+    def get_image(self):
+        image = super(PlayerShip, self).get_image()
+        return image
+
     def shot(self):
         if self.in_magazine > 0:
+            SOUNDS.player_shot.play()
             number_of_shots = self.app.current_profile.bullets_in_shot.get_value()
             shot = ShipBullet(self.rect.right, self.rect.centery - (20 * SETTINGS.SCALE), self.bullet_speed, self.bullet_damage)
             if number_of_shots % 2 == 0:
@@ -128,10 +152,18 @@ class PlayerShip(Ship):
             self.in_magazine -= 1
             return shots
         else:
+            SOUNDS.empty_magazine.play()
             return False
 
     def update(self):
         super(PlayerShip, self).update()
+
+        if self.bubble_frame_number < len(self.bubble_frames):
+            self.image.blit(self.bubble_frames[int(self.bubble_frame_number)], (0, 0))
+            if self.state == ShipState.RESPAWNING:
+                self.bubble_frame_number = 0
+            else:
+                self.bubble_frame_number += self.bubble_animation_speed
 
         if self.state == ShipState.ALIVE:
             if self.go_left and self.rect.left > 0:

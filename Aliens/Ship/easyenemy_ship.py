@@ -2,7 +2,7 @@ import pygame
 import os.path
 import random
 
-from Aliens import SETTINGS
+from Aliens import SETTINGS, SOUNDS
 from Aliens.Ship.ship import Ship, ShipState
 from Aliens.Bullets.easyenemy_bullet import EasyEnemyBullet
 
@@ -118,6 +118,7 @@ class EasyEnemy(Ship):
     def try_shot(self, shots):
         self.time_to_shot += 0.016
         if self.time_to_shot > self.shot_cooldown:
+            SOUNDS.enemy_shot.play()
             shots.add(self.shot())
             self.time_to_shot = 0
 

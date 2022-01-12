@@ -18,6 +18,7 @@ class GameMenuScene(Scene):
         self.endless_button = self.prepare_endless_button()
         self.upgrades_button = self.prepare_upgrades_button()
         self.statistics_button = self.prepare_statistics_button()
+        self.online_highscores_button = self.prepare_online_highscores_button()
         self.logout_button = self.prepare_logout_button()
         self.save_button = self.prepare_save_button()
         self.game_saved_text = self.prepare_game_saved_text()
@@ -35,6 +36,7 @@ class GameMenuScene(Scene):
         self.endless_button = self.prepare_endless_button()
         self.upgrades_button = self.prepare_upgrades_button()
         self.statistics_button = self.prepare_statistics_button()
+        self.online_highscores_button = self.prepare_online_highscores_button()
         self.logout_button = self.prepare_logout_button()
         self.save_button = self.prepare_save_button()
         self.game_saved_text = self.prepare_game_saved_text()
@@ -78,6 +80,14 @@ class GameMenuScene(Scene):
         button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 450, 300, 75),
             text="STATISTICS",
+            manager=self.manager)
+
+        return button
+
+    def prepare_online_highscores_button(self):
+        button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 150, 525, 300, 75),
+            text="Online HighScores", object_id=pygame_gui.core.ObjectID(class_id="@online_highscores_button", object_id="@online_highscores_button"),
             manager=self.manager)
 
         return button
@@ -160,6 +170,9 @@ class GameMenuScene(Scene):
                     if event.ui_element == self.logout_button:
                         self.app.profile_selected = False
                         self.app.current_scene = self.app.game_scenes['ProfileScene']
+                    if event.ui_element == self.online_highscores_button:
+                        self.app.current_scene = self.app.game_scenes['OnlineHighScoresScene']
+                        self.app.current_scene.prepare_highscores()
                     if event.ui_element == self.save_button:
                         save_profiles(self.app.profiles)
                         self.game_saved_text.set_alpha(256)

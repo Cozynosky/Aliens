@@ -1,7 +1,7 @@
 import pygame
 from enum import Enum
 
-from Aliens import SETTINGS
+from Aliens import SETTINGS, SOUNDS
 
 
 class ShipState(Enum):
@@ -93,10 +93,12 @@ class Ship(pygame.sprite.Sprite):
         self.image = self.get_image()
 
     def take_damage(self, damage):
+        SOUNDS.take_damage.play()
         self.current_health = max(0, self.current_health - damage)
         # check if still alive
         if self.current_health <= 0:
             self.state = ShipState.DEAD
+            SOUNDS.ship_destroyed.play()
             return True
         # change image depending od health
         elif self.current_health <= self.health_capacity / 4:

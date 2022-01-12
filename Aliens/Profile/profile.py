@@ -26,6 +26,9 @@ class Profile:
         # coins
         self.drop_rate = DropRate()
         self.coin_value = CoinValue()
+
+        # wave
+        self.starting_wave = StartingWave()
         # ---------------------------------------------------
 
         # earned coins
@@ -60,6 +63,8 @@ class Profile:
         # coins
         self.drop_rate = DropRate()
         self.coin_value = CoinValue()
+        # wave
+        self.starting_wave = StartingWave()
         # ---------------------------------------------------
 
         # earned coins

@@ -1,6 +1,7 @@
 import pygame
 from Aliens.Ship.easyenemy_ship import EasyEnemy
 from Aliens.EndlessGameCore.enums import GameState
+from Aliens import SOUNDS
 
 
 class Wave:
@@ -14,8 +15,8 @@ class Wave:
         self.spawn_time = self.get_spawn_time()      # in seconds
         self.to_spawn_time = 0                       # in seconds
 
-    def new_game(self):
-        self.wave_number = 1
+    def new_game(self, start_wave=1):
+        self.wave_number = start_wave
         self.enemies_to_spawn = self.get_enemies_to_spawn()
         self.enemies_left = self.enemies_to_spawn
         self.alive_enemies.empty()
@@ -66,6 +67,7 @@ class Wave:
         elif self.enemies_to_spawn == 0 and len(self.dead_enemies) == 0 and len(self.alive_enemies) == 0:
             self.game.scene.app.background.animate_background = False
             self.game.ship.reset_directions()
+            SOUNDS.swosh.play()
             self.game.state = GameState.NEXT_WAVE
 
     def get_shots(self, shots):

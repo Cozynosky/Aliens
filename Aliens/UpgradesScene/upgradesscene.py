@@ -123,8 +123,8 @@ class UpgradesScene(Scene):
 
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    SOUNDS.button_click.play()
                     if event.ui_element == self.back_button:
+                        SOUNDS.button_click.play()
                         self.app.current_scene = self.app.game_scenes['GameMenuScene']
 
             if event.type == pygame.KEYDOWN:
@@ -152,7 +152,9 @@ class UpgradesCardsGroup:
             UpgradeCard(0 + 260, 0 + 175, "magazine_size.png", self.manager, self.app.current_profile.magazine_size, self.cards_surface_rect, self.app),
             UpgradeCard(0 + 260, 0, "reload_time.png", self.manager, self.app.current_profile.reload_time, self.cards_surface_rect, self.app),
             UpgradeCard(0 + 390, 0, "drop_rate.png", self.manager, self.app.current_profile.drop_rate, self.cards_surface_rect, self.app),
-            UpgradeCard(0 + 390, 0 + 175, "coin_value.png", self.manager, self.app.current_profile.coin_value, self.cards_surface_rect, self.app)
+            UpgradeCard(0 + 390, 0 + 175, "coin_value.png", self.manager, self.app.current_profile.coin_value, self.cards_surface_rect, self.app),
+            UpgradeCardWave(0 + 320, 0 + 350, "wave_number.png", self.manager, self.app.current_profile.starting_wave,
+                        self.cards_surface_rect, self.app)
 
         ]
 
@@ -167,6 +169,7 @@ class UpgradesCardsGroup:
         self.cards[7].upgrade = self.app.current_profile.reload_time
         self.cards[8].upgrade = self.app.current_profile.drop_rate
         self.cards[9].upgrade = self.app.current_profile.coin_value
+        self.cards[10].upgrade = self.app.current_profile.starting_wave
 
     def get_cards_surface_rect(self):
         rect = pygame.rect.Rect(SETTINGS.WINDOW_WIDTH / 2 - 235, 240 * SETTINGS.SCALE, 470, 500)
@@ -320,6 +323,7 @@ class UpgradeCard:
         if event.type == pygame.USEREVENT:
             if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == self.buy_button:
+                    SOUNDS.upgrade_buy.play()
                     self.app.current_profile.coins -= self.upgrade.get_cost()
                     self.upgrade.upgrade_bought()
             self.manager.process_events(event)
@@ -330,6 +334,85 @@ class UpgradeCard:
     def render(self, screen):
         screen.blit(self.image, (self.parent_rect.x + self.image_rect.x, self.parent_rect.y + self.image_rect.y))
         screen.blit(self.level_text, (self.parent_rect.x + self.level_text_rect.x, self.parent_rect.y + self.level_text_rect.y))
+        screen.blit(self.value_text, (self.parent_rect.x + self.value_text_rect.x, self.parent_rect.y + self.value_text_rect.y))
+        screen.blit(self.cost_text, (self.parent_rect.x + self.cost_text_rect.x, self.parent_rect.y + self.cost_text_rect.y))
+        screen.blit(self.coin_icon, (self.parent_rect.x + self.coin_icon_rect.x, self.parent_rect.y + self.coin_icon_rect.y))
+
+
+class UpgradeCardWave(UpgradeCard):
+    def __init__(self, x, y, file_name, manager, upgrade, parent_rect, app):
+        super(UpgradeCardWave, self).__init__(x, y, file_name, manager, upgrade, parent_rect, app)
+        self.lower_button = self.prepare_lower_button()
+        self.higher_button = self.prepare_higher_button()
+
+    def refactor(self):
+        super(UpgradeCardWave, self).refactor()
+    
+    def update(self):
+        self.level_text = self.prepare_level_text()
+        self.level_text_rect = self.get_level_text_rect()
+        self.value_text = self.prepare_value_text()
+        self.value_text_rect = self.get_value_text_rect()
+        self.cost_text = self.prepare_cost_text()
+        self.cost_text_rect = self.get_cost_text_rect()
+        self.coin_icon = self.prepare_coin_icon()
+        self.coin_icon_rect = self.get_coin_icon_rect()
+
+        if self.upgrade.upgrade_available():
+            self.cost_text.set_alpha(255)
+            self.coin_icon.set_alpha(255)
+            if self.upgrade.get_cost() < self.app.current_profile.coins:
+                self.buy_button.enable()
+            else:
+                self.buy_button.disable()
+        else:
+            self.buy_button.disable()
+            self.cost_text.set_alpha(0)
+            self.coin_icon.set_alpha(0)
+
+        if self.upgrade.can_go_lower():
+            self.lower_button.enable()
+        else:
+            self.lower_button.disable()
+
+        if self.upgrade.can_go_higher():
+            self.higher_button.enable()
+        else:
+            self.higher_button.disable()
+        
+    def handle_events(self, event):
+        super(UpgradeCardWave, self).handle_events(event)
+        if event.type == pygame.USEREVENT:
+            if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == self.lower_button:
+                    SOUNDS.upgrade_buy.play()
+                    self.upgrade.go_lower()
+                if event.ui_element == self.higher_button:
+                    SOUNDS.upgrade_buy.play()
+                    self.upgrade.go_higher()
+
+    def prepare_lower_button(self):
+        button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(
+                self.image_rect.left + self.parent_rect.x - 50,
+                self.cost_text_rect.bottom + 8 + self.parent_rect.y,
+                48, 32),
+            text="<",
+            manager=self.manager)
+        return button
+
+    def prepare_higher_button(self):
+        button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(
+                self.image_rect.right + self.parent_rect.x + 2,
+                self.cost_text_rect.bottom + 8 + self.parent_rect.y,
+                48, 32),
+            text=">",
+            manager=self.manager)
+        return button
+
+    def render(self, screen):
+        screen.blit(self.image, (self.parent_rect.x + self.image_rect.x, self.parent_rect.y + self.image_rect.y))
         screen.blit(self.value_text, (self.parent_rect.x + self.value_text_rect.x, self.parent_rect.y + self.value_text_rect.y))
         screen.blit(self.cost_text, (self.parent_rect.x + self.cost_text_rect.x, self.parent_rect.y + self.cost_text_rect.y))
         screen.blit(self.coin_icon, (self.parent_rect.x + self.coin_icon_rect.x, self.parent_rect.y + self.coin_icon_rect.y))
