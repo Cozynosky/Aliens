@@ -233,6 +233,9 @@ class UpgradeCard:
         else:
             self.buy_button.enable()
 
+        if self.upgrade.is_max():
+            self.buy_button.hide()
+
         self.level_text = self.prepare_level_text()
         self.level_text_rect = self.get_level_text_rect()
         self.value_text = self.prepare_value_text()
@@ -278,7 +281,7 @@ class UpgradeCard:
         return rect
 
     def prepare_value_text(self):
-        text = self.font.render(f'{self.upgrade.get_value()}', True, (255, 255, 255))
+        text = self.font.render(self.upgrade.get_text(), True, (255, 255, 255))
         return text
 
     def get_value_text_rect(self):
@@ -289,6 +292,8 @@ class UpgradeCard:
 
     def prepare_cost_text(self):
         text = self.font.render(f'{self.upgrade.get_cost()}', True, (255, 255, 255))
+        if self.upgrade.is_max():
+            text.set_alpha(0)
         return text
 
     def get_cost_text_rect(self):
@@ -301,6 +306,10 @@ class UpgradeCard:
         images_folder = os.path.join("Data", "Sprites", "HUD")
         coin = pygame.image.load(os.path.join(images_folder, "coin.png")).convert_alpha()
         coin = pygame.transform.smoothscale(coin, (20, 20))
+
+        if self.upgrade.is_max():
+            coin.set_alpha(0)
+
         return coin
 
     def get_coin_icon_rect(self):
@@ -317,6 +326,7 @@ class UpgradeCard:
                 self.image_rect.width, 32),
             text="Buy", object_id=pygame_gui.core.ObjectID(object_id="@buy_upgrade_button", class_id="@buy_upgrade_button"),
             manager=self.manager)
+
         return button
 
     def handle_events(self, event):

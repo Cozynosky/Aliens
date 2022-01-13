@@ -21,7 +21,7 @@ class PauseScene:
         self.exit_game_button = self.prepare_exit_game_button()
 
     def prepare_manager(self):
-        return pygame_gui.UIManager(SETTINGS.WINDOW_SIZE, 'Data/gui_theme.json')
+        return pygame_gui.UIManager(SETTINGS.WINDOW_SIZE, 'Data/default_theme.json')
 
     def load_background(self):
         images_folder = os.path.join("Data", "Sprites", "Background")

@@ -53,6 +53,16 @@ class SettingsScene(Scene):
         self.music_volume_slider = self.prepare_music_volume_slider()
         self.sounds_volume_slider = self.prepare_sounds_volume_slider()
 
+    def update(self):
+        super(SettingsScene, self).update()
+        value = round(self.music_volume_slider.get_current_value(), 2)
+        SETTINGS.MUSIC_VOLUME = value
+        SOUNDS.set_playback_volume(value)
+
+        value = round(self.sounds_volume_slider.get_current_value(), 2)
+        SETTINGS.SOUNDS_VOLUME = value
+        SOUNDS.set_sounds_volume(value)
+
     def prepare_settings_background(self):
         images_folder = os.path.join("Data", "Sprites", "Background")
         filename = "small_bg.png"
@@ -128,7 +138,7 @@ class SettingsScene(Scene):
         slider = pygame_gui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 200, 250, 40),
             start_value=SETTINGS.MUSIC_VOLUME,
-            value_range=(0.0, 1.0),
+            value_range=(0.0, 0.5),
             manager=self.manager
         )
         return slider
@@ -137,7 +147,7 @@ class SettingsScene(Scene):
         slider = pygame_gui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect(SETTINGS.WINDOW_WIDTH // 2 - 50, self.settings_text_rect.bottom + 250, 250, 40),
             start_value=SETTINGS.SOUNDS_VOLUME,
-            value_range=(0.0, 1.0),
+            value_range=(0.0, 0.5),
             manager=self.manager
         )
         return slider
@@ -179,19 +189,6 @@ class SettingsScene(Scene):
                     SETTINGS.WINDOW_HEIGHT = int(event.text.split(" x ")[1])
                     SETTINGS.SCALE = SETTINGS.prepare_scale()
                     self.app.refactor_ui()
-
-            if event.type == pygame_gui.UI_HORIZONTAL_SLIDER_MOVED:
-                if event.ui_element == self.music_volume_slider:
-                    value = round(self.music_volume_slider.get_current_value(), 2)
-                    SETTINGS.MUSIC_VOLUME = value
-                    SOUNDS.set_playback_volume(value)
-                    print(value, SOUNDS.playback.get_volume())
-
-                if event.ui_element == self.sounds_volume_slider:
-                    value = self.sounds_volume_slider.get_current_value()
-                    SETTINGS.SOUNDS_VOLUME = value
-                    SOUNDS.set_sounds_volume(value)
-
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:

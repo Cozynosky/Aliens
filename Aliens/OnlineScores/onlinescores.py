@@ -37,12 +37,11 @@ def update_highscores(score, name):
             if score > high_score['Score']:
                 work_sheet[0].insert_rows(place + 1, 1, [name, score])
                 high_scores_len += 1
-                break
+                work_sheet[0].delete_rows(12, high_scores_len - 10)
+                return None
 
         if high_scores_len < 10:
             work_sheet[0].insert_rows(len(high_scores) + 1, 1, [name, score])
-        else:
-            work_sheet[0].delete_rows(12, high_scores_len - 10)
 
     except Exception:
         pass

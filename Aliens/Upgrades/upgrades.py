@@ -21,6 +21,9 @@ class Upgrade:
     def upgrade_bought(self):
         self.level += 1
 
+    def get_text(self):
+        return str(self.get_value())
+
 
 class ShipSpeed(Upgrade):
     max_level = 50
@@ -29,7 +32,7 @@ class ShipSpeed(Upgrade):
         super(ShipSpeed, self).__init__()
 
     def get_cost(self):
-        cost = 0.656227 * self.level ** 1.1709 + 0.696481
+        cost = 0.593616 * self.level  ** 1.40175 + 0.579409
         return round(cost)
 
     def get_value(self):
@@ -44,7 +47,7 @@ class BulletSpeed(Upgrade):
         super(BulletSpeed, self).__init__()
 
     def get_cost(self):
-        cost = 0.656227 * self.level ** 1.1709 + 0.696481
+        cost = 0.593616 * self.level  ** 1.40175 + 0.579409
         return round(cost)
 
     def get_value(self):
@@ -58,7 +61,7 @@ class BulletDamage(Upgrade):
         super(BulletDamage, self).__init__()
 
     def get_cost(self):
-        cost = 0.656227 * self.level ** 1.1709 + 0.696481
+        cost = 7.35757 * self.level ** 1.86217+2.91343
         return round(cost)
 
     def get_value(self):
@@ -73,7 +76,7 @@ class BulletsInShot(Upgrade):
         super(BulletsInShot, self).__init__()
 
     def get_cost(self):
-        costs = [10, 25, 60, 100, 150, 210, 300, 500]
+        costs = [15, 60, 150, 300, 500, 1000, 1500, 3000, 0]
         return costs[self.level-1]
 
     def get_value(self):
@@ -86,7 +89,7 @@ class HealthCapacity(Upgrade):
         super(HealthCapacity, self).__init__()
 
     def get_cost(self):
-        cost = 0.656227 * self.level ** 1.1709 + 0.696481
+        cost = 0.593616 * self.level  ** 1.40175 + 0.579409
         return round(cost)
 
     def get_value(self):
@@ -115,7 +118,7 @@ class MagazineSize(Upgrade):
         super(MagazineSize, self).__init__()
 
     def get_cost(self):
-        cost = 0.656227 * self.level ** 1.1709 + 0.696481
+        cost = 0.593616 * self.level ** 1.40175 + 0.579409
         return round(cost)
 
     def get_value(self):
@@ -129,7 +132,7 @@ class ReloadTime(Upgrade):
         super(ReloadTime, self).__init__()
 
     def get_cost(self):
-        cost = 0.656227 * self.level ** 1.1709 + 0.696481
+        cost = 0.593616 * self.level  ** 1.40175 + 0.579409
         return round(cost)
 
     def get_value(self):
@@ -144,12 +147,15 @@ class DropRate(Upgrade):
         super(DropRate, self).__init__()
 
     def get_cost(self):
-        cost = 0.656227 * self.level ** 1.1709 + 0.696481
+        cost = 0.593616 * self.level  ** 1.40175 + 0.579409
         return round(cost)
 
     def get_value(self):
         value = 0.01 * self.level+0.29
         return round(value, 2)
+
+    def get_text(self):
+        return f"{round(self.get_value() * 100)} %"
 
 
 class CoinValue(Upgrade):
@@ -163,6 +169,9 @@ class CoinValue(Upgrade):
 
     def get_value(self):
         return self.level
+
+    def get_text(self):
+        return f"x {self.level}"
 
 
 class StartingWave(Upgrade):
