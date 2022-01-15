@@ -58,11 +58,11 @@ class EasyEnemy(Ship):
         # WAVE, VALUE: 1, 4 -> 5, 3.9 -> 10, 3.7 -> 20, 3.5 -> 50, 2.5
         cooldown = 4.00704 - 0.0196861 * self.wave_number ** 1.108
         cooldown = max(cooldown, 0.5)
+        cooldown = random.uniform(cooldown, cooldown * 2)
         return cooldown
 
     def get_time_to_shoot(self):
-        time_to_shoot = random.uniform(self.shot_cooldown, self.shot_cooldown * 3)
-        return time_to_shoot
+        return self.shot_cooldown
 
     def load_ship_frames(self):
         images_folder = os.path.join("Data", "Sprites", "Ships", "EasyEnemy")
