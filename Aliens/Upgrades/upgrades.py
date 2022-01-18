@@ -61,7 +61,7 @@ class BulletDamage(Upgrade):
         super(BulletDamage, self).__init__()
 
     def get_cost(self):
-        cost = 7.35757 * self.level ** 1.86217+2.91343
+        cost = 0.593616 * self.level  ** 1.40175 + 0.579409
         return round(cost)
 
     def get_value(self):
