@@ -16,7 +16,7 @@ class InstructionsScene(Scene):
         # banner at the top
         self.instruction_text, self.instruction_text_rect = self.prepare_instruction_text()
         self.image, self.image_rect = self.prepare_image()
-        #buttons
+        # buttons
         self.back_button = self.prepare_back_button()
 
     def refactor_ui(self):
@@ -27,7 +27,7 @@ class InstructionsScene(Scene):
         # banner at the top
         self.instruction_text, self.instruction_text_rect = self.prepare_instruction_text()
         self.image, self.image_rect = self.prepare_image()
-        #buttons
+        # buttons
         self.back_button = self.prepare_back_button()
 
     def load_fonts(self):

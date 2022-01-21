@@ -35,14 +35,14 @@ class EasyEnemy(Ship):
         speed = 0.0119337 * self.wave_number ** 1.48289 + 2.04706
         # make max speed value
         speed = min(8, speed)
-        return round(speed * SETTINGS.SCALE)
+        return speed * SETTINGS.SCALE
 
     def get_bullet_speed(self):
         # WAVE, VALUE: 1, 4 -> 5, 4.5 -> 10, 6 -> 20, 10 -> 50, 22
         bullet_speed = 0.168918 * self.wave_number ** 1.2 + 3.57386
         # make max bullet speed
         bullet_speed = min(24, bullet_speed)
-        return round(bullet_speed)
+        return bullet_speed
 
     def get_hit_damage(self):
         # WAVE, VALUE: 1, 3 -> 5, 4 -> 10, 7 -> 20, 15-> 50, 40
@@ -168,9 +168,11 @@ class EasyEnemy(Ship):
                         self.dest_y = self.generate_y_destination()
 
                 if self.wave_number > 20:
-                    self.rect.x -= round(1 * SETTINGS.SCALE)
                     if self.rect.right < 0:
                         self.rect.left = SETTINGS.WINDOW_WIDTH
+                        self.real_x = self.rect.left
+
+                    self.real_x -= 0.5 * SETTINGS.SCALE
 
         elif self.state == ShipState.DEAD:
             if self.explosion_frame_number >= len(self.explosion_frames):

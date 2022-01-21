@@ -2,13 +2,10 @@ import pygsheets
 
 
 def get_highscores():
-    try:
-        google_sheet = pygsheets.authorize(service_file='Data/service_account_credentials.json')
-        work_sheet = google_sheet.open_by_url("https://docs.google.com/spreadsheets/d/1rkKbKDpU3oK8NKunMbhkNNrIUarewOvOGU4zccAvwtQ/edit?usp=sharing")
-        return work_sheet[0].get_all_records(empty_value='', head=1, majdim='ROWS', numericise_data=True)
+    google_sheet = pygsheets.authorize(service_file='Data/service_account_credentials.json')
+    work_sheet = google_sheet.open_by_url("https://docs.google.com/spreadsheets/d/1rkKbKDpU3oK8NKunMbhkNNrIUarewOvOGU4zccAvwtQ/edit?usp=sharing")
+    return work_sheet[0].get_all_records(empty_value='', head=1, majdim='ROWS', numericise_data=True)
 
-    except Exception:
-        return {}
 
 
 def get_smallest_value():
@@ -27,23 +24,19 @@ def get_smallest_value():
 
 
 def update_highscores(score, name):
-    try:
-        google_sheet = pygsheets.authorize(service_file='Data/service_account_credentials.json')
-        work_sheet = google_sheet.open_by_url("https://docs.google.com/spreadsheets/d/1rkKbKDpU3oK8NKunMbhkNNrIUarewOvOGU4zccAvwtQ/edit?usp=sharing")
-        high_scores = work_sheet[0].get_all_records(empty_value='', head=1, majdim='ROWS', numericise_data=True)
-        high_scores_len = len(high_scores)
+    google_sheet = pygsheets.authorize(service_file='Data/service_account_credentials.json')
+    work_sheet = google_sheet.open_by_url("https://docs.google.com/spreadsheets/d/1rkKbKDpU3oK8NKunMbhkNNrIUarewOvOGU4zccAvwtQ/edit?usp=sharing")
+    high_scores = work_sheet[0].get_all_records(empty_value='', head=1, majdim='ROWS', numericise_data=True)
+    high_scores_len = len(high_scores)
 
-        for place, high_score in enumerate(high_scores):
-            if score > high_score['Score']:
-                work_sheet[0].insert_rows(place + 1, 1, [name, score])
-                high_scores_len += 1
-                work_sheet[0].delete_rows(12, high_scores_len - 10)
-                return None
+    for place, high_score in enumerate(high_scores):
+        if score > high_score['Score']:
+            work_sheet[0].insert_rows(place + 1, 1, [name, score])
+            high_scores_len += 1
+            work_sheet[0].delete_rows(12, high_scores_len - 10)
+            return None
 
-        if high_scores_len < 10:
-            work_sheet[0].insert_rows(len(high_scores) + 1, 1, [name, score])
-
-    except Exception:
-        pass
+    if high_scores_len < 10:
+        work_sheet[0].insert_rows(len(high_scores) + 1, 1, [name, score])
 
 

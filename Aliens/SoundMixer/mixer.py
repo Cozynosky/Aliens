@@ -10,18 +10,18 @@ class Mixer:
         self.sounds_volume = sounds_volume
         pygame.mixer.init()
         # playback
-        self.playback = self.prepare_playback()
+        self.playback = self.prepare_playback("playback.wav")
         # sounds
-        self.button_click = self.prepare_button_click()
-        self.player_shot = self.prepare_player_shot()
-        self.take_damage = self.prepare_take_damage()
-        self.collect_coin = self.prepare_collect_coin()
-        self.upgrade_buy = self.prepare_upgrade_buy()
-        self.empty_magazine = self.prepare_empty_magazine()
-        self.enemy_shot = self.prepare_enemy_shot()
-        self.ship_destroyed = self.prepare_ship_destroyed()
-        self.swosh = self.prepare_swosh()
-        self.game_over = self.prepare_game_over()
+        self.button_click = self.prepare_sound("button_click.ogg")
+        self.player_shot = self.prepare_sound("player_shot.ogg")
+        self.take_damage = self.prepare_sound("take_damage.mp3")
+        self.collect_coin = self.prepare_sound("collect_coin.ogg")
+        self.upgrade_buy = self.prepare_sound("upgrade_buy.wav")
+        self.empty_magazine = self.prepare_sound("empty_magazine.wav")
+        self.enemy_shot = self.prepare_sound("enemy_shot.ogg")
+        self.ship_destroyed = self.prepare_sound("ship_destroyed.wav")
+        self.swosh = self.prepare_sound("swosh.flac")
+        self.game_over = self.prepare_sound("game_over.wav")
 
     def set_playback_volume(self, value):
         self.music_volume = value
@@ -40,75 +40,13 @@ class Mixer:
         self.swosh.set_volume(value)
         self.ship_destroyed.set_volume(value)
 
-    def prepare_playback(self):
-        filename = "playback.wav"
+    def prepare_playback(self, filename):
         playback = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
         playback.play(loops=-1)
         playback.set_volume(self.music_volume)
         return playback
 
-    def prepare_button_click(self):
-        filename = "button_click.ogg"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_ship_destroyed(self):
-        filename = "ship_destroyed.wav"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_player_shot(self):
-        filename = "player_shot.ogg"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_take_damage(self):
-        filename = "take_damage.mp3"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_collect_coin(self):
-        filename = "collect_coin.ogg"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_upgrade_buy(self):
-        filename = "upgrade_buy.wav"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_empty_magazine(self):
-        filename = "empty_magazine.wav"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_bubble_pop(self):
-        filename = "bubble_pop.wav"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_enemy_shot(self):
-        filename = "enemy_shot.ogg"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_swosh(self):
-        filename = "swosh.flac"
-        sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
-        sound.set_volume(self.sounds_volume)
-        return sound
-
-    def prepare_game_over(self):
-        filename = "game_over.wav"
+    def prepare_sound(self, filename):
         sound = pygame.mixer.Sound(os.path.join(self.data_folder, filename))
         sound.set_volume(self.sounds_volume)
         return sound
