@@ -175,7 +175,14 @@ class GameUI:
         return rect
 
     def get_score_text(self):
-        score_text = self.big_font.render(f"{self.game.score}", True, (255, 255, 255))
+        score = self.game.score
+        if score > 999_999_999:
+            score = f"{score // 100000000}G"
+        if score > 999_999:
+            score = f"{score // 100000}M"
+        elif score > 99_999:
+            score = f"{score // 1000}k"
+        score_text = self.big_font.render(f"{score}", True, (255, 255, 255))
         return score_text
 
     def get_score_rect(self):
@@ -185,7 +192,14 @@ class GameUI:
         return rect
 
     def get_coins_earned_text(self):
-        text = self.middle_font.render(f"{self.game.coins_earned}", True, (255, 255, 255))
+        coins = self.game.coins_earned
+        if coins > 999_999_999:
+            coins = f"{coins // 100000000}G"
+        if coins > 999_999:
+            coins = f"{coins // 100000}M"
+        elif coins > 99_999:
+            coins = f"{coins // 1000}k"
+        text = self.middle_font.render(f"{coins}", True, (255, 255, 255))
         return text
 
     def get_coins_earned_text_rect(self):
